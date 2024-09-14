@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model log {
+  id       BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  userid   BigInt
+  username String?  @db.VarChar(255)
+  type     String?  @default("") @db.VarChar(50)
+  sendtime DateTime @default(now()) @db.DateTime(0)
+  logtime  DateTime @default(now()) @db.DateTime(0)
+  content  String   @db.LongText
+  tags     Json?
+  imgs     Json?
+  videos   Json?
+  audios   Json?
+  files    Json?
+  location Json?
+  people   Json?
+  info     Json?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model relation {
+  id       BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
+  userid   BigInt
+  username String  @db.VarChar(255)
+  from     String? @db.VarChar(255)
+  name     String  @db.VarChar(255)
+  info     Json?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model user {
+  id         BigInt   @id @db.UnsignedBigInt
+  name       String   @unique(map: "user_name") @db.VarChar(255)
+  img        String?  @db.Text
+  info       Json?
+  setting    Json?
+  createtime DateTime @default(now()) @db.DateTime(0)
+  openid_q   String?  @default("") @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model userlogin {
+  id         BigInt  @default(autoincrement())
+  name       String  @db.VarChar(255)
+  pswd       String  @db.VarChar(255)
+  unionid_qq String? @db.VarChar(255)
+
+  @@id([id, name])
+}
