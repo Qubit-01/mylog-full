@@ -7,19 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id             BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
   name           String     @unique(map: "uni_name") @db.VarChar(255)
   pswd           String     @db.VarChar(255)
   unionid_qq     String?    @db.VarChar(255)
   unionid_weixin String?    @db.VarChar(255)
-  log            log[]
-  relation       relation[]
-  userdata       userdata?
+  logs           Log[]
+  relation       Relation[]
+  userdata       Userdata?
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model userdata {
+model Userdata {
   id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
   userid     BigInt?  @unique(map: "uni_userid") @db.UnsignedBigInt
   name       String   @unique(map: "uni_name") @db.VarChar(255)
@@ -27,11 +27,11 @@ model userdata {
   info       Json?
   setting    Json?
   createtime DateTime @default(now()) @db.DateTime(0)
-  user       user?    @relation(fields: [userid], references: [id], map: "ref_data_user")
+  user       User?    @relation(fields: [userid], references: [id], map: "ref_data_user")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model log {
+model Log {
   id       BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
   userid   BigInt?  @db.UnsignedBigInt
   type     String?  @default("log") @db.VarChar(50)
@@ -46,20 +46,20 @@ model log {
   location Json?
   people   Json?
   info     Json?
-  user     user?    @relation(fields: [userid], references: [id], map: "ref_log_user")
+  user     User?    @relation(fields: [userid], references: [id], map: "ref_log_user")
 
   @@index([type], map: "nor_type")
   @@index([userid], map: "nor_userid")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model relation {
+model Relation {
   id     BigInt  @id @default(autoincrement()) @db.UnsignedBigInt
   userid BigInt? @db.UnsignedBigInt
   from   String? @db.VarChar(255)
   name   String  @db.VarChar(255)
   info   Json?
-  user   user?   @relation(fields: [userid], references: [id], map: "ref_relation_user")
+  user   User?   @relation(fields: [userid], references: [id], map: "ref_relation_user")
 
   @@index([userid], map: "nor_userid")
 }

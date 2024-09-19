@@ -3,11 +3,16 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const allUsers = await prisma.log.findMany();
-  console.log('🐔', prisma.user.count());
+  const allUsers = await prisma.user.findMany();
+  console.log('🐔', allUsers);
   
-//   prisma.user.count();
-  console.log(allUsers);
+//   const res = await prisma.user.create({
+//     data: {name: 'lsq'}
+//   });
+//   const res = await prisma.user.update({
+//     where: {id: 1},
+//     data: {name: 'lsq'}
+//   });
 }
 
 main()
