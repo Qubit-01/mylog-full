@@ -25,7 +25,7 @@ model userdata {
   img        String?  @db.Text
   info       Json?
   setting    Json?
-  createtime DateTime @default(now()) @db.DateTime(0)
+  createtime DateTime @default(now()) @db.Timestamp(0)
   user       user?    @relation(fields: [userid], references: [id], map: "ref_data_user")
 }
 
