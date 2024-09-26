@@ -1,12 +1,11 @@
 import fs from 'node:fs/promises'
 import express from 'express'
 
-// Constants
 const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
-// Cached production assets
+// 提前缓存静态文件
 const templateHtml = isProduction
   ? await fs.readFile('./dist/client/index.html', 'utf-8')
   : ''
@@ -14,10 +13,9 @@ const ssrManifest = isProduction
   ? await fs.readFile('./dist/client/.vite/ssr-manifest.json', 'utf-8')
   : undefined
 
-// Create http server
 const app = express()
 
-// Add Vite or respective production middlewares
+// Vite 和生产中间件
 let vite
 if (!isProduction) {
   const { createServer } = await import('vite')
@@ -34,7 +32,6 @@ if (!isProduction) {
   app.use(base, sirv('./dist/client', { extensions: [] }))
 }
 
-// Serve HTML
 app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '')
@@ -42,7 +39,7 @@ app.use('*', async (req, res) => {
     let template
     let render
     if (!isProduction) {
-      // Always read fresh template in development
+      // 开发环境，每次都去读新模版
       template = await fs.readFile('./index.html', 'utf-8')
       template = await vite.transformIndexHtml(url, template)
       render = (await vite.ssrLoadModule('/src/entry-server.ts')).render
@@ -65,7 +62,6 @@ app.use('*', async (req, res) => {
   }
 })
 
-// Start http server
 app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`)
 })

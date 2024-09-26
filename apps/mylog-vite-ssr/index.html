@@ -1,14 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Vue + TS</title>
+
+    <!-- <link rel="icon" href="/favicon.svg" /> -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <!-- 给爬虫看的 -->
+    <meta name="author" content="廖世强" />
+    <meta name="keywords" content="多元记,廖世强,bit,2928318801,liaoshiqiang" />
+    <meta name="description" content="一个为社交生活设计的网站。" />
+
+    <!-- 对资源自动升级https, 暂时不开启 -->
+    <!-- <meta
+      http-equiv="Content-Security-Policy"
+      content="upgrade-insecure-requests"
+    /> -->
+
+    <title>多元记 - 把你写成书</title>
     <!--app-head-->
   </head>
   <body>
     <div id="app"><!--app-html--></div>
     <script type="module" src="/src/entry-client.ts"></script>
+
+    <!-- 前置js -->
+    <!-- <script type="text/javascript">
+      //高德地图
+      window._AMapSecurityConfig = {
+        serviceHost: "https://mylog.cool/_AMapService",
+        securityJsCode: "85b229327c63ab4ff844930144442d80",
+      };
+    </script> -->
+
+    <!-- 高德地图 -->
+    <!-- <script
+      type="text/javascript"
+      src="https://webapi.amap.com/maps?v=2.0&key=3e157c0915ab643cb42b74eb4c943cf5"
+    ></script> -->
+
+    <!-- QQ登录 重定向后data-callback="true"? -->
+    <!-- <script
+      type="text/javascript"
+      charset="utf-8"
+      src="https://connect.qq.com/qc_jssdk.js"
+      data-appid="102099147"
+      data-redirecturi="https://mylog.cool/#/login/qq-redirect"
+    ></script> -->
+
+    <!-- 背景漂移粒子 -->
+    <script
+      color="150,150,200"
+      opacity="0.8"
+      zIndex="-2"
+      count="70"
+      src="//cdn.bootcdn.net/ajax/libs/canvas-nest.js/1.0.1/canvas-nest.min.js"
+    ></script>
   </body>
 </html>

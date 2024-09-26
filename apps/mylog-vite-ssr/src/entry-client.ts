@@ -1,4 +1,4 @@
-import './style.css'
+import './assets/base.scss'
 import { createApp } from './main'
 
 const { app } = createApp()
