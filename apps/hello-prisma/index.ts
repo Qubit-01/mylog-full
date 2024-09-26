@@ -5,9 +5,6 @@ import dayjs from "dayjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  const user = await showUserInfo(64)
-  console.log('🐔', dayjs(user?.createtime).format("YYYY-MM-DD HH:mm:ss"));
-  
 }
 
 main()

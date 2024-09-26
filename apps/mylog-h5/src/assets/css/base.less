@@ -1,0 +1,175 @@
+/**
+ * :root 是全局的，无关明暗主题的
+ * html 和 html.dark 是单独为主题设置的
+ * 日间模式时，要覆盖element样式要加在:root中，要覆盖dark样式要加在html.dark中
+ * element是日间模式全加在 :root 中，如果开了dark，就用html.dark去覆盖
+ */
+
+:root {
+  font-size: 16px;
+  /* 无关主题，通用样式========================= */
+  /* 各个模块间的间距 */
+  --gap: 20px;
+  /* 页面宽度在最大挡位时的宽度 */
+  --center-width: 65%;
+  /* 默认圆角 */
+  --border-radius: 12px;
+  /* 默认padding */
+  --padding: 10px;
+
+  /* 顶栏高度 */
+  --header-height: 50px;
+  /* 两边栏宽度 */
+  --lan-width: 130px;
+  /* 主体内容的上边距 */
+  --header-top: calc(var(--header-height) + var(--gap));
+
+  /* 滚动条粗细 */
+  --scrollbar-weight: 6px;
+
+  @media (max-width: 1424px) {
+    /* 页面宽度在小挡位时的宽度 */
+    --center-width: 95%;
+  }
+
+  @media (max-width: 700px) {
+    /* 主体内容的上边距 */
+    --header-top: calc((var(--header-height) * 2) + var(--gap));
+  }
+
+  /* light下的样式========================= */
+
+  --body-background-color: #ccc;
+  --body-background-image: url(../img/bg-light.jpg);
+
+  /* 二级字体颜色 */
+  --color-2: #111a;
+
+  /* -m 模块 */
+  // --m-background-color: #eee5;
+  --m-background-color: hsla(0, 0%, 100%, 0.3);
+  --m-border: 1px solid #fff5;
+  --m-shadow: var(--el-box-shadow-lighter);
+  --m-hover-shadow: var(--el-box-shadow-light);
+
+  /* 滚动槽颜色 */
+  --scrollbar-background: #9995;
+  /* 滚动滑块颜色 */
+  --scrollbar-thumb-background: #999a;
+
+  /* 明暗主题通用element样式 */
+  .el-link {
+    --el-font-size-base: unset;
+  }
+
+  /* 修改element一些的样式 */
+  --el-fill-color-blank: #fff5; // 大部分组件背景色
+  --el-mask-color: rgba(255, 255, 255, 0.5); // 加载遮罩层颜色
+  --el-text-color-regular: var(--color-2); // 主要文字颜色
+}
+
+html.dark {
+  --body-background-color: #333;
+  --body-background-image: url(../img/bg-dark.jpg);
+
+  /* 二级字体颜色 */
+  --color-2: #eeea;
+
+  /* -m 模块 */
+  --m-background-color: #4444;
+  --m-border: 1px solid #8885;
+  --m-shadow: var(--el-box-shadow-lighter);
+  --m-hover-shadow: var(--el-box-shadow-light);
+
+  /* 滚动槽颜色 */
+  --scrollbar-background: #3335;
+  /* 滚动滑块颜色 */
+  --scrollbar-thumb-background: #333a;
+
+  /* 修改element一些的样式 */
+  --el-fill-color-blank: #6667;
+  --el-mask-color: rgba(0, 0, 0, 0.5);
+}
+
+/* 中间模块通用 */
+.-m {
+  position: relative;
+  transition: box-shadow 0.2s linear, width 0.2s linear;
+  background-color: var(--m-background-color);
+
+  border: var(--m-border);
+
+  box-shadow: var(--m-shadow);
+  backdrop-filter: blur(8px);
+
+  &:hover {
+    box-shadow: var(--m-hover-shadow);
+  }
+}
+
+/* 超出省略号 */
+// 单行省略号
+.-overflow-ellipsis-s {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行省略号， 默认3行，但是会被指令调用时要被覆盖
+.-overflow-ellipsis-m {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+// 去除百度地图坐下角的信息
+.amap-container {
+  a.amap-logo,
+  div.amap-copyright {
+    display: none !important;
+  }
+}
+
+// 整个滚动条。
+*::-webkit-scrollbar {
+  width: var(--scrollbar-weight); // 纵向滚动条的粗细
+  height: var(--scrollbar-weight); // 横向滚动条的粗细
+}
+// 滚动条上的滚动滑块。
+*::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: var(--scrollbar-thumb-background);
+}
+// 滚动条轨道。
+*::-webkit-scrollbar-track {
+  border-radius: 4px;
+  background: var(--scrollbar-background);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background-color: var(--body-background-color);
+  background-image: var(--body-background-image);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100%;
+
+  transition: color 0.5s, background-color 0.5s, background-image 0.5s,
+    width 0.5s;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
