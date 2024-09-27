@@ -6,10 +6,12 @@
 
 <style lang="scss">
 *,
-*::after,
-*::before {
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-weight: normal;
 }
 
 :root {
@@ -27,25 +29,40 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+@media (prefers-color-scheme: light) {
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+/* 中间模块通用 */
+.m {
+  position: relative;
+  transition: box-shadow 0.2s linear, width 0.2s linear;
+  background-color: var(--m-background-color);
+
+  border: var(--m-border);
+
+  box-shadow: var(--m-shadow);
+  backdrop-filter: blur(8px);
+
+  &:hover {
+    box-shadow: var(--m-hover-shadow);
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+}
+
+/* 超出省略号 */
+// 单行省略号
+.overflow-ellipsis-s {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行省略号， 默认3行，但是会被指令调用时要被覆盖
+.overflow-ellipsis-m {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
 }
 </style>

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "compression": "^1.7.4",
+    "dayjs": "^1.11.13",
     "express": "^4.19.2",
     "scss": "^0.2.4",
     "sirv": "^2.0.4",
@@ -27,6 +28,7 @@
     "node-sass": "^9.0.0",
     "sass-loader": "^16.0.2",
     "typescript": "^5.4.5",
+    "unplugin-auto-import": "^0.18.3",
     "vite": "^5.2.10",
     "vue-tsc": "^2.0.14"
   }
