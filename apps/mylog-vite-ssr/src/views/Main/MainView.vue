@@ -27,6 +27,7 @@ import OneSentence from "./comps/Lans/OneSentence.vue";
     </div>
     <!-- <FooterComp /> -->
   </div>
+  <ElBacktop :right="20" :bottom="20" />
 </template>
 
 <style scoped lang="scss">

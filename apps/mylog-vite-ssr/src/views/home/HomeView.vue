@@ -1,0 +1,81 @@
+<script setup lang="ts">
+// import HelloWorld from "@/components/HelloWorld.vue";
+</script>
+<template>
+  <div class="home-page">
+    home-page
+    <!-- <HelloWorld msg="Hello" /> -->
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+    <p>home-page</p>
+  </div>
+</template>
+<style lang="scss" scoped></style>
