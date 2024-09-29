@@ -14,7 +14,7 @@ const dev: boolean = import.meta.env.DEV;
         <div class="left">
           <div class="logo" @click="$router.push('/')">
             多元记
-            <img src="/public/img/favicon.svg" />
+            <img src="/img/favicon.svg" />
             <div class="env" v-if="dev">DEV</div>
           </div>
         </div>
