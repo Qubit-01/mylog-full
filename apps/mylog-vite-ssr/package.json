@@ -12,6 +12,7 @@
     "start": "pnpm build:client && pnpm build:server && pnpm preview"
   },
   "dependencies": {
+    "@vueuse/core": "^10.11.0",
     "compression": "^1.7.4",
     "dayjs": "^1.11.13",
     "express": "^4.19.2",
