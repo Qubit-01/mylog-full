@@ -7,5 +7,5 @@ import router from './views/router'
 export function createApp() {
   const app = createSSRApp(App)
   app.use(router)
-  return { app }
+  return { app, router }
 }
