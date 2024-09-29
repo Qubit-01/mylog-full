@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// const router = useRouter();
-
 // todo: 接入pinia
 const User = {};
 
@@ -52,7 +50,7 @@ const dev: boolean = import.meta.env.DEV;
     display: flex;
     justify-content: center;
 
-    background-color: #fff4;
+    background-color: var(--header-background-color);
     backdrop-filter: blur(8px);
 
     .main-container {
@@ -62,7 +60,6 @@ const dev: boolean = import.meta.env.DEV;
       height: 100%;
 
       > * {
-        // border: 1px solid red;
         display: flex;
         align-items: center;
 
@@ -71,7 +68,7 @@ const dev: boolean = import.meta.env.DEV;
           transition: all .5s;
 
           &:hover {
-            background-color: #fff;
+            background-color: var(--header-item-hover-background-color);
           }
         }
       }

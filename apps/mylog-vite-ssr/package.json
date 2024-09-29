@@ -16,7 +16,6 @@
     "compression": "^1.7.4",
     "dayjs": "^1.11.13",
     "express": "^4.19.2",
-    "scss": "^0.2.4",
     "sirv": "^2.0.4",
     "vue": "^3.4.23",
     "vue-router": "^4.4.0"
@@ -26,10 +25,12 @@
     "@types/node": "^20.12.7",
     "@vitejs/plugin-vue": "^5.0.4",
     "cross-env": "^7.0.3",
-    "node-sass": "^9.0.0",
+    "naive-ui": "^2.40.1",
+    "sass": "^1.79.4",
     "sass-loader": "^16.0.2",
     "typescript": "^5.4.5",
     "unplugin-auto-import": "^0.18.3",
+    "unplugin-vue-components": "^0.27.3",
     "vite": "^5.2.10",
     "vue-tsc": "^2.0.14"
   }

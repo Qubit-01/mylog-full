@@ -16,66 +16,6 @@
     <p>home-page</p>
     <p>home-page</p>
     <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
-    <p>home-page</p>
   </div>
 </template>
 <style lang="scss" scoped></style>
