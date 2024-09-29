@@ -35,6 +35,7 @@ if (!isProduction) {
 app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '')
+    console.log('🐔express: 被访问接口: ', url);
 
     let template
     let render
