@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import useGlobalStore from './stores/global';
+
+useGlobalStore();
+</script>
 
 <template>
   <RouterView />

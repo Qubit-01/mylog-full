@@ -16,6 +16,8 @@
     "compression": "^1.7.4",
     "dayjs": "^1.11.13",
     "express": "^4.19.2",
+    "js-cookie": "^3.0.5",
+    "pinia": "^2.2.0",
     "sirv": "^2.0.4",
     "vue": "^3.4.23",
     "vue-router": "^4.4.0"
