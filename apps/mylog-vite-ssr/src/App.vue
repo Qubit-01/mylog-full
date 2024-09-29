@@ -5,6 +5,9 @@
 </template>
 
 <style lang="scss">
+/**
+ * 这里放的是一些全局CSS，无关主题
+ */
 *,
 *::before,
 *::after {
@@ -15,18 +18,23 @@
 }
 
 :root {
+  // 主要内容的显示区域
+  --main-container-width: 65%;
+  // 文字颜色
+  --color: #111;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  // line-height: 1.5;
+  // font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  // color-scheme: light dark;
+  // color: rgba(255, 255, 255, 0.87);
+  // background-color: #242424;
+  background-color: var(--body-background-color);
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  // font-synthesis: none;
+  // text-rendering: optimizeLegibility;
+  // -webkit-font-smoothing: antialiased;
+  // -moz-osx-font-smoothing: grayscale;
 }
 
 @media (prefers-color-scheme: light) {
@@ -34,18 +42,22 @@
 
 /* 中间模块通用 */
 .m {
-  position: relative;
-  transition: box-shadow 0.2s linear, width 0.2s linear;
-  background-color: var(--m-background-color);
+  // position: relative;
+  // transition: box-shadow 0.2s linear, width 0.2s linear;
+  // background-color: var(--m-background-color);
 
-  border: var(--m-border);
+  // border: var(--m-border);
 
-  box-shadow: var(--m-shadow);
-  backdrop-filter: blur(8px);
+  // box-shadow: var(--m-shadow);
+  // backdrop-filter: blur(8px);
 
-  &:hover {
-    box-shadow: var(--m-hover-shadow);
-  }
+  // &:hover {
+  //   box-shadow: var(--m-hover-shadow);
+  // }
+}
+
+a {
+  text-decoration: none;
 }
 
 /* 超出省略号 */

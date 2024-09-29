@@ -3,12 +3,18 @@
 -->
 <script setup lang="ts">
 import HeaderComp from "./comps/HeaderComp.vue";
-import OneSentence from "./comps/Lans/OneSentence.vue";
+// import OneSentence from "./comps/Lans/OneSentence.vue";
+
+const a = ref(1)
+
+console.log('🐔main view');
+
 </script>
 
 <template>
   <div class="main-view">
     <HeaderComp />
+    <div @click="a++">count is {{ a }}</div>
     <div class="main-comp">
       <div class="center">
         <div class="middle">
@@ -21,13 +27,12 @@ import OneSentence from "./comps/Lans/OneSentence.vue";
         <div class="right">
           <!-- 目录栏 -->
           <!-- <ContentLan /> -->
-          <OneSentence />
+          <!-- <OneSentence /> -->
         </div>
       </div>
     </div>
     <!-- <FooterComp /> -->
   </div>
-  <ElBacktop :right="20" :bottom="20" />
 </template>
 
 <style scoped lang="scss">
