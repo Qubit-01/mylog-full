@@ -20,7 +20,7 @@ export default trpc;
 // 就是调用接口了，由页面自行调用了
 async function main() {
   const logs = await trpc.log.getPublics.query({
-    userid: 2,
+    userid: 1,
     skip: 0,
     limit: 1,
   });
