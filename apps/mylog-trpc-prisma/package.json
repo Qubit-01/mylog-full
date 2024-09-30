@@ -1,0 +1,29 @@
+{
+  "name": "@mylog-full/mylog-trpc-prisma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "echo",
+    "trpc:test": "ts-node client.ts",
+    "trpc:server": "ts-node src/server",
+    "prisma:studio": "prisma studio",
+    "prisma:pull": "prisma db pull && prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "@trpc/client": "11.0.0-rc.553",
+    "@trpc/server": "11.0.0-rc.553",
+    "dayjs": "^1.11.13"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "prisma": "^5.20.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2",
+    "zod": "^3.23.8"
+  }
+}
