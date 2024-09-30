@@ -1,5 +1,5 @@
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
-import type { AppRouter } from "./src/server";
+import type AppRouter from "@mylog-full/mylog-trpc-prisma";
 
 // 这里导入后端router，就能知道接口和输入输出类型
 const trpc = createTRPCClient<AppRouter>({
@@ -12,14 +12,3 @@ const trpc = createTRPCClient<AppRouter>({
 console.log("🐔tRPC Client 启动！");
 
 export default trpc;
-
-// 这里就是测试DEMO
-// 就是调用接口了，由页面自行调用了
-async function main() {
-  const logs = await trpc.log.getPublics.query({
-    userid: 1,
-    skip: 0,
-    limit: 1,
-  });
-  console.log("🐔", logs);
-}

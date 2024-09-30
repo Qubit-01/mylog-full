@@ -12,6 +12,8 @@
     "start": "pnpm build:client && pnpm build:server && pnpm preview"
   },
   "dependencies": {
+    "@mylog-full/mylog-trpc-prisma": "workspace:^",
+    "@trpc/client": "11.0.0-rc.502",
     "@vueuse/core": "^10.11.0",
     "compression": "^1.7.4",
     "dayjs": "^1.11.13",
