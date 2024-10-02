@@ -14,13 +14,12 @@ const logRouter = router({
       })
     )
     .query(async ({ input }) => {
-      return await prisma.log.findMany({
-        where: {
-          userid: input.userid,
-        },
+      const publics = await prisma.log.findMany({
+        where: { userid: input.userid },
         skip: input.skip,
         take: input.limit,
       });
+      return publics;
     }),
 });
 
