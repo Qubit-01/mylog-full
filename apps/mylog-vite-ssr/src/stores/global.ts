@@ -18,7 +18,7 @@ interface Global {
   isDark: boolean
 }
 
-export const useGlobalStore: () => Global = defineStore('global', () => {
+export const useGlobalStore = defineStore('global', () => {
   
 
   return {

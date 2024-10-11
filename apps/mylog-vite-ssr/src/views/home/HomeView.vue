@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import trpc from "@/api";
-import useLogStore from "@/stores/log";
+import useHomeStore from "@/stores/home";
 
-const home = useLogStore().home;
+const home = useHomeStore();
 
-const test = () => {
-  console.log("🐔", home);
-};
+onServerPrefetch(async () => {
+  await home.addLogs();
+});
 </script>
 
 <template>
   <div class="home-page" data-allow-mismatch="children">
-    <div @click="test">123</div>
-    <!-- <div v-for="l of home.list" class="log">{{ l.content }}</div> -->
+    <div v-for="l of home.logs.list" class="log" v-text="l.content"></div>
   </div>
 </template>
 <style lang="scss" scoped>

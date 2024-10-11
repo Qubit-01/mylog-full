@@ -5,7 +5,7 @@ import { RouteLocationRaw } from "vue-router";
 export async function render(url: RouteLocationRaw) {
   console.log("🐔entry-server.ts执行");
 
-  const { app, router } = createApp();
+  const { app, router, pinia } = createApp();
   router.push(url);
   await router.isReady();
   // 上下文对象ctx会通过 useSSRContext 获得
@@ -14,5 +14,13 @@ export async function render(url: RouteLocationRaw) {
   const ctx = {};
   const html = await renderToString(app, ctx);
 
-  return { html };
+  // 自己添加head，对提前获取的数据注入进html的head中
+  const head = `<script>window.__pinia = "${JSON.stringify(
+    pinia.state.value
+  )}"</script>`;
+
+  console.log('🐔', head);
+  
+
+  return { html, head };
 }
