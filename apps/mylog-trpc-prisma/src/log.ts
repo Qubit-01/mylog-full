@@ -18,6 +18,9 @@ const logRouter = router({
         where: { userid: input.userid, type: 'public' },
         skip: input.skip,
         take: input.limit,
+        orderBy: {
+          sendtime: "desc",
+        },
       });
       return publics;
     }),
