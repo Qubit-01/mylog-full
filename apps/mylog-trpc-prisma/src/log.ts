@@ -15,7 +15,7 @@ const logRouter = router({
     )
     .query(async ({ input }) => {
       const publics = await prisma.log.findMany({
-        where: { userid: input.userid },
+        where: { userid: input.userid, type: 'public' },
         skip: input.skip,
         take: input.limit,
       });

@@ -1,7 +1,7 @@
 // import { getUser as getUserApi } from '@/api/user'
 // import type { User } from '@/types'
 // import useUserStore, { setToken } from './user'
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 
 
 /**

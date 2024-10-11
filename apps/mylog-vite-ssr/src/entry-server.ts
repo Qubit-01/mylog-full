@@ -3,6 +3,8 @@ import { createApp } from "./main";
 import { RouteLocationRaw } from "vue-router";
 
 export async function render(url: RouteLocationRaw) {
+  console.log("🐔entry-server.ts执行");
+
   const { app, router } = createApp();
   router.push(url);
   await router.isReady();

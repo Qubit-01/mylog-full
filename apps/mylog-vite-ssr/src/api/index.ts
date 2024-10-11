@@ -9,6 +9,4 @@ const trpc = createTRPCClient<AppRouter>({
   ],
 });
 
-console.log("🐔tRPC Client 启动！");
-
 export default trpc;

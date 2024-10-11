@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import useGlobalStore from './stores/global';
-
+import useGlobalStore from "./stores/global";
 useGlobalStore();
 </script>
 
@@ -9,7 +8,7 @@ useGlobalStore();
 </template>
 
 <style lang="scss">
-@import 'public/css/light.scss';
+@import "public/css/light.scss";
 /**
  * 这里放的是一些全局CSS，无关主题
  */

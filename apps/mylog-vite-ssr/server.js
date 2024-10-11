@@ -55,6 +55,7 @@ app.use('*', async (req, res) => {
       .replace(`<!--app-head-->`, rendered.head ?? '')
       .replace(`<!--app-html-->`, rendered.html ?? '')
 
+    console.log('🐔SSR HTML渲染好了，返回给浏览器');
     res.status(200).set({ 'Content-Type': 'text/html' }).send(html)
   } catch (e) {
     vite?.ssrFixStacktrace(e)
@@ -64,5 +65,5 @@ app.use('*', async (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`)
+  console.log(`🐔ViteSSR前端启动: http://localhost:${port}`)
 })
