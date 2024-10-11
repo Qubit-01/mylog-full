@@ -15,9 +15,9 @@ export async function render(url: RouteLocationRaw) {
   const html = await renderToString(app, ctx);
 
   // 自己添加head，对提前获取的数据注入进html的head中
-  const head = `<script>window.__pinia = "${JSON.stringify(
+  const head = `<script>window.__pinia = ${JSON.stringify(
     pinia.state.value
-  )}"</script>`;
+  )}</script>`;
 
   console.log('🐔', head);
   
