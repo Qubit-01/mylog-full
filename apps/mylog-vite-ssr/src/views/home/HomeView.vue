@@ -10,12 +10,14 @@ onServerPrefetch(async () => {
 
 <template>
   <div class="home-page" data-allow-mismatch="children">
-    <div v-for="l of home.logs.list" class="log" v-text="l.content"></div>
+    <LogPublic v-for="l of home.logs.list" :key="l.id" :log="l" />
   </div>
 </template>
 <style lang="scss" scoped>
-.log {
-  margin-bottom: 10px;
-  border: 1px solid red;
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  // align-items: center;
 }
 </style>

@@ -1,7 +1,23 @@
 import trpc from "@/api";
+import { handleLog } from "@/utils/log";
+import { Log } from "@/types";
+
+/**
+ * 要分页查询需要的数据项
+ */
+export interface PageStore {
+  /** 真正显示的数据 */
+  list: Log[];
+  /** 请求参数 */
+  params: { skip: number; limit: number };
+  /** 加载状态 */
+  loading: boolean;
+  /** 是否还有数据 */
+  noMore: boolean;
+}
 
 const useHomeStore = defineStore("home", () => {
-  const logs = reactive({
+  const logs = reactive<PageStore>({
     list: [] as any,
     params: { skip: 0, limit: 10 },
     loading: true,
@@ -19,8 +35,10 @@ const useHomeStore = defineStore("home", () => {
     if (logs.noMore) return;
     logs.loading = true;
     const data = await trpc.log.getPublics.query(logs.params);
+
     if (data.length < logs.params.limit) logs.noMore = true;
-    // data.forEach(handleLog);
+
+    data.forEach(handleLog);
     logs.list.push(...data);
     logs.params.skip += logs.params.limit;
     logs.loading = false;

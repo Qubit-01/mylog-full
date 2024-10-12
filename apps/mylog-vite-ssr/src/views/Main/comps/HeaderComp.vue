@@ -6,7 +6,7 @@ const User = {};
 const dev: boolean = import.meta.env.DEV;
 </script>
 <template>
-  <div class="header-comp">
+  <div class="header-comp" v-if="!dev">
     <header>
       <div class="main-container">
         <div class="left">
@@ -40,6 +40,10 @@ const dev: boolean = import.meta.env.DEV;
   --header-height: 64px;
 }
 .header-comp {
+  * {
+    transition: width 0.5s;
+  }
+
   header {
     position: fixed;
     top: 0;
@@ -53,6 +57,8 @@ const dev: boolean = import.meta.env.DEV;
     background-color: var(--header-background-color);
     backdrop-filter: blur(8px);
 
+    min-width: 500px;
+
     .main-container {
       display: flex;
       justify-content: space-between;
@@ -65,7 +71,7 @@ const dev: boolean = import.meta.env.DEV;
 
         > * {
           border-radius: 12px;
-          transition: all .5s;
+          transition: all 0.5s;
 
           &:hover {
             background-color: var(--header-item-hover-background-color);
@@ -94,7 +100,7 @@ const dev: boolean = import.meta.env.DEV;
           display: flex;
           justify-content: center;
           align-items: center;
-          padding: 8px 24px;
+          padding: 6px 16px;
 
           font-size: 22px;
           cursor: pointer;
@@ -118,6 +124,25 @@ const dev: boolean = import.meta.env.DEV;
             border-radius: 10px;
             background: #f55a;
           }
+        }
+      }
+
+      @media (max-width: 890px) {
+        :global(:root) {
+          --header-height: 96px;
+        }
+
+        & {
+          flex-wrap: wrap;
+        }
+        > .center {
+          min-width: 100%;
+          order: 1;
+          height: 48px;
+        }
+        > .left,
+        > .right {
+          height: 48px;
         }
       }
     }

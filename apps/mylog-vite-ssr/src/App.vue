@@ -1,3 +1,7 @@
+<!-- 
+  这里放的是一些全局js
+  style中放无关主题的全局css
+-->
 <script setup lang="ts">
 import useGlobalStore from "./stores/global";
 useGlobalStore();
@@ -24,6 +28,7 @@ useGlobalStore();
 :root {
   // 主要内容的显示区域
   --main-container-width: 65%;
+
   // 文字颜色
   --color: #111;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -39,13 +44,23 @@ useGlobalStore();
   // text-rendering: optimizeLegibility;
   // -webkit-font-smoothing: antialiased;
   // -moz-osx-font-smoothing: grayscale;
+
+  // 平板横向
+  @media (max-width: 1424px) {
+    /* 页面宽度在小挡位时的宽度 */
+    --main-container-width: 95%;
+  }
+
+  // 手机，平板纵向
+  @media (max-width: 890px) {
+  }
 }
 
 @media (prefers-color-scheme: light) {
 }
 
 /* 中间模块通用 */
-.m {
+// .m {
   // position: relative;
   // transition: box-shadow 0.2s linear, width 0.2s linear;
   // background-color: var(--m-background-color);
@@ -58,7 +73,7 @@ useGlobalStore();
   // &:hover {
   //   box-shadow: var(--m-hover-shadow);
   // }
-}
+// }
 
 a {
   text-decoration: none;

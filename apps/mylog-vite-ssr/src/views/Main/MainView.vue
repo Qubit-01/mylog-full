@@ -4,7 +4,6 @@
 <script setup lang="ts">
 import FooterComp from "./comps/FooterComp.vue";
 import HeaderComp from "./comps/HeaderComp.vue";
-const a = ref(1);
 </script>
 
 <template>
@@ -14,7 +13,6 @@ const a = ref(1);
       <div class="main-container">
         <div class="left">123</div>
         <div class="middle">
-          <NButton @click="a++">count is {{ a }}</NButton>
           <RouterView />
         </div>
         <div class="right">123</div>
@@ -30,9 +28,14 @@ const a = ref(1);
   display: flex;
   flex-direction: column;
   gap: var(--gap);
+  min-width: 550px;
 
   // 中间主要部分的高度 = 屏幕高度 + Footer高度
   min-height: calc(100vh + var(--footer-height));
+
+  * {
+    transition: width 0.5s;
+  }
 
   .main-comp {
     flex: 1;
@@ -54,6 +57,13 @@ const a = ref(1);
       > .right {
         width: 130px;
         border: 1px solid green;
+      }
+
+      @media (max-width: 890px) {
+        > .left,
+        > .right {
+          display: none;
+        }
       }
     }
   }

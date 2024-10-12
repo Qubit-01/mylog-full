@@ -19,8 +19,5 @@ export async function render(url: RouteLocationRaw) {
     pinia.state.value
   )}</script>`;
 
-  console.log('🐔', head);
-  
-
   return { html, head };
 }

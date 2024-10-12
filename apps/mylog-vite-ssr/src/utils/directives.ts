@@ -1,13 +1,6 @@
 import type { Directive } from 'vue'
 
 /**
- * 毛玻璃效果
- * @param dom
- * @returns
- */
-export const vM: Directive = dom => dom.classList.add('-m')
-
-/**
  * 超出省略号，传入行数，默认一行，0就啥都不干
  * @param el
  * @param param1
