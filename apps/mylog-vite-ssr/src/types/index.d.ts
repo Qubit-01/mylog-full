@@ -20,20 +20,6 @@ export interface User extends DbUser {}
 /**
  * 用户数据结构
  */
-export interface Log extends DbLog {
-  info: {
-    sex?: "男" | "女" | undefined;
-    birth?: string; // 生日
-    text?: string; // 个性签名
-
-    stuId?: string; // 学号
-    stuClass?: string; // 班级
-  };
-}
-
-/**
- * 用户数据结构
- */
 // export interface User {
 //   id: string
 //   name: string
@@ -80,37 +66,6 @@ export interface Log extends DbLog {
 //   createtime?: Date
 //   openidQ?: string
 //   token?: string
-// }
-
-// /**
-//  * Log的数据结构
-//  * 都必须有，但是可以为空数组
-//  */
-// export interface Log {
-//   id?: string
-//   userid: string
-//   username: string
-//   type: 'public' | 'log' | 'tag' | 'todo'
-//   sendtime?: dayjs.Dayjs // 发送时间
-//   logtime: dayjs.Dayjs // 记录时间
-//   content: string
-//   tags: string[]
-//   imgs: string[]
-//   videos: string[]
-//   audios: string[]
-//   files: string[]
-//   location: [[number, number], string] | []
-//   people?: string[]
-//   info: {
-//     title?: string // log的标题
-//     link?: string // 爬虫数据的原始链接
-//     markdown?: boolean // 是否是MD类型
-//     source?: string // 爬虫数据的来源
-//     todo?: {
-//       complete: boolean // 是否完成
-//       level: number // 优先级
-//     }
-//   }
 // }
 
 // /**

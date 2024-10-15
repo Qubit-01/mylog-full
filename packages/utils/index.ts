@@ -1,3 +1,1 @@
-export function showNum(num: number) {
-  console.log("🐔", num);
-}
+export * from "./mylog/log";

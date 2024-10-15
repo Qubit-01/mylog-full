@@ -35,6 +35,8 @@ const useHomeStore = defineStore("home", () => {
     if (logs.noMore) return;
     logs.loading = true;
     const data = await trpc.log.getPublics.query(logs.params);
+    console.log('🐔', data);
+    
 
     if (data.length < logs.params.limit) logs.noMore = true;
 

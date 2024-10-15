@@ -6,10 +6,15 @@ const home = useHomeStore();
 onServerPrefetch(async () => {
   await home.addLogs();
 });
+
+const test = () => {
+  home.addLogs();
+}
 </script>
 
 <template>
   <div class="home-page" data-allow-mismatch="children">
+    <div @click="test">TEST</div>
     <LogPublic v-for="l of home.logs.list" :key="l.id" :log="l" />
   </div>
 </template>

@@ -295,6 +295,9 @@ importers:
       '@mylog-full/mylog-trpc-prisma':
         specifier: workspace:^
         version: link:../mylog-trpc-prisma
+      '@mylog-full/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
       '@trpc/client':
         specifier: 11.0.0-rc.502
         version: 11.0.0-rc.502(@trpc/server@11.0.0-rc.553)
@@ -383,6 +386,13 @@ importers:
         version: 2.1.6(typescript@5.6.2)
 
   packages/utils:
+    dependencies:
+      '@mylog-full/mylog-trpc-prisma':
+        specifier: workspace:^
+        version: link:../../apps/mylog-trpc-prisma
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
     devDependencies:
       typescript:
         specifier: ^5.5.3
