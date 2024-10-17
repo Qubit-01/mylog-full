@@ -1,6 +1,6 @@
 import trpc from "@/api";
-import { handleLog } from "@/utils/log";
-import { Log } from "@/types";
+
+type Log = any;
 
 /**
  * 要分页查询需要的数据项
@@ -35,12 +35,11 @@ const useHomeStore = defineStore("home", () => {
     if (logs.noMore) return;
     logs.loading = true;
     const data = await trpc.log.getPublics.query(logs.params);
-    console.log('🐔', data);
-    
+    console.log("🐔", data);
 
     if (data.length < logs.params.limit) logs.noMore = true;
 
-    data.forEach(handleLog);
+    // data.forEach(handleLog);
     logs.list.push(...data);
     logs.params.skip += logs.params.limit;
     logs.loading = false;

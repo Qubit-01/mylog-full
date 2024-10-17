@@ -11,6 +11,6 @@ export type AppRouter = typeof appRouter;
 
 const server = createHTTPServer({ router: appRouter });
 
-server.listen(3000);
+server.listen(8080);
 
-console.log('🐔tRPC Server 启动！ 3000');
+console.log('🐔tRPC Server 启动！ 8080');
