@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@mylog-full/mylog-trpc-prisma": "workspace:^",
-    "@mylog-full/utils": "workspace:^",
     "@trpc/client": "11.0.0-rc.502",
     "@vueuse/core": "^10.11.1",
     "compression": "^1.7.4",

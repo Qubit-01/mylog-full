@@ -1,10 +1,16 @@
 import { publicProcedure, router } from "./server/trpc";
-import { PrismaClient } from "@prisma/client";
+import prisma from "./server";
 import z from "zod";
 
-const prisma = new PrismaClient();
-
 const logRouter = router({
+  getPublic: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input }) => {
+      const log = await prisma.log.findUnique({
+        where: { id: input.id, type: "public" },
+      });
+      return log;
+    }),
   getPublics: publicProcedure
     .input(
       z.object({
@@ -14,15 +20,15 @@ const logRouter = router({
       })
     )
     .query(async ({ input }) => {
-      const publics = await prisma.log.findMany({
-        where: { userid: input.userid, type: 'public' },
+      const logs = await prisma.log.findMany({
+        where: { userid: input.userid, type: "public" },
         skip: input.skip,
         take: input.limit,
         orderBy: {
           sendtime: "desc",
         },
       });
-      return publics;
+      return logs;
     }),
 });
 

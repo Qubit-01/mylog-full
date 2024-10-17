@@ -1,6 +1,5 @@
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import type AppRouter from "@mylog-full/mylog-trpc-prisma";
-// import { type Log, handleLog} from "@mylog-full/utils";
 
 // 这里导入后端router，就能知道接口和输入输出类型
 const trpc = createTRPCClient<AppRouter>({
