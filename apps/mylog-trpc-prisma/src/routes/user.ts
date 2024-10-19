@@ -1,5 +1,5 @@
-import { publicProcedure, router } from "./server/trpc";
-import prisma from "./server";
+import { publicProcedure, router } from "../server/trpc";
+import prisma from "../server";
 import z from "zod";
 
 const userRouter = router({
@@ -22,13 +22,6 @@ const userRouter = router({
     .query(async ({ input }) => {
       return prisma.userdata.findUnique({ where: { userid: input.id } });
     }),
-  // userCreate: publicProcedure
-  // 	// 这里用zod定义类型
-  // 	.input(z.object({ name: z.string() }))
-  // 	.mutation(async (opts) => {
-  // 		const user = await db.user.create(opts.input);
-  // 		return user;
-  // 	}),
 });
 
 export default userRouter;

@@ -1,8 +1,8 @@
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import { PrismaClient } from "@prisma/client";
 import { router } from "./trpc";
-import user from "../user";
-import log from "../log";
+import user from "../routes/user";
+import log from "../routes/log";
 
 /** 总路由 */
 const appRouter = router({ user, log });
@@ -14,18 +14,11 @@ const server = createHTTPServer({ router: appRouter });
 
 server.listen(8080);
 
-console.log('🐔tRPC Server 启动！ 8080');
+console.log("🐔tRPC Server 启动！ 8080");
 
+/**
+ * PrismClient 应该是单例的
+ */
 const prisma = new PrismaClient();
-
-// prisma.$extends({
-//     result: {
-//         $allModels: {
-//             $allFieds: {
-
-//             }
-//         }
-//     }
-// })
 
 export default prisma;

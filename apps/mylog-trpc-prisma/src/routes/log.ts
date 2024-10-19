@@ -1,16 +1,28 @@
-import { publicProcedure, router } from "./server/trpc";
-import prisma from "./server";
+import { publicProcedure, router } from "../server/trpc";
+import prisma from "../server";
 import z from "zod";
+import { toLogVO4PO } from "../utils";
 
 const logRouter = router({
+  /**
+   * 获取单个public，没有返回null
+   * @param id log的id
+   */
   getPublic: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input }) => {
       const log = await prisma.log.findUnique({
         where: { id: input.id, type: "public" },
       });
-      return log;
+      return log && toLogVO4PO(log);
+      // return log;
     }),
+  /**
+   * 获取public列表， 按发送时间倒序
+   * @param userid 用户id
+   * @param skip 跳过多少条
+   * @param limit 取多少条
+   */
   getPublics: publicProcedure
     .input(
       z.object({
@@ -28,7 +40,7 @@ const logRouter = router({
           sendtime: "desc",
         },
       });
-      return logs;
+      return logs.map(toLogVO4PO);
     }),
 });
 

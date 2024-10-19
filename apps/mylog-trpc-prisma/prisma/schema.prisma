@@ -34,18 +34,18 @@ model userdata {
 model log {
   id       Int      @id @default(autoincrement()) @db.UnsignedInt
   userid   Int?     @db.UnsignedInt
-  type     String?  @default("log") @db.VarChar(50)
+  type     String   @default("log") @db.VarChar(50)
   sendtime DateTime @default(now()) @db.DateTime(0)
   logtime  DateTime @default(now()) @db.DateTime(0)
-  content  String?  @db.LongText
-  tags     Json?
-  imgs     Json?
-  videos   Json?
-  audios   Json?
-  files    Json?
-  location Json?
-  people   Json?
-  info     Json?
+  content  String   @db.LongText
+  tags     Json
+  imgs     Json
+  videos   Json
+  audios   Json
+  files    Json
+  location Json
+  people   Json
+  info     Json
   user     user?    @relation(fields: [userid], references: [id], map: "ref_log_user")
 
   @@index([type], map: "nor_type")

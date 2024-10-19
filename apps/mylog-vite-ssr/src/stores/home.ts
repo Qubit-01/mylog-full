@@ -1,13 +1,12 @@
 import trpc from "@/api";
-
-type Log = any;
+import { toLogVO4DTO, type LogVO } from "@mylog-full/mylog-trpc-prisma";
 
 /**
  * 要分页查询需要的数据项
  */
 export interface PageStore {
   /** 真正显示的数据 */
-  list: Log[];
+  list: LogVO[];
   /** 请求参数 */
   params: { skip: number; limit: number };
   /** 加载状态 */
@@ -18,7 +17,7 @@ export interface PageStore {
 
 const useHomeStore = defineStore("home", () => {
   const logs = reactive<PageStore>({
-    list: [] as any,
+    list: [],
     params: { skip: 0, limit: 10 },
     loading: true,
     noMore: false,
@@ -35,11 +34,9 @@ const useHomeStore = defineStore("home", () => {
     if (logs.noMore) return;
     logs.loading = true;
     const data = await trpc.log.getPublics.query(logs.params);
-    console.log("🐔", data);
-
     if (data.length < logs.params.limit) logs.noMore = true;
 
-    // data.forEach(handleLog);
+    // logs.list.push(...data.map(toLogVO4DTO));
     logs.list.push(...data);
     logs.params.skip += logs.params.limit;
     logs.loading = false;

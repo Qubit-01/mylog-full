@@ -2,8 +2,7 @@
   "name": "@mylog-full/mylog-trpc-prisma",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.js",
+  "main": "index.ts",
   "scripts": {
     "dev": "ts-node src/server",
     "trpc:test": "ts-node client.ts",
