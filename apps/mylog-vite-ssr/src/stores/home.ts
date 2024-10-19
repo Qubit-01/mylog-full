@@ -1,5 +1,6 @@
 import trpc from "@/api";
-import { toLogVO4DTO, type LogVO } from "@mylog-full/mylog-trpc-prisma";
+import type { LogVO } from "@mylog-full/mylog-trpc-prisma";
+import { toLogVO4DTO } from "@mylog-full/utils";
 
 /**
  * 要分页查询需要的数据项
@@ -35,9 +36,7 @@ const useHomeStore = defineStore("home", () => {
     logs.loading = true;
     const data = await trpc.log.getPublics.query(logs.params);
     if (data.length < logs.params.limit) logs.noMore = true;
-
-    // logs.list.push(...data.map(toLogVO4DTO));
-    logs.list.push(...data);
+    logs.list.push(...data.map(toLogVO4DTO));
     logs.params.skip += logs.params.limit;
     logs.loading = false;
   };
