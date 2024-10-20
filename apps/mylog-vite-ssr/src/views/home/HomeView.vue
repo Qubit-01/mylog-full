@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import useHomeStore from "@/stores/home";
+import LogTop from "./LogTop.vue";
 
 const home = useHomeStore();
 
@@ -15,6 +16,7 @@ const test = () => {
 <template>
   <div class="home-page" data-allow-mismatch="children">
     <div @click="test">TEST</div>
+    <LogTop />
     <LogPublic v-for="l of home.logs.list" :key="l.id" :log="l" />
   </div>
 </template>

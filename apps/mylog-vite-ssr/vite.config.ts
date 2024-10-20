@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
+import { imagetools } from 'vite-imagetools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,6 +19,8 @@ export default defineConfig({
       resolvers: [NaiveUiResolver()],
       dts: "src/types/components.d.ts",
     }),
+    // vite-imagetools 配置
+    imagetools()
   ],
   resolve: {
     alias: {
