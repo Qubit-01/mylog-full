@@ -1,9 +1,16 @@
-<!-- 
-  这里放的是一些全局js
-  style中放无关主题的全局css
+<!--
+  App.vue 的任务：
+  1. 放一些全局 JS
+  2. 获取用户信息
+  2. style中放无关主题的全局css
 -->
 <script setup lang="ts">
+import { useSSRContext } from "vue";
 import useGlobalStore from "./stores/global";
+onServerPrefetch(async () => {
+  const token = useSSRContext()!.token;
+  console.log("🐔", token);
+});
 useGlobalStore();
 </script>
 
@@ -61,18 +68,18 @@ useGlobalStore();
 
 /* 中间模块通用 */
 // .m {
-  // position: relative;
-  // transition: box-shadow 0.2s linear, width 0.2s linear;
-  // background-color: var(--m-background-color);
+// position: relative;
+// transition: box-shadow 0.2s linear, width 0.2s linear;
+// background-color: var(--m-background-color);
 
-  // border: var(--m-border);
+// border: var(--m-border);
 
-  // box-shadow: var(--m-shadow);
-  // backdrop-filter: blur(8px);
+// box-shadow: var(--m-shadow);
+// backdrop-filter: blur(8px);
 
-  // &:hover {
-  //   box-shadow: var(--m-hover-shadow);
-  // }
+// &:hover {
+//   box-shadow: var(--m-hover-shadow);
+// }
 // }
 
 a {

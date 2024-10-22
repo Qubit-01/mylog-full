@@ -17,6 +17,7 @@
     "@trpc/client": "11.0.0-rc.502",
     "@vueuse/core": "^10.11.1",
     "compression": "^1.7.4",
+    "cookie-parser": "^1.4.7",
     "dayjs": "^1.11.13",
     "express": "^4.21.1",
     "js-cookie": "^3.0.5",

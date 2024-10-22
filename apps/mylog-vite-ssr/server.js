@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import express from 'express'
+import cookieParser from 'cookie-parser'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 5173
@@ -14,6 +15,8 @@ const ssrManifest = isProduction
   : undefined
 
 const app = express()
+// 为了获取到cookie中的token
+app.use(cookieParser())
 
 // Vite 和生产中间件
 let vite
@@ -35,7 +38,7 @@ if (!isProduction) {
 app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '')
-    console.log('🐔express: 被访问接口: ', url);
+    console.log(`🐔express: 被访问接口: ${url};--------------------------------`);
 
     let template
     let render
@@ -49,7 +52,7 @@ app.use('*', async (req, res) => {
       render = (await import('./dist/server/entry-server.js')).render
     }
 
-    const rendered = await render(url, ssrManifest)
+    const rendered = await render(url, ssrManifest, req.cookies.token || undefined)
 
     const html = template
       .replace(`<!--app-head-->`, rendered.head ?? '')
