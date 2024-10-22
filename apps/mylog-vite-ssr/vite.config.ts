@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
-import { imagetools } from 'vite-imagetools'
+import { imagetools } from "vite-imagetools";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,7 +20,14 @@ export default defineConfig({
       dts: "src/types/components.d.ts",
     }),
     // vite-imagetools 配置
-    imagetools()
+    imagetools({
+      defaultDirectives: (url) => {
+        if (url.searchParams.get("preset") === "modern") {
+          return new URLSearchParams({ format: "webp", as: "picture" });
+        }
+        return new URLSearchParams();
+      },
+    }),
   ],
   resolve: {
     alias: {
