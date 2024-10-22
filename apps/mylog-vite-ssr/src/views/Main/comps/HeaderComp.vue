@@ -6,14 +6,14 @@ const User = {};
 const dev: boolean = import.meta.env.DEV;
 </script>
 <template>
-  <div class="header-comp" v-if="!dev">
+  <div class="header-comp">
     <header>
       <div class="main-container">
         <div class="left">
           <div class="logo" @click="$router.push('/')">
-            多元记
+            <span v-if="dev">测试服</span>
+            <span v-else>多元记</span>
             <img src="/img/favicon.svg" />
-            <div class="env" v-if="dev">DEV</div>
           </div>
         </div>
         <nav class="center">
@@ -111,18 +111,6 @@ const dev: boolean = import.meta.env.DEV;
             right: 0;
             bottom: 0;
             opacity: 0.7;
-          }
-
-          .env {
-            position: absolute;
-            top: 0;
-            left: 0;
-            line-height: 14px;
-            height: 16px;
-            font-size: 10px;
-            padding: 0 6px;
-            border-radius: 10px;
-            background: #f55a;
           }
         }
       }

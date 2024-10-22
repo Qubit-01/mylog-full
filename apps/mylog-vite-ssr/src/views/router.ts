@@ -70,7 +70,8 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   if (!import.meta.env.SSR) {
-    document.title = to.meta.title || "多元记 - 把你写成书";
+    if (import.meta.env.DEV) document.title = "测试";
+    else document.title = to.meta.title || "多元记 - 把你写成书";
   }
 
   // 这里是处理没有token的情况，token是否错误或过期这里不处理
