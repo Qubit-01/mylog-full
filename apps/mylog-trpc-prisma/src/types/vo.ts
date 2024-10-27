@@ -36,7 +36,7 @@ export type UserVO = {
       }[];
     };
   };
-  createtime: Date;
+  createtime: dayjs.Dayjs;
 };
 
 /**

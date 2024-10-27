@@ -1,6 +1,8 @@
 <script setup lang="ts">
-// todo: 接入pinia
-const User = {};
+import useGlobalStore from "@/stores/global";
+
+const global = useGlobalStore();
+const user = global.user;
 
 // 判断是否在dev环境
 const dev: boolean = import.meta.env.DEV;
@@ -24,10 +26,10 @@ const dev: boolean = import.meta.env.DEV;
           <RouterLink to="/relation">人脉</RouterLink>
         </nav>
         <div class="right">
-          <RouterLink v-if="User.isLogined" class="user" to="/logger">
-            {{ User.name }}
+          <RouterLink v-if="global.isLogined" class="user" to="/logger">
+            {{ user.name }}
           </RouterLink>
-          <RouterLink v-else to="/login"> 去登录 </RouterLink>
+          <RouterLink v-else to="/login">去登录</RouterLink>
           <!-- <ThemeSwitch /> -->
         </div>
       </div>

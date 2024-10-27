@@ -7,11 +7,26 @@
 <script setup lang="ts">
 import { useSSRContext } from "vue";
 import useGlobalStore from "./stores/global";
+import trpc from "./api";
+
+const global = useGlobalStore();
+
 onServerPrefetch(async () => {
   const token = useSSRContext()!.token;
-  console.log("🐔", token);
+  if (token) {
+    const userdata = await trpc.user.getUser.query({ token });
+    Object.assign(global.user, userdata);
+  }
 });
-useGlobalStore();
+
+onMounted(async () => {
+  console.log("🐔", "App.vue");
+  // const a = await trpc.test.test1.query();
+  // const a = await trpc.user.getToken.query({
+  //   // name: "sybit", pswd: "12345qaZ"
+  //   unionidQq: "UID_A01CA2BA124F884F93A78348AB6B8DA5",
+  // });
+});
 </script>
 
 <template>
@@ -57,7 +72,6 @@ useGlobalStore();
     /* 页面宽度在小挡位时的宽度 */
     --main-container-width: 95%;
   }
-
   // 手机，平板纵向
   @media (max-width: 890px) {
   }
@@ -66,21 +80,22 @@ useGlobalStore();
 @media (prefers-color-scheme: light) {
 }
 
-/* 中间模块通用 */
-// .m {
-// position: relative;
-// transition: box-shadow 0.2s linear, width 0.2s linear;
-// background-color: var(--m-background-color);
+/* 模块通用 */
+.m {
+  position: relative;
+  transition: box-shadow 0.2s linear, width 0.2s linear;
+  background-color: var(--block-background-color);
+  border-radius: var(--block-border-radius);
+  padding: var(--block-padding);
 
-// border: var(--m-border);
+  // border: var(--m-border);
+  // box-shadow: var(--m-shadow);
+  // backdrop-filter: blur(8px);
 
-// box-shadow: var(--m-shadow);
-// backdrop-filter: blur(8px);
-
-// &:hover {
-//   box-shadow: var(--m-hover-shadow);
-// }
-// }
+  // &:hover {
+  //   box-shadow: var(--m-hover-shadow);
+  // }
+}
 
 a {
   text-decoration: none;

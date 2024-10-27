@@ -36,7 +36,7 @@ const router = createRouter({
           path: "logger", // 我的主页（别人看的）
           component: () => import("./logger/LoggerView.vue"),
           props: ({ query: { id } }) => ({ id }),
-          meta: { title: "主页 - 多元记" },
+          meta: { title: "主页 - 多元记", requiresAuth: true },
           // children: [
           //   {
           //     path: '',
@@ -58,6 +58,26 @@ const router = createRouter({
     {
       path: "/login",
       component: LoginView,
+      children: [
+        {
+          path: "",
+          name: "login", // 登录
+          component: () => import("./login/LoginComp.vue"),
+          meta: { title: "登录 - 多元记" },
+        },
+        {
+          path: "signin",
+          name: "signin", // 注册
+          component: () => import("./login/SigninComp.vue"),
+          meta: { title: "注册 - 多元记" },
+        },
+        {
+          path: "qq-redirect",
+          name: "qq-redirect", // QQ重定向页面
+          component: () => import("./login/QQRedirectComp.vue"),
+          meta: { title: "QQ登录 - 多元记" },
+        },
+      ],
     },
     {
       path: "/:pathMatch(.*)*",
