@@ -9,7 +9,7 @@ const TestRouter = router({
     return "Hello, world!";
   }),
   test1: publicProcedure.query(async () => {
-    return await prisma.$queryRawTyped(getUserByPswd("sybit", "12345qaZ"));
+    
   }),
 });
 

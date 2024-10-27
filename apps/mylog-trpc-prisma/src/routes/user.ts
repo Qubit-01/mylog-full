@@ -1,12 +1,12 @@
 import { publicProcedure, router } from "../server/trpc";
 import prisma from "../server";
 import z from "zod";
-import jwt from "jsonwebtoken";
 import { getUserByPswd } from "@prisma/client/sql";
+import { sign, verify } from "../utils/jwt";
 
 const userRouter = router({
   /**
-   * login 可以获取token的，getUser不行
+   * login 可以获取token的，getUser不行，目前token只包含id
    * @returns token，没有用户就返回undefined
    */
   getToken: publicProcedure
@@ -37,12 +37,7 @@ const userRouter = router({
       }
       // 为0直接返回undefined，否则查询生成token
       if (!userid) return undefined;
-      const userdata = await prisma.userdata.findUnique({ where: { userid } });
-      return jwt.sign(
-        { userid, name: userdata?.name },
-        process.env.JwtSecretKey!,
-        { expiresIn: process.env.JwtExpiresIn }
-      );
+      return sign(userid);
     }),
   /**
    * getUser 获取用户信息，id>name>token
@@ -64,6 +59,8 @@ const userRouter = router({
       } else if ("name" in input) {
         return prisma.userdata.findUnique({ where: { name: input.name } });
       } else if ("token" in input) {
+        const userid = verify(input.token);
+        return prisma.userdata.findUnique({ where: { userid } });
       }
     }),
 });
