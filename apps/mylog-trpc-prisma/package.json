@@ -13,14 +13,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.20.0",
+    "@prisma/client": "^5.21.1",
     "@trpc/client": "11.0.0-rc.553",
     "@trpc/server": "11.0.0-rc.553",
-    "dayjs": "^1.11.13"
+    "@types/jsonwebtoken": "^9.0.7",
+    "dayjs": "^1.11.13",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "@types/node": "^22.7.5",
-    "prisma": "^5.20.0",
+    "prisma": "^5.21.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
     "zod": "^3.23.8"

@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["typedSql"]
 }
 
 datasource db {
@@ -11,8 +12,8 @@ model user {
   id             Int        @id @default(autoincrement()) @db.UnsignedInt
   name           String     @unique(map: "uni_name") @db.VarChar(255)
   pswd           String     @db.VarChar(255)
-  unionid_qq     String?    @db.VarChar(255)
-  unionid_weixin String?    @db.VarChar(255)
+  unionid_qq     String?    @unique(map: "uni_unionid_qq") @db.VarChar(255)
+  unionid_weixin String?    @unique(map: "uni_unionid_weixin") @db.VarChar(255)
   log            log[]
   relation       relation[]
   userdata       userdata?
