@@ -8,14 +8,13 @@ onServerPrefetch(async () => {
   await home.addLogs();
 });
 
-const test = () => {
-  home.addLogs();
-}
+onMounted(() => {
+  if (home.logs.list.length === 0) home.addLogs();
+});
 </script>
 
 <template>
   <div class="home-page" data-allow-mismatch="children">
-    <div @click="test">TEST</div>
     <LogTop />
     <LogPublic v-for="l of home.logs.list" :key="l.id" :log="l" />
   </div>

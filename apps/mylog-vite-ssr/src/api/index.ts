@@ -12,14 +12,3 @@ const trpc = createTRPCClient<AppRouter>({
 });
 
 export default trpc;
-
-// export const getPublics = async (params: {
-//   skip: number;
-//   limit: number;
-//   userid?: number | undefined;
-// }): Promise<Log[]> => {
-//   const rawLogs = await trpc.log.getPublics.query(params);
-//   // csl
-//   rawLogs[0].logtime;
-//   return rawLogs.map(handleLog);
-// };

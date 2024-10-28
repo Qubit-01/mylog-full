@@ -3,7 +3,7 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 
 const isProduction = process.env.NODE_ENV === 'production'
-const port = process.env.PORT || 5173
+const port = process.env.PORT || 443
 const base = process.env.BASE || '/'
 
 // 提前缓存静态文件
