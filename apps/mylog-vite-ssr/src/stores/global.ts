@@ -43,11 +43,27 @@ export const useGlobalStore = defineStore("global", () => {
     createtime: dayjs(),
   });
 
+  // 主题相关 ===============================
+
+  /** 是否是暗黑模式 */
+  const isDark = computed<boolean>({
+    get: () => user.setting.page.theme === "dark",
+    set: (v) => (user.setting.page.theme = v ? "dark" : "light"),
+  });
+
+  // 主题切换
+  // const html = document.getElementsByTagName("html")[0];
+  // watchEffect(() => {
+  //   localStorage.setItem("theme", user.setting.page.theme!);
+  //   html.className = user.setting.page.theme!;
+  // });
+
   const isLogined = computed(() => user.id !== 0);
 
   return {
     user,
     isLogined,
+    isDark,
   };
 });
 
