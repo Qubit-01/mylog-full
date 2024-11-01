@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import https from 'node:https'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 443
@@ -67,6 +68,9 @@ app.use('*', async (req, res) => {
   }
 })
 
-app.listen(port, () => {
-  console.log(`🐔ViteSSR前端启动: http://localhost:${port}`)
+https.createServer({
+  key: await fs.readFile('./cert/mylog.cool.key', 'utf-8'),
+  cert: await fs.readFile('./cert/mylog.cool.crt', 'utf-8')
+}, app).listen(port, () => {
+  console.log(`🐔ViteSSR前端启动: https://mylog.cool`)
 })

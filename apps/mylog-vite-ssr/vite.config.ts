@@ -37,4 +37,16 @@ export default defineConfig({
   ssr: {
     noExternal: ["naive-ui", "vueuc", "date-fns"],
   },
+  server: {
+    hmr: {
+      protocol: "ws",
+      host: "localhost",
+    },
+    // host: "0.0.0.0",
+    // port: 443,
+    // https: {
+    //   key: fs.readFileSync("./cert/mylog.cool.key"),
+    //   cert: fs.readFileSync("./cert/mylog.cool.crt"),
+    // },
+  },
 });
