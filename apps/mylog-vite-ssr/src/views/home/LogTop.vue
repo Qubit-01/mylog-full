@@ -1,25 +1,13 @@
 <script setup lang="ts">
-import bgImg from '@/assets/bg-light-raw.jpg?preset=modern'
-
+import bgImg from "@/assets/bg-light-raw.jpg?preset=modern";
 </script>
 
 <template>
   <n-carousel autoplay>
-    <img
-      class="carousel-img"
-      :src="bgImg.img.src"
-    />
+    <img class="carousel-img" :src="bgImg.img.src" />
     <img
       class="carousel-img"
       src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel2.jpeg"
-    />
-    <img
-      class="carousel-img"
-      src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel3.jpeg"
-    />
-    <img
-      class="carousel-img"
-      src="https://naive-ui.oss-cn-beijing.aliyuncs.com/carousel-img/carousel4.jpeg"
     />
   </n-carousel>
 </template>

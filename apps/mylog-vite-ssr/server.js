@@ -39,7 +39,7 @@ if (!isProduction) {
 app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '')
-    console.log(`🐔express: 被访问接口: ${url};--------------------------------`);
+    console.log(`📃---- 被访问接口: ${url} --------------------------------`);
 
     let template
     let render
@@ -72,5 +72,5 @@ https.createServer({
   key: await fs.readFile('./cert/mylog.cool.key', 'utf-8'),
   cert: await fs.readFile('./cert/mylog.cool.crt', 'utf-8')
 }, app).listen(port, () => {
-  console.log(`🐔ViteSSR前端启动: https://mylog.cool`)
+  console.log(`🍁ViteSSR前端启动: https://mylog.cool`)
 })

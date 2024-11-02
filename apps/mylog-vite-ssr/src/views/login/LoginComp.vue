@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import trpc from "@/api";
-import { loginByToken } from "@/utils/user";
+import { loginByToken, loginTest } from "@/utils/user";
 // import { appId, redirectURI } from '@/utils/qq-connect'
 // import { loginByToken, loginTest } from '@/stores/user'
 
