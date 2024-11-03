@@ -2,6 +2,7 @@
 import useGlobalStore from "@/stores/global";
 import LoginComp from "./LoginComp.vue";
 import { logout } from "@/utils/user";
+import router from "../router";
 const global = useGlobalStore();
 </script>
 
@@ -23,9 +24,9 @@ const global = useGlobalStore();
         <div v-if="global.isLogined" class="loged">
           <div>检测到您已经登录了，是否要</div>
           <NButton @click="$router.push('/')" type="primary">进入首页</NButton>
-          <NButton @click="logout('')">退出登录</NButton>
+          <NButton @click="logout()">退出登录</NButton>
         </div>
-        <LoginComp v-else />
+        <router-view v-else />
       </div>
     </div>
   </div>
@@ -94,6 +95,62 @@ const global = useGlobalStore();
 
         > div:nth-child(1) {
           margin-bottom: 24px;
+        }
+      }
+
+      // 这里统一写内部的样式
+      :deep(.login-comp),
+      :deep(.signin-comp),
+      :deep(.qq-redirect-comp) {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        > .title {
+          font-size: 2.5em;
+          font-weight: bold;
+          margin-bottom: 20px;
+          display: flex;
+          align-items: center;
+        }
+
+        > form {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+
+          input {
+            color: var(--color-text);
+            background-color: #8882;
+            font-size: 1.2rem;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            transition: all 0.5s;
+
+            /* 去除自动浏览器自动填充添加的样式 */
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active {
+              -webkit-transition-delay: 99999s;
+              -webkit-transition: color 99999s ease-out,
+                background-color 99999s ease-out;
+            }
+
+            &:focus,
+            &:hover {
+              box-shadow: 1px 1px 2px 2px #0001;
+            }
+          }
+        }
+
+        // 表单模块下的文本，如：没有账号？
+        > .text-link {
+          display: flex;
+          justify-content: flex-end;
+          flex: 1;
         }
       }
     }

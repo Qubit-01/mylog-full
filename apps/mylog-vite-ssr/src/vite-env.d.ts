@@ -1,5 +1,9 @@
 /// <reference types="vite/client" />
 
+declare interface Window {
+  QC: QQConnect;
+}
+
 declare module "*.vue" {
   import type { DefineComponent } from "vue";
   const component: DefineComponent<{}, {}, any>;

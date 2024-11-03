@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import trpc from "@/api";
+import { appId, redirectURI } from "@/utils/qq-connect";
 import { loginByToken, loginTest } from "@/utils/user";
-// import { appId, redirectURI } from '@/utils/qq-connect'
-// import { loginByToken, loginTest } from '@/stores/user'
 
 const route = useRoute();
 
@@ -16,16 +15,13 @@ const doLogin = async () => {
   if (token) {
     loginByToken(token, route.query.redirect as string);
   } else {
-    console.log('🐔用户名或密码错误');
+    console.log("🐔用户名或密码错误");
   }
 };
 
-/**
- * QQ登录
- */
+/** 跳转QQ登录 */
 const qqLogin = () => {
-  // 防止CSRF攻击的随机参数，必传，登录成功之后会回传，最好后台自己生成然后校验合法性
-  let state = "login";
+  let state = "login"; // 防止CSRF攻击的随机参数，必传，登录成功之后会回传，最好后台自己生成然后校验合法性
   location.href = `https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=${appId}&redirect_uri=${encodeURIComponent(
     redirectURI
   )}&state=${state}`;
@@ -51,7 +47,7 @@ const qqLogin = () => {
       <n-button @click="doLogin" size="large">登录</n-button>
     </form>
 
-    <div class="toSignin">
+    <div class="text-link">
       <span>
         没有账号？
         <n-button text @click="$router.replace('/login/signin')" type="primary">
@@ -71,6 +67,11 @@ const qqLogin = () => {
         <div></div>
       </div>
       <div class="icons">
+        <img
+          @click="qqLogin"
+          src="https://s1.hdslb.com/bfs/static/jinkela/passport-pc/assets/qq.png"
+          alt="QQ登录"
+        />
         <!-- <img
           src="https://s1.hdslb.com/bfs/static/jinkela/passport-pc/assets/wechat.png"
           alt="微信登录"
@@ -79,66 +80,12 @@ const qqLogin = () => {
           src="https://s1.hdslb.com/bfs/static/jinkela/passport-pc/assets/weibo.png"
           alt="微博登录"
         /> -->
-        <img
-          @click="qqLogin"
-          src="https://s1.hdslb.com/bfs/static/jinkela/passport-pc/assets/qq.png"
-          alt="QQ登录"
-        />
       </div>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
 .login-comp {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  .title {
-    font-size: 2.5em;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-
-  > form {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-
-    input {
-      color: var(--color-text);
-      background-color: #8882;
-      font-size: 1.2rem;
-      padding: 12px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-      transition: all 0.5s;
-
-      /* 去除自动浏览器自动填充添加的样式 */
-      &:-webkit-autofill,
-      &:-webkit-autofill:hover,
-      &:-webkit-autofill:focus,
-      &:-webkit-autofill:active {
-        -webkit-transition-delay: 99999s;
-        -webkit-transition: color 99999s ease-out,
-          background-color 99999s ease-out;
-      }
-
-      &:focus,
-      &:hover {
-        box-shadow: 1px 1px 2px 2px #0001;
-      }
-    }
-  }
-
-  // 没有账号？
-  .toSignin {
-    display: flex;
-    justify-content: flex-end;
-    flex: 1;
-  }
-
   // 选中最后一个div
   > .three {
     display: flex;

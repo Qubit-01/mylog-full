@@ -1,11 +1,224 @@
-<script setup lang="ts">
+<!-- 
+  正常流程：这个页面是通过QQ登录后重定向而来，会自动给站点注入QQ登录状态的数据
+  先加载，看有没有对应的用户
+  1. 有，直接登录，获取token
+  2. 没有，分两种情况，让用户选择
+   ① 有本网站账号，启动绑定流程
+    让用户输入账号密码
+   ② 不是网站用户，启动注册流程
+    让用户注册
 
-</script> 
+  https://mylog.cool/#/login/qq-redirect
+  #access_token=C8CB48CFEF31E123EA660E14218B493E
+  &expires_in=7776000
+  &state=login
+ -->
+<script setup lang="ts">
+import trpc from "@/api";
+import QC from "@/utils/qq-connect";
+import { loginByToken } from "@/utils/user";
+import { ArrowBack } from "@vicons/ionicons5";
+const state = ref(0); // 0加载 1选择（没找到用户） 2登录 3注册
+// 存储QQ登录的用户信息
+const user = reactive<{ data: any; unionidQq: string }>({
+  data: {},
+  unionidQq: "",
+});
+
+// 先获取用户基本信息，再用jsonp获取unionid
+onMounted(() => {
+  // @ts-ignore
+  window.callback = async (res: any) => {
+    console.log("🐔jsonp", res.unionid);
+    // const unionidQq = await getUnionidQq({accessToken})
+    // console.log('🐔', unionidQq);
+
+    user.unionidQq = res.unionid;
+    // 先看数据库有没有这个openId
+    const token = await trpc.user.getToken.query({ unionidQq: user.unionidQq });
+    if (token) {
+      console.log("🐤找到账号直接登录");
+      loginByToken(token, "/");
+    } else {
+      state.value = 1; // 没找到用户，选择
+    }
+  };
+
+  if (QC.Login.check()) {
+    QC.api("get_user_info").success((res: any) => {
+      // 这里面只有用户信息，头像那些
+      user.data = res.data;
+    });
+    // 如果是登录状态
+    QC.Login.getMe(async (unionId, accessToken) => {
+      const script = document.createElement("script");
+      script.src = `https://graph.qq.com/oauth2.0/me?access_token=${accessToken}&unionid=1`;
+      document.head.appendChild(script);
+      // 这里用了jsonp，看上面的callback
+    });
+  } else {
+    // 用户没有QQ登录直接进入此页面
+    location.replace("/login");
+  }
+});
+
+// 选择绑定时的输入数据
+const loginData = reactive({ name: "", pswd: "", captcha: "" });
+// 确认密码独立出来
+const pswd2 = ref("");
+const qqImg = ref(true);
+
+// 1.绑定已有账号
+const bd = async () => {
+  // 先登录获取token，再token和openid一起绑定
+  const token = await trpc.user.getToken.query({
+    name: loginData.name,
+    pswd: loginData.pswd,
+  });
+  if (token) {
+    // 先绑定平台，再更新头像
+    await bindPlatform({
+      token: resUser.token,
+      platform: "qq",
+      unionid: user.unionidQq,
+    });
+    if (qqImg.value) {
+      const userJson = { img: user.data.figureurl_qq };
+      await updateUser({
+        token: resUser.token,
+        userJson: JSON.stringify(userJson),
+      });
+    }
+    // ElMessage({ message: "绑定成功", type: "success" });
+    loginByToken(token, "/");
+  } else {
+    console.log("🐔用户名或密码错误");
+    return;
+    // return ElMessage.error("用户名或密码不正确");
+  }
+};
+</script>
+
 <template>
   <div class="qq-redirect-comp">
-    qq-redirect-comp
+    <!-- {{ user }} -->
+    <div class="title">
+      <n-button circle quaternary @click="state = 1" style="margin-right: 12px">
+        <template #icon>
+          <n-icon><ArrowBack /></n-icon>
+        </template>
+      </n-button>
+      QQ登录
+      <div style="flex: 1"></div>
+      <div class="right">
+        <div>{{ user.data.nickname }}</div>
+        <img :src="user.data.figureurl_qq" />
+      </div>
+    </div>
+
+    <!-- 
+      v-loading="state === 0"
+      element-loading-background="transparent" -->
+
+    <form v-if="state === 1">
+      <div class="title2">没有找到对应的用户</div>
+      <div>以前有注册过本网站吗？可以直接进行绑定</div>
+      <n-button @click="state = 2" size="large">绑定已有账号</n-button>
+      <!-- <n-button @click="handleNew" size="large">注册新用户</n-button> -->
+    </form>
+
+    <!-- 绑定已有 -->
+    <form v-if="state == 2">
+      <div class="title2">绑定已有账号</div>
+      <input
+        type="text"
+        class="username"
+        v-model="loginData.name"
+        placeholder="用户名"
+      />
+      <input
+        type="password"
+        class="password"
+        v-model="loginData.pswd"
+        placeholder="密码"
+      />
+      <div><n-switch v-model="qqImg" />使用QQ头像</div>
+      <n-button
+        @click="bd"
+        size="large"
+        :disabled="!loginData.name.trim() || !loginData.pswd.trim()"
+      >
+        绑定并登录
+      </n-button>
+    </form>
+
+    <!-- 注册新用户 -->
+    <!-- <form v-if="state == 3">
+        <div class="title2">注册新用户</div>
+        <input
+          type="text"
+          v-model="loginData.name"
+          autocomplete="off"
+          placeholder="用户名"
+        />
+        <input
+          type="password"
+          v-model="loginData.pswd"
+          autocomplete="off"
+          placeholder="密码"
+        />
+        <input
+          type="password"
+          v-model="pswd2"
+          autocomplete="off"
+          placeholder="确认密码"
+        />
+        <div class="captcha">
+          <input
+            v-model="loginData.captcha"
+            placeholder="验证码"
+            type="text"
+            autocomplete="off"
+          />
+          <img ref="captchaDom" alt="验证码看不清，换一张" @click="changeImg" />
+        </div>
+        <n-button
+          class="btn"
+          @click="zc"
+          size="large"
+          :disable="
+            !loginData.name.trim() || !loginData.pswd.trim() || !pswd2.trim()
+          "
+        >
+          注册并登录
+        </n-button>
+      </form> -->
   </div>
 </template>
-<style lang="scss" scoped>
- 
+
+<style scoped lang="scss">
+.qq-redirect-comp {
+  > .title {
+    // 用户QQ昵称和头像
+    .right {
+      display: flex;
+      // flex-direction: column;
+      align-items: center;
+      font-size: 1rem;
+      gap: 8px;
+
+      img {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  > form {
+    .title2 {
+      font-size: 1.3em;
+    }
+  }
+}
 </style>
