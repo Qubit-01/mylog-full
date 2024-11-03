@@ -17,91 +17,96 @@ declare module "vue-router" {
   }
 }
 
-const router = createRouter({
-  history: import.meta.env.SSR
-    ? createMemoryHistory(import.meta.env.BASE_URL)
-    : createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: "",
-      redirect: "/home",
-      component: MainView,
-      children: [
-        {
-          path: "",
-          name: "home", // 主页
-          component: HomeView,
-        },
-        {
-          path: "logger", // 我的主页（别人看的）
-          component: () => import("./logger/LoggerView.vue"),
-          props: ({ query: { id } }) => ({ id }),
-          meta: { title: "主页 - 多元记", requiresAuth: true },
-          // children: [
-          //   {
-          //     path: '',
-          //     name: 'logger', // 时间线
-          //     component: () =>
-          //       import('../components/Pages/Logger/LoggerComp.vue'),
-          //     props: ({ query: { id } }) => ({ id }),
-          //   },
-          //   {
-          //     path: 'setting',
-          //     name: 'setting', // 设置
-          //     component: () =>
-          //       import('../components/Pages/Logger/SettingComp.vue'),
-          //   },
-          // ],
-        },
-      ],
-    },
-    {
-      path: "/login",
-      component: LoginView,
-      children: [
-        {
-          path: "",
-          name: "login", // 登录
-          component: () => import("./login/LoginComp.vue"),
-          meta: { title: "登录 - 多元记" },
-        },
-        {
-          path: "signin",
-          name: "signin", // 注册
-          component: () => import("./login/SigninComp.vue"),
-          meta: { title: "注册 - 多元记" },
-        },
-        {
-          path: "qq-redirect",
-          name: "qq-redirect", // QQ重定向页面
-          component: () => import("./login/QQRedirectComp.vue"),
-          meta: { title: "QQ登录 - 多元记" },
-        },
-      ],
-    },
-    {
-      path: "/:pathMatch(.*)*",
-      name: "404",
-      component: () => import("./404/404View.vue"),
-      meta: { title: "404 - 多元记" },
-    },
-  ],
-});
+const history = import.meta.env.SSR
+  ? createMemoryHistory(import.meta.env.BASE_URL)
+  : createWebHistory(import.meta.env.BASE_URL);
 
-router.beforeEach((to, from) => {
-  if (!import.meta.env.SSR) {
-    if (import.meta.env.DEV) document.title = "测试";
-    else document.title = to.meta.title || "多元记 - 把你写成书";
-  }
+const routes = [
+  {
+    path: "",
+    redirect: "/home",
+    component: MainView,
+    children: [
+      {
+        path: "",
+        name: "home", // 主页
+        component: HomeView,
+      },
+      {
+        path: "logger", // 我的主页（别人看的）
+        component: () => import("./logger/LoggerView.vue"),
+        props: ({ query: { id } }) => ({ id }),
+        meta: { title: "主页 - 多元记", requiresAuth: true },
+        // children: [
+        //   {
+        //     path: '',
+        //     name: 'logger', // 时间线
+        //     component: () =>
+        //       import('../components/Pages/Logger/LoggerComp.vue'),
+        //     props: ({ query: { id } }) => ({ id }),
+        //   },
+        //   {
+        //     path: 'setting',
+        //     name: 'setting', // 设置
+        //     component: () =>
+        //       import('../components/Pages/Logger/SettingComp.vue'),
+        //   },
+        // ],
+      },
+    ],
+  },
+  {
+    path: "/login",
+    component: LoginView,
+    children: [
+      {
+        path: "",
+        name: "login", // 登录
+        component: () => import("./login/LoginComp.vue"),
+        meta: { title: "登录 - 多元记" },
+      },
+      {
+        path: "signin",
+        name: "signin", // 注册
+        component: () => import("./login/SigninComp.vue"),
+        meta: { title: "注册 - 多元记" },
+      },
+      {
+        path: "qq-redirect",
+        name: "qq-redirect", // QQ重定向页面
+        component: () => import("./login/QQRedirectComp.vue"),
+        meta: { title: "QQ登录 - 多元记" },
+      },
+    ],
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "404",
+    component: () => import("./404/404View.vue"),
+    meta: { title: "404 - 多元记" },
+  },
+];
 
-  // 这里是处理没有token的情况，token是否错误或过期这里不处理
-  // if (to.meta.requiresAuth && !Cookies.get('token')) {
-  //   ElMessage({ message: '请先登录', type: 'warning' })
-  //   return {
-  //     name: 'login',
-  //     query: { redirect: to.fullPath },
-  //   }
-  // }
-});
+export function newRouter() {
+  const router = createRouter({ history, routes });
 
-export default router;
+  router.beforeEach((to, from) => {
+    if (!import.meta.env.SSR) {
+      if (import.meta.env.DEV) document.title = "测试";
+      else document.title = to.meta.title || "多元记 - 把你写成书";
+    }
+
+    // 这里是处理没有token的情况，token是否错误或过期这里不处理
+    // if (to.meta.requiresAuth && !Cookies.get('token')) {
+    //   ElMessage({ message: '请先登录', type: 'warning' })
+    //   return {
+    //     name: 'login',
+    //     query: { redirect: to.fullPath },
+    //   }
+    // }
+  });
+
+  return router;
+}
+
+export default newRouter();

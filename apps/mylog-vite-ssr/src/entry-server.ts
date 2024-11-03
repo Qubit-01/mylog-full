@@ -1,22 +1,27 @@
 import { renderToString } from "vue/server-renderer";
 import { createApp } from "./main";
 import { RouteLocationRaw } from "vue-router";
+import { newRouter } from "./views/router";
 
 /**
  * 通过renderToString，渲染HTML和head
  * @param url 用户访问到的页面
  * @param manifest SSR生产阶段的manifest.json
  * @param token 用户cookie中的token
- * @returns 
+ * @returns
  */
 export async function render(
   url: RouteLocationRaw,
   manifest?: string,
   token?: string
 ) {
-  console.log(`🐔entry-server.ts执行, token: ${token}; manifest: ${manifest};`);
+  console.log(
+    `🐔entry-server执行, url: ${url}; token: ${token}; manifest: ${manifest};`
+  );
 
-  const { app, router, pinia } = createApp();
+  const { app, pinia } = createApp();
+  const router = newRouter();
+  app.use(router);
   router.push(url);
   await router.isReady();
   // 上下文对象ctx会通过 useSSRContext 获得
