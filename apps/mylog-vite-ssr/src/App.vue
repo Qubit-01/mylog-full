@@ -34,10 +34,7 @@ onMounted(async () => {
 </template>
 
 <style lang="scss">
-@import "public/css/light.scss";
-/**
- * 这里放的是一些全局CSS，无关主题
- */
+/** 这里放的是一些全局CSS，无关主题 */
 *,
 *::before,
 *::after {
