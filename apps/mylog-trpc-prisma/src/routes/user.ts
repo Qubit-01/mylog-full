@@ -63,6 +63,51 @@ const userRouter = router({
         return prisma.userdata.findUnique({ where: { userid } });
       }
     }),
+  /**
+   * setUser 设置用户信息
+   * @param token 用户token
+   */
+  setUser: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        data: z.object({
+          img: z.string().optional(),
+          info: z.string().optional(),
+          setting: z.string().optional(),
+        }),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const userid = verify(input.token);
+      await prisma.userdata.update({
+        where: { userid },
+        data: input.data,
+      });
+    }),
+  /**
+   * setUserLogin 设置用户登录数据，pswd,unionid_qq,unionid_weixin
+   * @param token
+   */
+  setUserLogin: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        unionidQq: z.string().optional(),
+        unionidWeixin: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const userid = verify(input.token);
+      await prisma.user.update({
+        where: { id: userid },
+        data: {
+          unionid_qq: input.unionidQq,
+          unionid_weixin: input.unionidWeixin,
+        },
+      });
+
+    }),
 });
 
 export default userRouter;

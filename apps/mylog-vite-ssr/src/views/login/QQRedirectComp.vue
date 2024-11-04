@@ -27,69 +27,57 @@ const user = reactive<{ data: any; unionidQq: string }>({
 
 // 先获取用户基本信息，再用jsonp获取unionid
 onMounted(() => {
-  // @ts-ignore
+  // @ts-ignore 获取 unionid
   window.callback = async (res: any) => {
-    console.log("🐔jsonp", res.unionid);
-    // const unionidQq = await getUnionidQq({accessToken})
-    // console.log('🐔', unionidQq);
-
     user.unionidQq = res.unionid;
     // 先看数据库有没有这个openId
     const token = await trpc.user.getToken.query({ unionidQq: user.unionidQq });
-    if (token) {
-      console.log("🐤找到账号直接登录");
-      loginByToken(token, "/");
-    } else {
-      state.value = 1; // 没找到用户，选择
-    }
+    if (token) loginByToken(token, "/"); // 找到账号直接登录
+    else state.value = 1; // 没找到用户，选择
   };
 
   if (QC.Login.check()) {
     QC.api("get_user_info").success((res: any) => {
-      // 这里面只有用户信息，头像那些
-      user.data = res.data;
+      user.data = res.data; // 这里面只有用户信息，头像那些
     });
-    // 如果是登录状态
+    // 如果是登录状态，这里用了jsonp，看上面的callback
     QC.Login.getMe(async (unionId, accessToken) => {
       const script = document.createElement("script");
       script.src = `https://graph.qq.com/oauth2.0/me?access_token=${accessToken}&unionid=1`;
       document.head.appendChild(script);
-      // 这里用了jsonp，看上面的callback
     });
   } else {
-    // 用户没有QQ登录直接进入此页面
-    location.replace("/login");
+    location.replace("/login"); // 没有QQ登录跳转登录页
   }
 });
 
 // 选择绑定时的输入数据
-const loginData = reactive({ name: "", pswd: "", captcha: "" });
+const input = reactive({ name: "", pswd: "", captcha: "" });
 // 确认密码独立出来
 const pswd2 = ref("");
-const qqImg = ref(true);
+const qqImg = ref(false);
 
 // 1.绑定已有账号
 const bd = async () => {
   // 先登录获取token，再token和openid一起绑定
   const token = await trpc.user.getToken.query({
-    name: loginData.name,
-    pswd: loginData.pswd,
+    name: input.name,
+    pswd: input.pswd,
   });
   if (token) {
+    console.log("🐔", token);
+
     // 先绑定平台，再更新头像
-    await bindPlatform({
-      token: resUser.token,
-      platform: "qq",
-      unionid: user.unionidQq,
+    await trpc.user.setUserLogin.mutate({
+      token,
+      unionidQq: user.unionidQq,
     });
     if (qqImg.value) {
-      const userJson = { img: user.data.figureurl_qq };
-      await updateUser({
-        token: resUser.token,
-        userJson: JSON.stringify(userJson),
+      await trpc.user.setUser.mutate({
+        token,
+        data: { img: user.data.figureurl_qq },
       });
     }
-    // ElMessage({ message: "绑定成功", type: "success" });
     loginByToken(token, "/");
   } else {
     console.log("🐔用户名或密码错误");
@@ -133,20 +121,20 @@ const bd = async () => {
       <input
         type="text"
         class="username"
-        v-model="loginData.name"
+        v-model="input.name"
         placeholder="用户名"
       />
       <input
         type="password"
         class="password"
-        v-model="loginData.pswd"
+        v-model="input.pswd"
         placeholder="密码"
       />
-      <div><n-switch v-model="qqImg" />使用QQ头像</div>
+      <div><n-switch v-model:value="qqImg" />&nbsp;&nbsp;使用QQ头像</div>
       <n-button
         @click="bd"
         size="large"
-        :disabled="!loginData.name.trim() || !loginData.pswd.trim()"
+        :disabled="!input.name.trim() || !input.pswd.trim()"
       >
         绑定并登录
       </n-button>
@@ -157,13 +145,13 @@ const bd = async () => {
         <div class="title2">注册新用户</div>
         <input
           type="text"
-          v-model="loginData.name"
+          v-model="input.name"
           autocomplete="off"
           placeholder="用户名"
         />
         <input
           type="password"
-          v-model="loginData.pswd"
+          v-model="input.pswd"
           autocomplete="off"
           placeholder="密码"
         />
@@ -175,7 +163,7 @@ const bd = async () => {
         />
         <div class="captcha">
           <input
-            v-model="loginData.captcha"
+            v-model="input.captcha"
             placeholder="验证码"
             type="text"
             autocomplete="off"
@@ -187,7 +175,7 @@ const bd = async () => {
           @click="zc"
           size="large"
           :disable="
-            !loginData.name.trim() || !loginData.pswd.trim() || !pswd2.trim()
+            !input.name.trim() || !input.pswd.trim() || !pswd2.trim()
           "
         >
           注册并登录
