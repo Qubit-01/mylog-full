@@ -14,14 +14,14 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.21.1",
-    "@trpc/client": "11.0.0-rc.553",
-    "@trpc/server": "11.0.0-rc.553",
+    "@trpc/client": "11.0.0-rc.608",
+    "@trpc/server": "11.0.0-rc.608",
     "@types/jsonwebtoken": "^9.0.7",
     "dayjs": "^1.11.13",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "@types/node": "^22.7.5",
+    "@types/node": "^22.8.7",
     "prisma": "^5.21.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
