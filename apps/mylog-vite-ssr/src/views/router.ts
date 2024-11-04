@@ -4,9 +4,6 @@ import {
   createWebHistory,
 } from "vue-router";
 // 文件夹大写的是大框架，小写是框架里面的主要内容
-import MainView from "./Main/MainView.vue";
-import HomeView from "./home/HomeView.vue";
-import LoginView from "./login/LoginView.vue";
 
 declare module "vue-router" {
   interface RouteMeta {
@@ -25,39 +22,54 @@ const routes = [
   {
     path: "",
     redirect: "/home",
-    component: MainView,
+    component: () => import("./Main/MainView.vue"),
     children: [
       {
         path: "",
         name: "home", // 主页
-        component: HomeView,
+        component: () => import("./home/HomeView.vue"),
       },
       {
         path: "logger", // 我的主页（别人看的）
-        component: () => import("./logger/LoggerView.vue"),
-        props: ({ query: { id } }) => ({ id }),
+        component: () => import("./logger/index.vue"),
+        props: ({ query: { id } }: { query: { id: string } }) => ({ id }),
         meta: { title: "主页 - 多元记", requiresAuth: true },
-        // children: [
-        //   {
-        //     path: '',
-        //     name: 'logger', // 时间线
-        //     component: () =>
-        //       import('../components/Pages/Logger/LoggerComp.vue'),
-        //     props: ({ query: { id } }) => ({ id }),
-        //   },
-        //   {
-        //     path: 'setting',
-        //     name: 'setting', // 设置
-        //     component: () =>
-        //       import('../components/Pages/Logger/SettingComp.vue'),
-        //   },
-        // ],
+        children: [
+          {
+            path: "",
+            name: "logger", // 时间线
+            component: () => import("./logger/LoggerComp.vue"),
+            props: ({ query: { id } }: { query: { id: string } }) => ({ id }),
+          },
+          {
+            path: "setting",
+            name: "setting", // 设置
+            component: () => import("./logger/SettingComp.vue"),
+          },
+        ],
+      },
+      {
+        path: "mylog", // 我的记录（自己看的）
+        component: () => import("./mylog/index.vue"),
+        meta: { title: "记录 - 多元记", requiresAuth: true },
+        children: [
+          {
+            path: "",
+            name: "mylog", // 时间线
+            component: () => import("./mylog/TimelineComp.vue"),
+          },
+          {
+            path: "calendar",
+            name: "calendar", // 日历
+            component: () => import("./mylog/CalendarComp.vue"),
+          },
+        ],
       },
     ],
   },
   {
     path: "/login",
-    component: LoginView,
+    component: () => import("./login/index.vue"),
     children: [
       {
         path: "",
