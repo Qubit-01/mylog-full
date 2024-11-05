@@ -17,6 +17,7 @@ onMounted(() => {
   <div class="home-page" data-allow-mismatch="children">
     <LogTop />
     <LogPublic v-for="l of home.logs.list" :key="l.id" :log="l" />
+    <div @click="home.addLogs()">test</div>
   </div>
 </template>
 <style lang="scss" scoped>

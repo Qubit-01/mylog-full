@@ -6,6 +6,7 @@ const trpc = createTRPCClient<AppRouter>({
   links: [
     // HTTP Batch Link 将多个请求合为一个http请求
     httpBatchLink({
+      // url: "https://mylog.cool:8080",
       url: "http://localhost:8080",
     }),
   ],
