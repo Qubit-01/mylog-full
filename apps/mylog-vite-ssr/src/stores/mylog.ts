@@ -34,7 +34,7 @@ const useMylogStore = defineStore("mylog", () => {
   const addLogs = async () => {
     if (logs.noMore) return;
     logs.loading = true;
-    const data = await trpc.log.getPublics.query(logs.params);
+    const data = await trpc.log.getMylogs.query(logs.params);
     if (data.length < logs.params.limit) logs.noMore = true;
     logs.list.push(...data.map(toLogVO4DTO));
     logs.params.skip += logs.params.limit;

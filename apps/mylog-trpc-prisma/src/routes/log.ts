@@ -1,7 +1,7 @@
-import { publicProcedure, router } from "../server/trpc";
-import prisma from "../server";
-import z from "zod";
-import { toLogVO4PO } from "../utils";
+import { publicProcedure, router } from '../server/trpc'
+import prisma from '../server'
+import z from 'zod'
+import { toLogVO4PO } from '../utils'
 
 const logRouter = router({
   /**
@@ -12,9 +12,9 @@ const logRouter = router({
     .input(z.object({ id: z.number() }))
     .query(async ({ input }) => {
       const log = await prisma.log.findUnique({
-        where: { id: input.id, type: "public" },
-      });
-      return log && toLogVO4PO(log);
+        where: { id: input.id, type: 'public' },
+      })
+      return log && toLogVO4PO(log)
       // return log;
     }),
   /**
@@ -33,15 +33,40 @@ const logRouter = router({
     )
     .query(async ({ input }) => {
       const logs = await prisma.log.findMany({
-        where: { userid: input.userid, type: "public" },
+        where: { userid: input.userid, type: 'public' },
         skip: input.skip,
         take: input.limit,
         orderBy: {
-          sendtime: "desc",
+          sendtime: 'desc',
         },
-      });
-      return logs.map(toLogVO4PO);
+      })
+      return logs.map(toLogVO4PO)
     }),
-});
+  /**
+   * 获取mylog列表， 按记录时间倒序
+   * @param userid 用户id
+   * @param skip 跳过多少条
+   * @param limit 取多少条
+   */
+  getMylogs: publicProcedure
+    .input(
+      z.object({
+        userid: z.number().optional(),
+        skip: z.number(),
+        limit: z.number(),
+      })
+    )
+    .query(async ({ input }) => {
+      const logs = await prisma.log.findMany({
+        where: { userid: input.userid },
+        skip: input.skip,
+        take: input.limit,
+        orderBy: {
+          logtime: 'desc',
+        },
+      })
+      return logs.map(toLogVO4PO)
+    }),
+})
 
-export default logRouter;
+export default logRouter
