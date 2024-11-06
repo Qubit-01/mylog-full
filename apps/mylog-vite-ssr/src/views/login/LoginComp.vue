@@ -13,7 +13,7 @@ const loginData = reactive({
 const doLogin = async () => {
   const token = await trpc.user.getToken.query(loginData);
   if (token) {
-    loginByToken(token, route.query.redirect as string);
+    loginByToken(token, route.query.redirect as string ?? '/');
   } else {
     console.log("🐔用户名或密码错误");
   }

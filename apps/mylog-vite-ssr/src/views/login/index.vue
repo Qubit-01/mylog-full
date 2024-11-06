@@ -55,7 +55,7 @@ const global = useGlobalStore();
       width: 300px;
 
       border-radius: var(--block-border-radius);
-      background-image: url("https://api.lyiqk.cn/scenery");
+      // background-image: url("https://api.lyiqk.cn/scenery");
       background-position: center center;
       background-size: cover;
       box-shadow: 0 0 16px 3px #0001;
