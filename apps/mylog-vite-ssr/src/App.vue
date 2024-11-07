@@ -35,15 +35,6 @@ onMounted(async () => {
 
 <style lang="scss">
 /** 这里放的是一些全局CSS，无关主题 */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-weight: normal;
-}
-
 :root {
   // 主要内容的显示区域
   --main-container-width: 65%;
@@ -115,4 +106,36 @@ a {
   line-clamp: 3;
   -webkit-line-clamp: 3;
 }
+
+// 去除百度地图坐下角的信息
+.amap-container {
+  a.amap-logo,
+  div.amap-copyright {
+    display: none !important;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+// body {
+//   min-height: 100vh;
+//   background-position: center center;
+//   background-repeat: no-repeat;
+//   background-size: cover;
+//   background-attachment: fixed;
+//   min-height: 100%;
+
+//   transition: color 0.5s, background-color 0.5s, background-image 0.5s,
+//     width 0.5s;
+//   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+//     Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+//     sans-serif;
+// }
 </style>
