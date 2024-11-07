@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Log } from '@/types'
+// import ViewerImgs from '@/components/ViewerImgs.vue'
 
 const log = inject<Log>('log')!
 const isExpand = inject<boolean>('isExpand')!
@@ -7,6 +7,8 @@ const isExpand = inject<boolean>('isExpand')!
 
 <template>
   <!-- 图片和视频放在一起 -->
+  {{ log.imgs.length }}
+  {{ log.videos.length }}
   <div class="block-media">
     <ViewerImgs v-if="log.imgs.length" />
     <ViewerVideos v-if="log.videos.length && isExpand" />

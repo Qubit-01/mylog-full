@@ -1,5 +1,4 @@
 import trpc from "@/api";
-import type { LogVO } from "@mylog-full/mylog-trpc-prisma";
 import { toLogVO4DTO } from "@mylog-full/utils";
 
 /**
@@ -7,7 +6,7 @@ import { toLogVO4DTO } from "@mylog-full/utils";
  */
 export interface PageStore {
   /** 真正显示的数据 */
-  list: LogVO[];
+  list: Log[];
   /** 请求参数 */
   params: { skip: number; limit: number };
   /** 加载状态 */

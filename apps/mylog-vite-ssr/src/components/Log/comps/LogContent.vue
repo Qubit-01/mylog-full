@@ -2,11 +2,10 @@
   抽取Log的内容
  -->
 <script setup lang="ts">
-import type { Log } from '@/types'
 import { vOverflowEllipsis } from '@/utils/directives'
 
 const log = inject<Log>('log')!
-const isExpand = inject<Ref<boolean>>('isExpand')!
+const isExpand = inject<boolean>('isExpand')!
 </script>
 
 <template>
@@ -21,11 +20,10 @@ const isExpand = inject<Ref<boolean>>('isExpand')!
     </div>
 
     <!-- 内容 -->
-    <pre
-      class="content"
-      v-overflow-ellipsis="isExpand ? 0 : 3"
-      v-text="log.content"
-    ></pre>
+    <!-- {{ log.content }} -->
+    <pre class="content" v-overflow-ellipsis="isExpand ? 0 : 3">{{
+      log.content
+    }}</pre>
   </div>
 </template>
 

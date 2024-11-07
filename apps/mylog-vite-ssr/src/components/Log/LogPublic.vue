@@ -1,19 +1,27 @@
 <script setup lang="ts">
-import type { Log } from "@/types";
-// import LogContent from "./comps/LogContent.vue";
+import LogContent from './comps/LogContent.vue'
+import { vDblclick } from '@/utils/directives'
+
 // import LogMedias from "./comps/LogMedias.vue";
 // import LogTags from "./comps/LogTags.vue";
 // import LogBottom from "./comps/LogBottom.vue";
 
-const { log } = defineProps<{ log: Log }>();
-provide("log", log); // 暴露给子组件
+const { log } = defineProps<{ log: Log }>()
+provide('log', log) // 暴露给子组件
+
+/** 是否展开 */
+const isExpand = ref(false)
+provide('isExpand', isExpand) // 暴露给子组件
+const expand = () => {
+  isExpand.value = !isExpand.value
+}
 </script>
 <template>
-  <div class="log-public">
-    {{ log }}
-    <!-- <LogContent /> -->
+  <div class="log-public" :id="'log' + log.id" v-dblclick="expand">
+    <!-- {{ log }} -->
+    <LogContent />
 
-    <!-- <LogMedias /> -->
+    <LogMedias />
 
     <!-- <LogTags noPublic /> -->
 

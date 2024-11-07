@@ -4,8 +4,6 @@ import dayjs from "dayjs";
 // import useUserStore, { setToken } from './user'
 // import Cookies from 'js-cookie'
 
-import { UserVO } from "@mylog-full/mylog-trpc-prisma";
-
 /** Global 全局数据的类型 */
 interface Global {
   //   /** 用户Token */
@@ -21,7 +19,7 @@ interface Global {
 export const useGlobalStore = defineStore("global", () => {
   // user的数据得做默认值，因为数据库里面的数据是不全的
   // 设置默认值后，从获取的数据中覆盖
-  const user = reactive<UserVO>({
+  const user = reactive<User>({
     id: 0,
     name: "",
     img: "",
