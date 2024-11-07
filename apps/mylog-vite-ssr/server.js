@@ -57,7 +57,8 @@ app.use('*', async (req, res) => {
 
     const html = template
       .replace(`<!--app-head-->`, rendered.head ?? '')
-      .replace(`<!--app-html-->`, rendered.html ?? '')
+      .replace(`<!--css-head-->`, rendered.cssHead ?? '')
+      .replace(`<!--app-html-->`, rendered.appHtml ?? '')
 
     console.log('🐔SSR HTML渲染好了，返回给浏览器');
     res.status(200).set({ 'Content-Type': 'text/html' }).send(html)

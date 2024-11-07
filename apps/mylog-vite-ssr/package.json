@@ -12,6 +12,7 @@
     "start": "pnpm build:client && pnpm build:server && pnpm preview"
   },
   "dependencies": {
+    "@css-render/vue3-ssr": "^0.15.14",
     "@mylog-full/mylog-trpc-prisma": "workspace:^",
     "@mylog-full/utils": "workspace:^",
     "@trpc/client": "11.0.0-rc.608",

@@ -2,6 +2,7 @@ import { renderToString } from "vue/server-renderer";
 import { createApp } from "./main";
 import { RouteLocationRaw } from "vue-router";
 import { newRouter } from "./views/router";
+import { setup } from "@css-render/vue3-ssr";
 
 /**
  * 通过renderToString，渲染HTML和head
@@ -20,6 +21,7 @@ export async function render(
   );
 
   const { app, pinia } = createApp();
+  const { collect } = setup(app);
   const router = newRouter();
   app.use(router);
   router.push(url);
@@ -28,12 +30,13 @@ export async function render(
   // @vitejs/plugin-vue 会将代码注入组件的setup，setup会注册自身到ctx.modules
   // 渲染后，ctx.modules 将包含调用期间实例化的所有组件
   const ctx = { token }; // 这里把用户cookie里面的token带进去
-  const html = await renderToString(app, ctx);
+  const appHtml = await renderToString(app, ctx);
+  const cssHead = collect();
 
   // 自己添加head，对提前获取的数据注入进html的head中
   const head = `<script>window.__pinia = ${JSON.stringify(
     pinia.state.value
   )}</script>`;
 
-  return { html, head };
+  return { cssHead, appHtml, head };
 }
