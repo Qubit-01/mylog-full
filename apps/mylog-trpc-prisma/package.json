@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev": "ts-node src/server",
-    "trpc:test": "ts-node client.ts",
+    "dev": "ts-node server",
+    "trpc:test": "ts-node client",
     "prisma:studio": "prisma studio",
     "prisma:pull": "prisma db pull && prisma generate && prisma generate --sql"
   },

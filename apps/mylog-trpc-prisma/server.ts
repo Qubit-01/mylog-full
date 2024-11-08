@@ -1,10 +1,10 @@
 import { createHTTPHandler } from "@trpc/server/adapters/standalone";
-import { router } from "./utils/trpc";
+import { router } from "./src/utils/trpc";
 import https from "https";
 import fs from "fs";
-import user from "./routes/user";
-import log from "./routes/log";
-import test from "./routes/test";
+import user from "./src/routes/user";
+import log from "./src/routes/log";
+import test from "./src/routes/test";
 
 /** 总路由 */
 const appRouter = router({ user, log, test });
