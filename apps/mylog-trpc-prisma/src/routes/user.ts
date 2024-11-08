@@ -1,5 +1,5 @@
-import { publicProcedure, router } from "../server/trpc";
-import prisma from "../server";
+import { publicProcedure, router } from "../utils/trpc";
+import prisma from "../utils/prisma";
 import z from "zod";
 import { getUserByPswd } from "@prisma/client/sql";
 import { sign, verify } from "../utils/jwt";
@@ -106,7 +106,6 @@ const userRouter = router({
           unionid_weixin: input.unionidWeixin,
         },
       });
-
     }),
 });
 
