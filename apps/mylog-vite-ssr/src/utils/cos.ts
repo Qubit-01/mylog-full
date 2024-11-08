@@ -1,7 +1,7 @@
 /**
  * COS相关工具
  * cos-js-sdk-v5 文档
- * @see https://github.com/tencentyun/cos-js-sdk-v5/blob/master/server/sts.js
+ * @see https://github.com/tencentyun/cos-js-sdk-v5/tree/master
  * node后端配置参考
  * @see https://github.com/tencentyun/cos-js-sdk-v5/blob/master/server/sts.js
  */
