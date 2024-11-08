@@ -1,4 +1,4 @@
-import type { AppRouter } from "./server.ts";
+import type { AppRouter } from "./server";
 
 export default AppRouter;
 

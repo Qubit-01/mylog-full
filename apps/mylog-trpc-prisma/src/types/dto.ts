@@ -1,4 +1,4 @@
-import { AppRouter } from "../server";
+import type { AppRouter } from "../../server";
 import { createTRPCClient } from "@trpc/client";
 
 type trpcClient = ReturnType<typeof createTRPCClient<AppRouter>>;
