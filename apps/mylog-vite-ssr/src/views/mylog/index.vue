@@ -1,10 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import TimelineComp from "./TimelineComp.vue";
+import CalendarComp from "./CalendarComp.vue";
+</script>
 <template>
   <div class="mylog-page">
-    <n-tabs type="line" animated>
-      <n-tab-pane name="oasis" tab="Oasis"> <RouterView /> </n-tab-pane>
-      <n-tab-pane name="the beatles" tab="the Beatles"> Hey Jude </n-tab-pane>
-      <n-tab-pane name="jay chou" tab="周杰伦"> 七里香 </n-tab-pane>
+    <n-tabs type="segment" animated>
+      <n-tab-pane name="mylog" tab="时间线"><TimelineComp /></n-tab-pane>
+      <n-tab-pane name="calendar" tab="日历"><CalendarComp /></n-tab-pane>
+      <n-tab-pane name="todo" tab="待办">待办</n-tab-pane>
     </n-tabs>
   </div>
 </template>

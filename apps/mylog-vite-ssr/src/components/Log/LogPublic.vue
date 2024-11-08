@@ -21,7 +21,7 @@ const expand = () => {
     <!-- {{ log }} -->
     <LogContent />
 
-    <LogMedias />
+    <!-- <LogMedias /> -->
 
     <!-- <LogTags noPublic /> -->
 

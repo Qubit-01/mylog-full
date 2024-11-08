@@ -52,18 +52,18 @@ const routes = [
         path: "mylog", // 我的记录（自己看的）
         component: () => import("./mylog/index.vue"),
         meta: { title: "记录 - 多元记", requiresAuth: true },
-        children: [
-          {
-            path: "",
-            name: "mylog", // 时间线
-            component: () => import("./mylog/TimelineComp.vue"),
-          },
-          {
-            path: "calendar",
-            name: "calendar", // 日历
-            component: () => import("./mylog/CalendarComp.vue"),
-          },
-        ],
+        // children: [
+        // {
+        //   path: "",
+        //   name: "mylog", // 时间线
+        //   component: () => import("./mylog/TimelineComp.vue"),
+        // },
+        //   {
+        //     path: "calendar",
+        //     name: "calendar", // 日历
+        //     component: () => import("./mylog/CalendarComp.vue"),
+        //   },
+        // ],
       },
     ],
   },
