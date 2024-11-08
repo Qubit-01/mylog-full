@@ -55,6 +55,7 @@ const dev: boolean = import.meta.env.DEV;
 
     display: flex;
     justify-content: center;
+    z-index: 100;
 
     background-color: var(--header-background-color);
     backdrop-filter: blur(8px);
