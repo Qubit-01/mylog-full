@@ -1,0 +1,66 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["typedSql"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id             Int        @id @default(autoincrement()) @db.UnsignedInt
+  name           String     @unique(map: "uni_name") @db.VarChar(255)
+  pswd           String     @db.VarChar(255)
+  unionid_qq     String?    @unique(map: "uni_unionid_qq") @db.VarChar(255)
+  unionid_weixin String?    @unique(map: "uni_unionid_weixin") @db.VarChar(255)
+  log            log[]
+  relation       relation[]
+  userdata       userdata?
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model userdata {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  userid     Int?     @unique(map: "uni_userid") @db.UnsignedInt
+  name       String   @unique(map: "uni_name") @db.VarChar(255)
+  img        String?  @db.Text
+  info       Json?
+  setting    Json?
+  createtime DateTime @default(now()) @db.Timestamp(0)
+  user       user?    @relation(fields: [userid], references: [id], map: "ref_data_user")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model log {
+  id       Int      @id @default(autoincrement()) @db.UnsignedInt
+  userid   Int?     @db.UnsignedInt
+  type     String   @default("log") @db.VarChar(50)
+  sendtime DateTime @default(now()) @db.DateTime(0)
+  logtime  DateTime @default(now()) @db.DateTime(0)
+  content  String   @db.LongText
+  tags     Json
+  imgs     Json
+  videos   Json
+  audios   Json
+  files    Json
+  location Json
+  people   Json
+  info     Json
+  user     user?    @relation(fields: [userid], references: [id], map: "ref_log_user")
+
+  @@index([type], map: "nor_type")
+  @@index([userid], map: "nor_userid")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model relation {
+  id     Int     @id @default(autoincrement()) @db.UnsignedInt
+  userid Int?    @db.UnsignedInt
+  from   String? @db.VarChar(255)
+  name   String  @db.VarChar(255)
+  info   Json?
+  user   user?   @relation(fields: [userid], references: [id], map: "ref_relation_user")
+
+  @@index([userid], map: "nor_userid")
+}
