@@ -8,7 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model userlogin {
   id             Int        @id @default(autoincrement()) @db.UnsignedInt
   name           String     @unique(map: "uni_name") @db.VarChar(255)
   pswd           String     @db.VarChar(255)
@@ -16,29 +16,28 @@ model user {
   unionid_weixin String?    @unique(map: "uni_unionid_weixin") @db.VarChar(255)
   log            log[]
   relation       relation[]
-  userdata       userdata?
+  user           user?
 }
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model userdata {
-  id         Int      @id @default(autoincrement()) @db.UnsignedInt
-  userid     Int?     @unique(map: "uni_userid") @db.UnsignedInt
-  name       String   @unique(map: "uni_name") @db.VarChar(255)
-  img        String?  @db.Text
+model user {
+  id         Int        @id @default(autoincrement()) @db.UnsignedInt
+  userid     Int?       @unique(map: "uni_userid") @db.UnsignedInt
+  name       String     @unique(map: "uni_name") @db.VarChar(255)
+  img        String?    @db.Text
   info       Json?
   setting    Json?
-  createtime DateTime @default(now()) @db.Timestamp(0)
-  user       user?    @relation(fields: [userid], references: [id], map: "ref_data_user")
+  createtime DateTime   @default(now()) @db.Timestamp(0)
+  userlogin  userlogin? @relation(fields: [userid], references: [id], map: "ref_data_user")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model log {
-  id       Int      @id @default(autoincrement()) @db.UnsignedInt
-  userid   Int?     @db.UnsignedInt
-  type     String   @default("log") @db.VarChar(50)
-  sendtime DateTime @default(now()) @db.DateTime(0)
-  logtime  DateTime @default(now()) @db.DateTime(0)
-  content  String   @db.LongText
+  id       Int        @id @default(autoincrement()) @db.UnsignedInt
+  userid   Int?       @db.UnsignedInt
+  type     String     @default("log") @db.VarChar(50)
+  sendtime DateTime   @default(now()) @db.DateTime(0)
+  logtime  DateTime   @default(now()) @db.DateTime(0)
+  content  String     @db.LongText
   tags     Json
   imgs     Json
   videos   Json
@@ -47,7 +46,7 @@ model log {
   location Json
   people   Json
   info     Json
-  user     user?    @relation(fields: [userid], references: [id], map: "ref_log_user")
+  user     userlogin? @relation(fields: [userid], references: [id], map: "ref_log_user")
 
   @@index([type], map: "nor_type")
   @@index([userid], map: "nor_userid")
@@ -55,12 +54,12 @@ model log {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model relation {
-  id     Int     @id @default(autoincrement()) @db.UnsignedInt
-  userid Int?    @db.UnsignedInt
-  from   String? @db.VarChar(255)
-  name   String  @db.VarChar(255)
+  id     Int        @id @default(autoincrement()) @db.UnsignedInt
+  userid Int?       @db.UnsignedInt
+  from   String?    @db.VarChar(255)
+  name   String     @db.VarChar(255)
   info   Json?
-  user   user?   @relation(fields: [userid], references: [id], map: "ref_relation_user")
+  user   userlogin? @relation(fields: [userid], references: [id], map: "ref_relation_user")
 
   @@index([userid], map: "nor_userid")
 }
