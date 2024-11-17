@@ -156,9 +156,6 @@ importers:
       '@mylog-full/utils':
         specifier: workspace:^
         version: link:../../packages/utils
-      '@trpc/client':
-        specifier: 11.0.0-rc.608
-        version: 11.0.0-rc.608(@trpc/server@11.0.0-rc.608)
       '@vueuse/core':
         specifier: ^10.11.1
         version: 10.11.1(@vue/composition-api@1.7.2(vue@3.5.12(typescript@5.6.3)))(vue@3.5.12(typescript@5.6.3))
@@ -238,6 +235,16 @@ importers:
       vue-tsc:
         specifier: ^2.1.10
         version: 2.1.10(typescript@5.6.3)
+
+  packages/types:
+    dependencies:
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
+    devDependencies:
+      typescript:
+        specifier: ^5.5.3
+        version: 5.6.3
 
   packages/ui:
     dependencies:

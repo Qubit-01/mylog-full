@@ -2,6 +2,8 @@
   "name": "@mylog-full/utils",
   "private": true,
   "version": "0.0.0",
+  "description": "工具函数包",
+  "author": "bit",
   "type": "module",
   "main": "index.ts",
   "scripts": {

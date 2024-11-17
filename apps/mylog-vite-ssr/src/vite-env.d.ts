@@ -18,5 +18,5 @@ declare module "*?preset=modern" {
   export default src;
 }
 
-declare type Log = import("@mylog-full/mylog-trpc-prisma").LogVO;
-declare type User = import("@mylog-full/mylog-trpc-prisma").UserVO;
+declare type Log = import("@mylog-full/types").LogVO;
+declare type User = import("@mylog-full/types").UserVO;
