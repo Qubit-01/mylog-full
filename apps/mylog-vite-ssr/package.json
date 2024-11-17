@@ -13,9 +13,8 @@
   },
   "dependencies": {
     "@css-render/vue3-ssr": "^0.15.14",
-    "@mylog-full/mylog-trpc-prisma": "workspace:^",
+    "@mylog-full/types": "workspace:^",
     "@mylog-full/utils": "workspace:^",
-    "@trpc/client": "11.0.0-rc.608",
     "@vueuse/core": "^10.11.1",
     "compression": "^1.7.5",
     "cookie-parser": "^1.4.7",

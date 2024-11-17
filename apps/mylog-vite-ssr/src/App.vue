@@ -7,7 +7,6 @@
 <script setup lang="ts">
 import { useSSRContext } from "vue";
 import useGlobalStore from "./stores/global";
-import trpc from "./api";
 
 const global = useGlobalStore();
 
