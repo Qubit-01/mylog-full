@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 
 // 从env中获取配置
 const secretKey = process.env.JwtSecretKey!;
