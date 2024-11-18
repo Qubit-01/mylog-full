@@ -1,5 +1,4 @@
-import trpc from "@/api";
-import { toLogVO4DTO } from "@mylog-full/utils";
+import { toLogVO4DTO } from '@mylog-full/utils';
 
 /**
  * 要分页查询需要的数据项
@@ -15,7 +14,7 @@ export interface PageStore {
   noMore: boolean;
 }
 
-const useMylogStore = defineStore("mylog", () => {
+const useMylogStore = defineStore('mylog', () => {
   const logs = reactive<PageStore>({
     list: [],
     params: { skip: 0, limit: 10 },
@@ -33,7 +32,7 @@ const useMylogStore = defineStore("mylog", () => {
   const addLogs = async () => {
     if (logs.noMore) return;
     logs.loading = true;
-    const data = await trpc.log.getMylogs.query(logs.params);
+    const data = await []; // trpc.log.getMylogs.query(logs.params);
     if (data.length < logs.params.limit) logs.noMore = true;
     logs.list.push(...data.map(toLogVO4DTO));
     logs.params.skip += logs.params.limit;

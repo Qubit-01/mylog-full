@@ -14,15 +14,15 @@
   &state=login
  -->
 <script setup lang="ts">
-import trpc from "@/api";
-import QC from "@/utils/qq-connect";
-import { loginByToken } from "@/utils/user";
-import { ArrowBack } from "@vicons/ionicons5";
+import * as UserApi from '@/api/user';
+import QC from '@/utils/qq-connect';
+import { loginByToken } from '@/utils/user';
+import { ArrowBack } from '@vicons/ionicons5';
 const state = ref(0); // 0加载 1选择（没找到用户） 2登录 3注册
 // 存储QQ登录的用户信息
 const user = reactive<{ data: any; unionidQq: string }>({
   data: {},
-  unionidQq: "",
+  unionidQq: '',
 });
 
 // 先获取用户基本信息，再用jsonp获取unionid
@@ -31,56 +31,57 @@ onMounted(() => {
   window.callback = async (res: any) => {
     user.unionidQq = res.unionid;
     // 先看数据库有没有这个openId
-    const token = await trpc.user.getToken.query({ unionidQq: user.unionidQq });
-    if (token) loginByToken(token, "/"); // 找到账号直接登录
+    const token = await UserApi.getToken({ unionidQq: user.unionidQq });
+    if (token)
+      loginByToken(token, '/'); // 找到账号直接登录
     else state.value = 1; // 没找到用户，选择
   };
 
   if (QC.Login.check()) {
-    QC.api("get_user_info").success((res: any) => {
+    QC.api('get_user_info').success((res: any) => {
       user.data = res.data; // 这里面只有用户信息，头像那些
     });
     // 如果是登录状态，这里用了jsonp，看上面的callback
     QC.Login.getMe(async (unionId, accessToken) => {
-      const script = document.createElement("script");
+      const script = document.createElement('script');
       script.src = `https://graph.qq.com/oauth2.0/me?access_token=${accessToken}&unionid=1`;
       document.head.appendChild(script);
     });
   } else {
-    location.replace("/login"); // 没有QQ登录跳转登录页
+    location.replace('/login'); // 没有QQ登录跳转登录页
   }
 });
 
 // 选择绑定时的输入数据
-const input = reactive({ name: "", pswd: "", captcha: "" });
+const input = reactive({ name: '', pswd: '', captcha: '' });
 // 确认密码独立出来
-const pswd2 = ref("");
+const pswd2 = ref('');
 const qqImg = ref(false);
 
 // 1.绑定已有账号
 const bd = async () => {
   // 先登录获取token，再token和openid一起绑定
-  const token = await trpc.user.getToken.query({
+  const token = await UserApi.getToken({
     name: input.name,
     pswd: input.pswd,
   });
   if (token) {
-    console.log("🐔", token);
+    console.log('🐔', token);
 
     // 先绑定平台，再更新头像
-    await trpc.user.setUserLogin.mutate({
+    await UserApi.setUserLogin({
       token,
       unionidQq: user.unionidQq,
     });
     if (qqImg.value) {
-      await trpc.user.setUser.mutate({
+      await UserApi.setUser({
         token,
         data: { img: user.data.figureurl_qq },
       });
     }
-    loginByToken(token, "/");
+    loginByToken(token, '/');
   } else {
-    console.log("🐔用户名或密码错误");
+    console.log('🐔用户名或密码错误');
     return;
     // return ElMessage.error("用户名或密码不正确");
   }

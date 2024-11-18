@@ -1,18 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { getUseridByPswd } from '@prisma/client/sql';
 import { PrismaClient } from '@prisma/client';
-import { sign } from 'src/utils/jwt';
+import { sign, verify } from 'src/utils/jwt';
 
 @Controller('user')
 export class UserController {
@@ -23,10 +13,10 @@ export class UserController {
 
   /**
    * 获取token。用于登录，getUser不行，目前token只包含id信息
-   * @param body unionidQq 或 name+pswd
+   * @param body unionidQq > name+pswd
    * @returns 用户token
    */
-  @Get('token')
+  @Post('token')
   async getToken(
     @Body() body: { unionidQq: string } | { name: string; pswd: string },
   ) {
@@ -34,29 +24,70 @@ export class UserController {
     return userid ? sign(userid) : undefined;
   }
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  /**
+   * 获取用户信息，id > name > token
+   * @param id 用户ID
+   * @param name 用户名
+   * @param token 用户token
+   * @returns 用户信息
+   */
+  @Post('get_user')
+  getUser(@Body() body: { id: number } | { name: string } | { token: string }) {
+    if ('id' in body) {
+      return this.prisma.user.findUnique({
+        where: { userid: Number(body.id) },
+      });
+    } else if ('name' in body) {
+      return this.prisma.user.findUnique({ where: { name: body.name } });
+    } else if ('token' in body) {
+      return this.prisma.user.findUnique({
+        where: { userid: verify(body.token) },
+      });
+    }
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.userService.findAll();
-  // }
-
-  @Get()
-  findOne(id: string) {
-    return this.userService.findOne(+id);
+  /**
+   * 设置用户信息
+   * @param token 用户令牌，
+   * @param data 要设置的数据。目前只能设置img/info/setting
+   */
+  @Post('set_user')
+  async setUser(
+    @Body()
+    body: {
+      token: string;
+      data: {
+        img?: string;
+        info?: string;
+        setting?: string;
+      };
+    },
+  ) {
+    const userid = verify(body.token);
+    await this.prisma.user.update({
+      where: { userid },
+      data: body.data,
+    });
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  /**
+   * 设置用户登录数据
+   * @param token 用户令牌
+   * @param unionidQq QQ的unionid
+   * @param unionidWeixin 微信的unionid
+   */
+  @Post('set_userlogin')
+  async setUserLogin(
+    @Body() body: { token: string; unionidQq?: string; unionidWeixin?: string },
+  ) {
+    const userid = verify(body.token);
+    await this.prisma.userlogin.update({
+      where: { id: userid },
+      data: {
+        unionid_qq: body.unionidQq,
+        unionid_weixin: body.unionidWeixin,
+      },
+    });
   }
 
   /**

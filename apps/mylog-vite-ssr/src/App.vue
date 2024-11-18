@@ -5,26 +5,22 @@
   2. style中放无关主题的全局css
 -->
 <script setup lang="ts">
-import { useSSRContext } from "vue";
-import useGlobalStore from "./stores/global";
+import { onMounted, onServerPrefetch, useSSRContext } from 'vue';
+import useGlobalStore from './stores/global';
+import * as UserApi from './api/user';
 
 const global = useGlobalStore();
 
 onServerPrefetch(async () => {
   const token = useSSRContext()!.token;
   if (token) {
-    const userdata = await trpc.user.getUser.query({ token });
+    const userdata = await UserApi.getUser({ token });
     Object.assign(global.user, userdata);
   }
 });
 
 onMounted(async () => {
-  console.log("🐔", "App.vue");
-  // const a = await trpc.test.test1.query();
-  // const a = await trpc.user.getToken.query({
-  //   // name: "sybit", pswd: "12345qaZ"
-  //   unionidQq: "UID_A01CA2BA124F884F93A78348AB6B8DA5",
-  // });
+  console.log('🐔', 'App.vue');
 });
 </script>
 
@@ -70,7 +66,9 @@ onMounted(async () => {
 /* 模块通用 */
 .m {
   position: relative;
-  transition: box-shadow 0.2s linear, width 0.2s linear;
+  transition:
+    box-shadow 0.2s linear,
+    width 0.2s linear;
   background-color: var(--block-background-color);
   border-radius: var(--block-border-radius);
   padding: var(--block-padding);

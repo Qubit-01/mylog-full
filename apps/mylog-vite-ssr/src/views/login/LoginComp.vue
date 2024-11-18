@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import trpc from "@/api";
+import * as UserApi from "@/api/user";
 import { appId, redirectURI } from "@/utils/qq-connect";
 import { loginByToken, loginTest } from "@/utils/user";
 
@@ -11,7 +11,7 @@ const loginData = reactive({
 });
 
 const doLogin = async () => {
-  const token = await trpc.user.getToken.query(loginData);
+  const token = await UserApi.getToken(loginData);
   if (token) {
     loginByToken(token, route.query.redirect as string ?? '/');
   } else {

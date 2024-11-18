@@ -1,4 +1,4 @@
-import trpc from "@/api";
+import * as UserApi from "@/api/user";
 import Cookies from "js-cookie";
 
 /**
@@ -37,7 +37,7 @@ export const logout = (to?: string) => {
  * 登录测试账号
  */
 export const loginTest = async () => {
-  const token = await trpc.user.getToken.query({
+  const token = await UserApi.getToken({
     name: "测试账号",
     pswd: "12345qaZ",
   });
