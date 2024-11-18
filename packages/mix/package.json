@@ -1,9 +1,9 @@
 {
   "name": "@mylog-full/mix",
-  "private": true,
   "version": "0.0.0",
   "description": "公共包：工具函数，类型",
   "author": "bit",
+  "private": true,
   "type": "module",
   "main": "index.ts",
   "scripts": {

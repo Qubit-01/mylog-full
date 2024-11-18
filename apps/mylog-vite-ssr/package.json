@@ -1,7 +1,9 @@
 {
   "name": "mylog-vite-ssr",
-  "private": true,
   "version": "0.0.0",
+  "description": "Mylog Vite SSR前端",
+  "author": "bit",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "node server",
@@ -13,8 +15,7 @@
   },
   "dependencies": {
     "@css-render/vue3-ssr": "^0.15.14",
-    "@mylog-full/types": "workspace:^",
-    "@mylog-full/utils": "workspace:^",
+    "@mylog-full/mix": "workspace:^",
     "@vueuse/core": "^10.11.1",
     "compression": "^1.7.5",
     "cookie-parser": "^1.4.7",

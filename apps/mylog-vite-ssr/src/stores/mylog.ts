@@ -1,4 +1,4 @@
-import { toLogVO4DTO } from '@mylog-full/utils';
+import { toLogVO4DTO } from '@mylog-full/mix/utils';
 
 /**
  * 要分页查询需要的数据项

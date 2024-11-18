@@ -18,5 +18,5 @@ declare module "*?preset=modern" {
   export default src;
 }
 
-declare type Log = import("@mylog-full/types").LogVO;
-declare type User = import("@mylog-full/types").UserVO;
+declare type Log = import("@mylog-full/mix/types").LogVO;
+declare type User = import("@mylog-full/mix/types").UserVO;
