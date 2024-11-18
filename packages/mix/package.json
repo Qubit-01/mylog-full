@@ -1,0 +1,24 @@
+{
+  "name": "@mylog-full/mix",
+  "private": true,
+  "version": "0.0.0",
+  "description": "公共包：工具函数，类型",
+  "author": "bit",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node index.ts"
+  },
+  "exports": {
+    "./types": "./types/index.ts",
+    "./utils": "./utils/index.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "dayjs": "^1.11.13"
+  }
+}
