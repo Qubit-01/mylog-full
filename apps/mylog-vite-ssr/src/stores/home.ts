@@ -1,3 +1,4 @@
+import * as LogApi from '@/api/log';
 import { toLogVO4DTO } from '@mylog-full/mix/utils';
 
 /**
@@ -32,9 +33,11 @@ const useHomeStore = defineStore('home', () => {
   const addLogs = async () => {
     if (logs.noMore) return;
     logs.loading = true;
-    const data = await []; // trpc.log.getPublics.query(logs.params);
+    const data = await LogApi.getPublics(logs.params);
+    // console.log('🐔', data);
+
     if (data.length < logs.params.limit) logs.noMore = true;
-    logs.list.push(...data.map(toLogVO4DTO));
+    logs.list.push(...data); //.map(toLogVO4DTO));
     logs.params.skip += logs.params.limit;
     logs.loading = false;
   };

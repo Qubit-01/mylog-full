@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
  * PO to VO :
  *   1. JsonValue 转 对象
  *   2. Date 转 dayjs
+ * @deprecated
  * @param log PO数据库对象 trpc直接返回的对象类型
  * @returns
  */

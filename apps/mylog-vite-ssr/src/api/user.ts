@@ -1,17 +1,6 @@
-const url = 'https://mylog.cool:3000';
+import { options } from ".";
 
-/**
- * 默认 POST ，json
- * @param p 自定义请求参数
- * @returns 默认请求参数
- */
-const options = (p: { body: object }) => {
-  return {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' }, // 'application/x-www-form-urlencoded'
-    body: JSON.stringify(p.body),
-  };
-};
+const url = 'https://mylog.cool:3000';
 
 /**
  * 获取token。用于登录，getUser不行，目前token只包含id信息
