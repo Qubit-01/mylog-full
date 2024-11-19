@@ -92,6 +92,12 @@ const routes = [
     ],
   },
   {
+    path: "/test",
+    name: "test",
+    component: () => import("./test/index.vue"),
+    meta: { title: "测试 - 多元记" },
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "404",
     component: () => import("./404/404View.vue"),

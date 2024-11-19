@@ -3,7 +3,7 @@ import TimelineComp from "./TimelineComp.vue";
 import CalendarComp from "./CalendarComp.vue";
 </script>
 <template>
-  <div class="mylog-page">
+  <div class="mylog-view">
     <n-tabs type="segment" animated>
       <n-tab-pane name="mylog" tab="时间线"><TimelineComp /></n-tab-pane>
       <n-tab-pane name="calendar" tab="日历"><CalendarComp /></n-tab-pane>
@@ -12,7 +12,7 @@ import CalendarComp from "./CalendarComp.vue";
   </div>
 </template>
 <style lang="scss" scoped>
-.mylog-page {
+.mylog-view {
   display: flex;
   flex-direction: column;
   gap: var(--gap);
