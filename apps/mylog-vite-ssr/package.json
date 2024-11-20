@@ -21,6 +21,7 @@
     "cookie-parser": "^1.4.7",
     "cos-js-sdk-v5": "^1.8.6",
     "dayjs": "^1.11.13",
+    "element-plus": "^2.8.8",
     "express": "^4.21.1",
     "js-cookie": "^3.0.5",
     "pinia": "^2.2.6",

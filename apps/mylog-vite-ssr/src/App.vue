@@ -6,7 +6,9 @@
 -->
 <script setup lang="ts">
 import { onMounted, onServerPrefetch, useSSRContext } from 'vue';
+import { ElConfigProvider } from 'element-plus';
 import useGlobalStore from './stores/global';
+import zhCn from 'element-plus/es/locale/lang/zh-cn';
 import * as UserApi from './api/user';
 
 const global = useGlobalStore();
@@ -25,7 +27,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <RouterView />
+  <el-config-provider :locale="zhCn">
+    <RouterView />
+  </el-config-provider>
 </template>
 
 <style lang="scss">

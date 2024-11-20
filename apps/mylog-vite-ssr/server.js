@@ -59,6 +59,8 @@ app.use('*', async (req, res) => {
       .replace(`<!--app-head-->`, rendered.head ?? '')
       .replace(`<!--css-head-->`, rendered.cssHead ?? '')
       .replace(`<!--app-html-->`, rendered.appHtml ?? '')
+      .replace(`<!--preload-links-->`, rendered.preloadLinks ?? '')
+      .replace(/(\n|\r\n)\s*<!--app-teleports-->/, rendered.teleports ?? '')
 
     console.log('🐔SSR HTML渲染好了，返回给浏览器');
     res.status(200).set({ 'Content-Type': 'text/html' }).send(html)
