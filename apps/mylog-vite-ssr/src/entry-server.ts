@@ -38,7 +38,6 @@ export async function render(
   // @vitejs/plugin-vue 会将代码注入组件的setup，setup会注册自身到ctx.modules
   const ctx: SSRContext = { token }; // 这里把用户cookie里面的token带进去
   const appHtml = await renderToString(app, ctx); // 会多个 ctx.modules 将包含调用期间实例化的所有组件
-  // console.log('🐔', ctx);
 
   const preloadLinks = renderPreloadLinks(ctx.modules, ssrManifest);
   const teleports = renderTeleports(ctx.teleports);
@@ -48,7 +47,20 @@ export async function render(
   // 自己添加head，对提前获取的数据注入进html的head中
   const head = `<script>window.__pinia = ${JSON.stringify(pinia.state.value)}</script>`;
 
-  return { cssHead, appHtml, head, preloadLinks, teleports };
+  console.log('🐤teleports', teleports)
+
+  return {
+    /** Vue渲染的主要HTML代码 */
+    appHtml,
+    /** Naive UI 注入的CSS代码 */
+    cssHead,
+    /** Pinia 服务器获取到的数据存储在window上 */
+    head,
+    /** 通过ctx.modules预加载manifest中用到的资源 */
+    preloadLinks,
+    /** 有些需要瞬移组件的挂载点 */
+    teleports,
+  };
 }
 
 function renderPreloadLinks(modules: any, manifest: Manifest) {

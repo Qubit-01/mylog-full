@@ -28,10 +28,9 @@ import HeaderComp from "./comps/HeaderComp.vue";
   display: flex;
   flex-direction: column;
   gap: var(--gap);
-  min-width: 550px;
+  min-width: 500px;
 
-  // 中间主要部分的高度 = 屏幕高度 + Footer高度
-  min-height: calc(100vh + var(--footer-height));
+  min-height: 100vh;
 
   * {
     transition: width 0.5s;
