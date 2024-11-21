@@ -34,8 +34,6 @@ const useHomeStore = defineStore('home', () => {
     if (logs.noMore) return;
     logs.loading = true;
     const data = await LogApi.getPublics(logs.params);
-    // console.log('🐔', data);
-
     if (data.length < logs.params.limit) logs.noMore = true;
     logs.list.push(...data); //.map(toLogVO4DTO));
     logs.params.skip += logs.params.limit;

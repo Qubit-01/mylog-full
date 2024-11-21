@@ -38,8 +38,11 @@ export async function render(
   // @vitejs/plugin-vue 会将代码注入组件的setup，setup会注册自身到ctx.modules
   const ctx: SSRContext = { token }; // 这里把用户cookie里面的token带进去
   const appHtml = await renderToString(app, ctx); // 会多个 ctx.modules 将包含调用期间实例化的所有组件
+  console.log('🐔appHtml');
 
   const preloadLinks = renderPreloadLinks(ctx.modules, ssrManifest);
+  console.log('🐔preloadLinks', preloadLinks);
+
   const teleports = renderTeleports(ctx.teleports);
 
   const cssHead = collect();
@@ -47,7 +50,7 @@ export async function render(
   // 自己添加head，对提前获取的数据注入进html的head中
   const head = `<script>window.__pinia = ${JSON.stringify(pinia.state.value)}</script>`;
 
-  console.log('🐤teleports', teleports)
+  console.log('🐤teleports', teleports);
 
   return {
     /** Vue渲染的主要HTML代码 */
@@ -87,22 +90,20 @@ function renderPreloadLinks(modules: any, manifest: Manifest) {
   return links;
 
   function renderPreloadLink(file: string) {
-    if (file.endsWith('.js')) {
+    if (file.endsWith('.js')) { // modulepreload 模块不必等到执行时才加载
       return `<link rel="modulepreload" crossorigin href="${file}">`;
     } else if (file.endsWith('.css')) {
       return `<link rel="stylesheet" href="${file}">`;
-    } else if (file.endsWith('.woff')) {
-      return ` <link rel="preload" href="${file}" as="font" type="font/woff" crossorigin>`;
-    } else if (file.endsWith('.woff2')) {
-      return ` <link rel="preload" href="${file}" as="font" type="font/woff2" crossorigin>`;
-    } else if (file.endsWith('.gif')) {
-      return ` <link rel="preload" href="${file}" as="image" type="image/gif">`;
-    } else if (file.endsWith('.jpg') || file.endsWith('.jpeg')) {
-      return ` <link rel="preload" href="${file}" as="image" type="image/jpeg">`;
-    } else if (file.endsWith('.png')) {
-      return ` <link rel="preload" href="${file}" as="image" type="image/png">`;
-    } else if (file.endsWith('.webp')) {
-      return ` <link rel="preload" href="${file}" as="image" type="image/webp">`;
+    } else if (file.endsWith('.woff') || file.endsWith('.woff2')) {
+      return ` <link rel="preload" href="${file}" as="font" crossorigin>`;
+    } else if (
+      file.endsWith('.gif') ||
+      file.endsWith('.jpg') ||
+      file.endsWith('.jpeg') ||
+      file.endsWith('.png') ||
+      file.endsWith('.webp')
+    ) {
+      return ` <link rel="preload" href="${file}" as="image">`;
     } else {
       return '';
     }
