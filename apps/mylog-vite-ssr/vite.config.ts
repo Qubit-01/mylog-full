@@ -23,12 +23,15 @@ export default defineConfig({
     vue(),
     AutoImport({
       // 自动导入
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver({ ssr: true })],
       imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
       dts: 'src/types/auto-imports.d.ts',
     }),
     Components({
-      resolvers: [ElementPlusResolver(), NaiveUiResolver()],
+      resolvers: [
+        ElementPlusResolver({ ssr: true }),
+        NaiveUiResolver(),
+      ],
       dts: 'src/types/components.d.ts',
     }),
     // vite-imagetools 配置
@@ -47,7 +50,7 @@ export default defineConfig({
     },
   },
   ssr: {
-    noExternal: ['naive-ui', 'vueuc', 'date-fns'],
+    noExternal: ['naive-ui', 'vueuc', 'date-fns', 'element-plus'],
   },
   server: {
     hmr: {
