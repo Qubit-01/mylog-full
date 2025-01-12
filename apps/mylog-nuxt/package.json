@@ -10,6 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@element-plus/icons-vue": ">=0.2.6",
+    "@element-plus/nuxt": "1.1.1",
+    "dayjs": "^1.11.13",
+    "element-plus": "^2.8.8",
     "nuxt": "^3.14.1592",
     "vue": "latest",
     "vue-router": "latest"

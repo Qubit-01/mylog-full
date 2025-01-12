@@ -4,8 +4,6 @@
   /* 无关主题，通用样式========================= */
   /* 各个模块间的间距 */
   --gap: 20px;
-  /* 页面宽度在最大挡位时的宽度 */
-  --center-width: 65%;
   /* 默认圆角 */
   --border-radius: 12px;
   /* 默认padding */
@@ -16,6 +14,9 @@
 
   /* 滚动条粗细 */
   --scrollbar-weight: 6px;
+
+  /* 默认模糊半径 */
+  --backdrop-filter-blur: 8px;
 
   /* 明暗主题通用element样式 */
   .el-link {
@@ -36,7 +37,7 @@
   border: var(--m-border);
 
   box-shadow: var(--m-shadow);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(var(--backdrop-filter-blur));
 
   &:hover {
     box-shadow: var(--m-hover-shadow);
