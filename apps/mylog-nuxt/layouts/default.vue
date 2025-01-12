@@ -58,29 +58,42 @@ onBeforeUnmount(() => clearInterval(timer))
           </div>
         </div>
         <nav>
-          <div to="/mylog">记录</div>
-          <div to="/album">相册</div>
-          <div to="/map">地图</div>
-          <div to="/relation">人脉</div>
+          <el-button text to="/mylog">记录</el-button>
+          <el-button text to="/album">相册</el-button>
+          <el-button text to="/map">地图</el-button>
+          <el-button text to="/relation">人脉</el-button>
         </nav>
         <div class="right">
-          去登录
-          <!-- <RouterLink v-if="User.isLogined" class="user" to="/logger">
-            {{ User.name }}
-          </RouterLink> -->
-          <!-- <el-link v-else type="primary" @click="$router.push('login')">
-            去登录
-          </el-link> -->
-          <!-- <ThemeSwitch /> -->
+          <div class="mix">
+            <!-- <el-button v-if="User.isLogined" class="user" to="/logger">
+              {{ User.name }}
+            </el-button> -->
+            <!-- @click="$router.push('login')" -->
+            <el-button text type="primary" to="/relation">去登录</el-button>
+            <!-- <ThemeSwitch /> -->
+          </div>
         </div>
       </div>
     </header>
     <!-- 顶栏在主文档流中的占位 -->
-    <div
-      class="placeholder"
-      style="height: var(--header-height); margin-bottom: var(--gap)"
-    />
-    <slot />
+    <div class="placeholder" />
+
+    <main>
+      <div class="center">
+        <div class="middle">
+          <slot />
+        </div>
+        <aside class="left">
+          <!-- <UserLan /> -->
+          <!-- <NoteLan /> -->
+        </aside>
+        <aside class="right">
+          <!-- 目录栏 -->
+          <!-- <ContentLan /> -->
+          <OneSentence />
+        </aside>
+      </div>
+    </main>
     <footer>
       <div class="center">
         <div class="statistic">
@@ -147,23 +160,13 @@ onBeforeUnmount(() => clearInterval(timer))
   --center-width: 65%;
   /* 顶栏高度 */
   --header-height: 50px;
-
-  @media (max-width: 1424px) {
-    /* 页面宽度在小挡位时的宽度 */
-    --center-width: 95%;
-  }
-
-  @media (max-width: 700px) {
-    /* 主体内容的上边距 */
-    --header-height: calc(var(--header-height) * 2);
-  }
+  /* 左右栏宽 */
+  --lan-width: 130px;
 
   > header {
     position: fixed;
     z-index: 50;
     width: 100vw;
-    height: var(--header-height);
-    line-height: var(--header-height);
     background-color: var(--m-background-color);
     border-bottom: var(--m-border);
     box-shadow: var(--m-shadow);
@@ -184,34 +187,27 @@ onBeforeUnmount(() => clearInterval(timer))
         flex: 1;
         display: flex;
         justify-content: center;
-        // justify-content: flex-start;
-        font-size: 1.1rem;
-        height: 100%;
+        align-items: center;
+        gap: 10px;
+        height: var(--header-height);
+        min-width: 330px; // 按钮宽58*5 + 间隔10*4 = 330 预计只有5个按钮
 
         > * {
-          text-decoration: none;
+          margin: 0;
           color: inherit;
-          padding-left: 20px;
-          padding-right: 20px;
-
-          &:hover {
-            background: #ccc5;
-          }
         }
       }
 
       > .left {
-        .logo {
+        > .logo {
           position: relative;
           font-size: 22px;
           width: var(--lan-width);
           height: var(--header-height);
-          padding-left: 20px;
-          padding-right: 20px;
 
           display: flex;
           justify-content: center;
-
+          align-items: center;
           cursor: pointer;
 
           &:hover {
@@ -242,54 +238,95 @@ onBeforeUnmount(() => clearInterval(timer))
 
       > .right {
         display: flex;
-        gap: 12px;
-        align-items: center;
         justify-content: flex-end;
 
-        .theme-switch {
-          --el-switch-on-color: #2c2c2c;
-          --el-switch-off-color: #f2f2f255;
-          --color: #333;
+        > .mix {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 12px;
+
+          height: var(--header-height);
+          width: var(--lan-width);
+
+          // .theme-switch {
+          //   --el-switch-on-color: #2c2c2c;
+          //   --el-switch-off-color: #f2f2f255;
+          //   --color: #333;
+          // }
         }
+      }
+    }
+  }
 
-        > .user {
-          text-decoration: none;
-          color: inherit;
-          padding-left: 20px;
-          padding-right: 20px;
+  > .placeholder {
+    height: var(--header-height);
+    margin-bottom: var(--gap);
+  }
 
-          &:hover {
-            background: #ccc5;
-          }
+  > main {
+    display: flex;
+    justify-content: center;
+
+    .center {
+      width: var(--center-width);
+      display: flex;
+      gap: var(--gap);
+      transition: width 0.3s;
+
+      .middle {
+        border: 1px solid red;
+        width: 0;
+        order: 2;
+        flex: 1;
+      }
+
+      .left {
+        border: 1px solid red;
+
+        order: 1;
+        width: var(--lan-width);
+
+        // 栏固定
+        > div:nth-child(1) {
+          position: sticky;
+          top: calc(var(--header-height) + var(--gap));
         }
       }
 
-      @media (max-width: 700px) {
-        flex-wrap: wrap;
-        > .left {
-          width: 45%;
-        }
-        > .right {
-          width: 45%;
-        }
+      .right {
+        border: 1px solid red;
 
-        > nav {
-          order: 2;
-          font-size: 1rem;
+        order: 3;
+        width: var(--lan-width);
+      }
+
+      .left,
+      .right {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+        > * {
+          border-radius: var(--border-radius);
+        }
+      }
+
+      @media (max-width: 890px) {
+        .left,
+        .right {
+          display: none;
         }
       }
     }
   }
 
   > footer {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
+    position: sticky;
+    top: 100vh;
     margin-top: var(--gap);
 
     background-color: var(--m-background-color);
     border-top: var(--m-border);
-    box-shadow: var(--m-shadow);
     backdrop-filter: blur(var(--backdrop-filter-blur));
 
     > .center {
@@ -345,6 +382,28 @@ onBeforeUnmount(() => clearInterval(timer))
           }
         }
       }
+    }
+  }
+
+  @media (max-width: 1424px) {
+    /* 页面宽度在小挡位时的宽度 */
+    --center-width: calc(100vw - var(--gap) * 2);
+  }
+
+  // nav330 + 左右栏130*2 + margin10*2
+  @media (max-width: 600px) {
+    > header {
+      // 顶栏换行
+      > .center {
+        flex-wrap: wrap;
+        > nav {
+          order: 2;
+        }
+      }
+    }
+
+    > .placeholder {
+      height: calc(var(--header-height) * 2);
     }
   }
 }
