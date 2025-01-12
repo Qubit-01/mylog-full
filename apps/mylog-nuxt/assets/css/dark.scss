@@ -1,0 +1,138 @@
+/* 夜间 */
+:root {
+  /* 背景颜色 */
+  --body-back-color: var(--el-bg-color);
+
+  /* 文字颜色 */
+  --font-color: var(--el-color-white);
+  /* 小文本的颜色 */
+  --mini-text-color: var(--el-text-color-secondary);
+
+  /* 模块颜色 */
+  --model-back-color: rgba(50, 50, 50, 0.4);
+  --model-back-color-hover: rgba(50, 50, 50, 0.6);
+  /* 模块边框颜色 */
+  --model-border-color: #666;
+  /* 模块边框 */
+  --model-border: 1px solid var(--model-border-color);
+  /* 阴影 */
+  --model-shadow: 1px 1px 10px -4px black;
+  --model-shadow-hover: 1px 1px 10px -7px black;
+
+  /* 按钮颜色 */
+  --btn-color: #1a2d4e;
+  /* 按钮悬停颜色，要选用hoverBottom类 */
+  --hoverBottom-color: rgba(45, 64, 95, 0.4);
+
+  /* 左栏标签数字底色 */
+  --class-span-color: #4f5761;
+
+  /* 滚动条滚动槽 */
+  --scrollbar-color: transparent;
+  /* 滚动条滑块 */
+  --scrollbar-thumb-color: #a5a5a5;
+
+  /* 改ElementUI里面的属性 */
+  --el-fill-color-blank: var(--model-back-color) !important;
+
+  /* 二级字体颜色 */
+  --color-2: #eeea;
+
+  /* -m 模块 */
+  --m-background-color: #4444;
+  --m-border: 1px solid #8885;
+  --m-shadow: var(--el-box-shadow-lighter);
+  --m-hover-shadow: var(--el-box-shadow-light);
+
+  /* 滚动槽颜色 */
+  --scrollbar-background: #3335;
+  /* 滚动滑块颜色 */
+  --scrollbar-thumb-background: #333a;
+
+  /* 修改element一些的样式 */
+  --el-fill-color-blank: #6667;
+  --el-mask-color: rgba(0, 0, 0, 0.5);
+}
+
+body {
+  background-color: #333;
+  background-image: url(~/assets/img/bg-dark.jpg);
+}
+
+/* .my-el-dark {
+    --el-color-primary: #409eff;
+    --el-color-primary-light-3: #3375b9;
+    --el-color-primary-light-5: #2a598a;
+    --el-color-primary-light-7: #213d5b;
+    --el-color-primary-light-8: #1d3043;
+    --el-color-primary-light-9: #18222c;
+    --el-color-primary-dark-2: #66b1ff;
+    --el-color-success: #67c23a;
+    --el-color-success-light-3: #4e8e2f;
+    --el-color-success-light-5: #3e6b27;
+    --el-color-success-light-7: #2d481f;
+    --el-color-success-light-8: #25371c;
+    --el-color-success-light-9: #1c2518;
+    --el-color-success-dark-2: #85ce61;
+    --el-color-warning: #e6a23c;
+    --el-color-warning-light-3: #a77730;
+    --el-color-warning-light-5: #7d5b28;
+    --el-color-warning-light-7: #533f20;
+    --el-color-warning-light-8: #3e301c;
+    --el-color-warning-light-9: #292218;
+    --el-color-warning-dark-2: #ebb563;
+    --el-color-danger: #f56c6c;
+    --el-color-danger-light-3: #b25252;
+    --el-color-danger-light-5: #854040;
+    --el-color-danger-light-7: #582e2e;
+    --el-color-danger-light-8: #412626;
+    --el-color-danger-light-9: #2b1d1d;
+    --el-color-danger-dark-2: #f78989;
+    --el-color-error: #f56c6c;
+    --el-color-error-light-3: #b25252;
+    --el-color-error-light-5: #854040;
+    --el-color-error-light-7: #582e2e;
+    --el-color-error-light-8: #412626;
+    --el-color-error-light-9: #2b1d1d;
+    --el-color-error-dark-2: #f78989;
+    --el-color-info: #909399;
+    --el-color-info-light-3: #6b6d71;
+    --el-color-info-light-5: #525457;
+    --el-color-info-light-7: #393a3c;
+    --el-color-info-light-8: #2d2d2f;
+    --el-color-info-light-9: #202121;
+    --el-color-info-dark-2: #a6a9ad;
+
+    --el-box-shadow: 0px 12px 32px 4px rgba(0, 0, 0, 0.36), 0px 8px 20px rgba(0, 0, 0, 0.72);
+    --el-box-shadow-light: 0px 0px 12px rgba(0, 0, 0, 0.72);
+    --el-box-shadow-lighter: 0px 0px 6px rgba(0, 0, 0, 0.72);
+    --el-box-shadow-dark: 0px 16px 48px 16px rgba(0, 0, 0, 0.72), 0px 12px 32px #000000, 0px 8px 16px -8px #000000;
+
+    --el-bg-color: #141414;
+    --el-bg-color-page: #0a0a0a;
+    --el-bg-color-overlay: #1d1e1f;
+
+    --el-text-color-primary: #E5EAF3;
+    --el-text-color-regular: #CFD3DC;
+    --el-text-color-secondary: #A3A6AD;
+    --el-text-color-placeholder: #8D9095;
+    --el-text-color-disabled: #6C6E72;
+
+    --el-border-color: #4C4D4F;
+    --el-border-color-light: #414243;
+    --el-border-color-lighter: #363637;
+    --el-border-color-extra-light: #2B2B2C;
+
+    --el-border-color-dark: #58585B;
+    --el-border-color-darker: #636466;
+    --el-fill-color: #303030;
+    --el-fill-color-light: #262727;
+    --el-fill-color-lighter: #1D1D1D;
+    --el-fill-color-extra-light: #191919;
+    --el-fill-color-dark: #39393A;
+    --el-fill-color-darker: #424243;
+    --el-fill-color-blank: transparent;
+
+    --el-mask-color: rgba(0, 0, 0, 0.8);
+    --el-mask-color-extra-light: rgba(0, 0, 0, 0.3);
+} */

@@ -1,0 +1,84 @@
+/* markdown样式 */
+.markdown {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+
+  margin-top: 10px;
+  width: 100%;
+
+  /* 超出省略号（多行） */
+  display: inline-block;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  -webkit-box-orient: inline-axis;
+
+  >* {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  h1 {
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #aaa;
+  }
+
+
+  h2 {
+    margin: 0px;
+    border-bottom: 1px solid #aaa;
+  }
+
+  ul {
+    padding-left: 20px;
+  }
+
+  h3,
+  h4 {
+    margin-top: 0px;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  // th第一行，td下面的
+  table {
+    font-size: 14px;
+    overflow: auto;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 3px 5px;
+      border: 1px solid rgb(138, 138, 138);
+    }
+  }
+
+  pre {
+    // width: 500px;
+    width: 100%;
+
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: var(--model-back-color);
+    overflow: auto;
+
+    * {
+      font-family: Consolas, Monaco, Profont;
+    }
+  }
+
+  *:not(pre)>code {
+    border-radius: 5px;
+    padding: 0px 5px;
+    background-color: rgba(100, 100, 100, 0.2);
+    // color: yellow;
+    font-family: Consolas, Monaco, Profont;
+    color: rgb(255, 128, 49);
+  }
+
+  strong {
+    color: rgb(196, 0, 0);
+  }
+}
