@@ -1,5 +1,7 @@
 import type { Directive } from 'vue'
 
+export * from './constant'
+
 /**
  * 超出省略号，传入行数，默认一行，0就啥都不干
  * @param el

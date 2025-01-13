@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import '~/assets/css/light.scss'
-import OneSentence from '~/components/Lans/OneSentence.vue'
+import OneSentence from '~/components/aside/OneSentence.vue'
+import NoteAside from '~/components/aside/NoteAside.vue'
 // 判断是否在dev环境
 const dev: boolean = import.meta.dev
 
@@ -86,7 +87,7 @@ onBeforeUnmount(() => clearInterval(timer))
         </div>
         <aside class="left">
           <!-- <UserLan /> -->
-          <!-- <NoteLan /> -->
+          <NoteAside />
         </aside>
         <aside class="right">
           <!-- 目录栏 -->
@@ -276,15 +277,12 @@ onBeforeUnmount(() => clearInterval(timer))
       transition: width 0.3s;
 
       .middle {
-        border: 1px solid red;
         width: 0;
         order: 2;
         flex: 1;
       }
 
       .left {
-        border: 1px solid red;
-
         order: 1;
         width: var(--lan-width);
 
@@ -296,8 +294,6 @@ onBeforeUnmount(() => clearInterval(timer))
       }
 
       .right {
-        border: 1px solid red;
-
         order: 3;
         width: var(--lan-width);
       }
