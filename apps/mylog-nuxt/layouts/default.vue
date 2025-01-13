@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import '~/assets/css/light.scss'
+import OneSentence from '~/components/Lans/OneSentence.vue'
 // 判断是否在dev环境
 const dev: boolean = import.meta.dev
 
