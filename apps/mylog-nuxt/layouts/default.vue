@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import '~/assets/css/light.scss'
 import OneSentence from '~/components/aside/OneSentence.vue'
 import NoteAside from '~/components/aside/NoteAside.vue'
+import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'
 // 判断是否在dev环境
 const dev: boolean = import.meta.dev
 
@@ -72,7 +73,7 @@ onBeforeUnmount(() => clearInterval(timer))
             </el-button> -->
             <!-- @click="$router.push('login')" -->
             <el-button text type="primary" to="/relation">去登录</el-button>
-            <!-- <ThemeSwitch /> -->
+            <ThemeSwitch />
           </div>
         </div>
       </div>

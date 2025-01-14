@@ -35,8 +35,8 @@ const loginTest = () => { // todo
       </div>
       <div>
         朋友们帮我点个免费的Star吧，感谢：
-        <a href="https://gitee.com/bit-01/mylog2" target="_black">
-          gitee.com/bit-01/mylog2
+        <a href="https://gitee.com/bit-01/mylog-full" target="_black">
+          gitee.com/bit-01/mylog-full
         </a>
       </div>
       <div>

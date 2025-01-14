@@ -13,9 +13,9 @@ const showBeg = ref(false)
       <el-button text @click="showBeg = true">联系&资助</el-button>
       <el-button text @click="$router.push('/about')">关于本站</el-button>
       <el-button text @click="$router.push('/user?name=Sybit')">更新公告</el-button>
-      <a href="https://gitee.com/bit-01/mylog2" target="_black">
+      <a href="https://gitee.com/bit-01/mylog-full" target="_black">
         <img
-          :src="`https://gitee.com/bit-01/mylog2/badge/star.svg?theme=${
+          :src="`https://gitee.com/bit-01/mylog-full/badge/star.svg?theme=${
             Global?.isDark ? 'dark' : 'white'
           }`"
           alt="star"
@@ -52,6 +52,7 @@ const showBeg = ref(false)
     gap: 8px;
     > * {
       margin: 0;
+      color: unset;
     }
   }
 

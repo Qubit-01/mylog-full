@@ -1,21 +1,23 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import HomeTopLog from '~/components/log/HomeTopLog.vue'
+</script>
 <template>
+  <!-- v-infinite-scroll="home.addLogs!"
+  :infinite-scroll-disabled="home.loading" -->
   <div class="home-page">
-    <div v-for="i in 100">主页内容</div>
-    <!-- <AfadsfsVfasdf>fasdfa</AfadsfsVfasdf>
-    <AppAlert> This is an auto-imported component 主页 </AppAlert> -->
+    <HomeTopLog />
+
+    <!-- <Log v-for="log in home.list" :key="log.id" :log="log" /> -->
+
+    <!-- <LogLoading v-if="home.loading" /> -->
   </div>
+  <!-- <AfadsfsVfasdf>fasdfa</AfadsfsVfasdf>
+    <AppAlert> This is an auto-imported component 主页 </AppAlert> -->
 </template>
 <style lang="scss" scoped>
-.tree {
-  width: 300px;
-  height: 400px;
-  border: 1px solid red;
-
-  position: relative;
-  overflow: hidden;
-
-  background-image: radial-gradient(circle, #afa, #0a0 80%);
-
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
 }
 </style>
