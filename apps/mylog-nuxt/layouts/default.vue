@@ -214,7 +214,7 @@ onBeforeUnmount(() => clearInterval(timer))
           cursor: pointer;
 
           &:hover {
-            background: #aaa5;
+            background: #fff8;
           }
 
           img {
