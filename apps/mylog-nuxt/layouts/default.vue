@@ -5,8 +5,6 @@ import OneSentence from '~/components/aside/OneSentence.vue'
 import NoteAside from '~/components/aside/NoteAside.vue'
 import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'
 
-console.info('🐤layouts/default.vue')
-
 // 判断是否在dev环境
 const dev: boolean = import.meta.dev
 
@@ -17,7 +15,7 @@ let timer: NodeJS.Timeout
 
 onMounted(() => {
   // 用户注册时间
-  const userCreatetime = dayjs('2021-11-21T22:25:20.000Z').valueOf() // dayjs(User.createtime).valueOf()
+  const userCreatetime = dayjs('2021-11-21T22:25:20.000Z').valueOf() // todo dayjs(User.createtime).valueOf()
   const startTime = dayjs('2021-11-21T22:25:20.000Z').valueOf() // 建站时间
   const pageTime = dayjs().valueOf()
 
