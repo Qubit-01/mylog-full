@@ -1,17 +1,11 @@
 <script setup lang="ts">
-const hitokoto = ref("")
-const getHitoketo = async () => {
-  const res = await fetch("https://v2.jinrishici.com/one.json")
-  const data = await res.json()
-  hitokoto.value = data.data.content
-}
-onMounted(getHitoketo)
+const { data, refresh } = useFetch<any>('https://v2.jinrishici.com/one.json')
 </script>
 
 <template>
-  <div class="one-sentence _m" @click="getHitoketo()">
+  <div class="one-sentence _m" @click="refresh()">
     <div class="title">一言</div>
-    <div class="items">{{ hitokoto }}</div>
+    <div class="items">{{ data.data?.content }}</div>
   </div>
 </template>
 
