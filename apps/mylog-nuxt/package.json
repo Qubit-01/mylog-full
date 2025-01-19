@@ -14,6 +14,7 @@
     "@element-plus/nuxt": "1.1.1",
     "@mylog-full/mix": "workspace:^",
     "@pinia/nuxt": "0.9.0",
+    "@vueuse/nuxt": "12.4.0",
     "dayjs": "^1.11.13",
     "element-plus": "^2.8.8",
     "nuxt": "^3.14.1592",

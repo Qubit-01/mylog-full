@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import HomeTopLog from '~/components/log/HomeTopLog.vue'
+
+console.info('🐤pages/index.vue')
 </script>
 <template>
   <!-- v-infinite-scroll="home.addLogs!"

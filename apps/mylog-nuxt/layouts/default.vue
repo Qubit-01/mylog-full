@@ -4,6 +4,9 @@ import '~/assets/css/light.scss'
 import OneSentence from '~/components/aside/OneSentence.vue'
 import NoteAside from '~/components/aside/NoteAside.vue'
 import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'
+
+console.info('🐤layouts/default.vue')
+
 // 判断是否在dev环境
 const dev: boolean = import.meta.dev
 
