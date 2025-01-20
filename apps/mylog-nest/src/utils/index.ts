@@ -1,6 +1,7 @@
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import dayjs from 'dayjs';
 import type { log as LogPO } from '@prisma/client';
 import { LogVO } from '@mylog-full/mix/types';
-import dayjs from 'dayjs';
 
 /**
  * 数据库转VO对象，主要后端用
@@ -29,3 +30,14 @@ export function toLogVO4PO(log: LogPO): LogVO {
   };
   return logVO;
 }
+
+/**
+ * 获取请求的cookie的装饰器
+ * @see https://docs.nestjs.com/techniques/cookies#creating-a-custom-decorator-cross-platform
+ */
+export const Cookies = createParamDecorator(
+  (data: string, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return data ? request.cookies?.[data] : request.cookies;
+  },
+);

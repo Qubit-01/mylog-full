@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import cookieParser from 'cookie-parser';
 import * as fs from 'fs';
 
 async function bootstrap() {
@@ -11,6 +12,7 @@ async function bootstrap() {
     },
     cors: { origin: ['https://mylog.cool', 'https://www.mylog.cool'] },
   });
+  app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.listen(process.env.PORT ?? 3000);
 }
