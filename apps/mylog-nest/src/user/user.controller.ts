@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { getUseridByPswd } from '@prisma/client/sql';
 import { PrismaClient } from '@prisma/client';
 import { sign, verify } from 'src/utils/jwt';
+import { Cookies } from 'src/utils';
 
 @Controller('user')
 export class UserController {
@@ -32,7 +33,10 @@ export class UserController {
    * @returns 用户信息
    */
   @Post('get_user')
-  getUser(@Body() body: { id: number } | { name: string } | { token: string }) {
+  getUser(
+    @Cookies('token') token: string,
+    @Body() body: { id: number } | { name: string },
+  ) {
     if ('id' in body) {
       return this.prisma.user.findUnique({
         where: { userid: Number(body.id) },
@@ -41,7 +45,7 @@ export class UserController {
       return this.prisma.user.findUnique({ where: { name: body.name } });
     } else if ('token' in body) {
       return this.prisma.user.findUnique({
-        where: { userid: verify(body.token) },
+        where: { userid: verify(token) },
       });
     }
   }
@@ -53,17 +57,13 @@ export class UserController {
    */
   @Post('set_user')
   async setUser(
+    @Cookies('token') token: string,
     @Body()
     body: {
-      token: string;
-      data: {
-        img?: string;
-        info?: string;
-        setting?: string;
-      };
+      data: { img?: string; info?: string; setting?: string };
     },
   ) {
-    const userid = verify(body.token);
+    const userid = verify(token);
     await this.prisma.user.update({
       where: { userid },
       data: body.data,
@@ -78,9 +78,10 @@ export class UserController {
    */
   @Post('set_userlogin')
   async setUserLogin(
-    @Body() body: { token: string; unionidQq?: string; unionidWeixin?: string },
+    @Cookies('token') token: string,
+    @Body() body: { unionidQq?: string; unionidWeixin?: string },
   ) {
-    const userid = verify(body.token);
+    const userid = verify(token);
     await this.prisma.userlogin.update({
       where: { id: userid },
       data: {

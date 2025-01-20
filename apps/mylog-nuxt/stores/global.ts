@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import { type UserVO as User } from '@mylog-full/mix/types'
+import { useDark, useToggle } from '@vueuse/core'
 // import { getUser as getUserApi } from '@/api/user'
 // import type { User } from '@/types'
 // import useUserStore, { setToken } from './user'
@@ -18,6 +19,8 @@ interface Global {
 }
 
 export const useGlobalStore = defineStore('global', () => {
+  // const { data } = useFetch('localhost:3000/user/get_user')
+  // console.log('🐤', data)
   // user的数据得做默认值，因为数据库里面的数据是不全的
   // 设置默认值后，从获取的数据中覆盖
   const user = reactive<User>({
@@ -42,27 +45,31 @@ export const useGlobalStore = defineStore('global', () => {
     createtime: dayjs().valueOf(),
   })
 
-  // 主题相关 ===============================
-
-  /** 是否是暗黑模式 */
-  const isDark = computed<boolean>({
-    get: () => user.setting.page.theme === 'dark',
-    set: v => (user.setting.page.theme = v ? 'dark' : 'light'),
-  })
-
-  // 主题切换
-  // const html = document.getElementsByTagName("html")[0];
-  // watchEffect(() => {
-  //   localStorage.setItem("theme", user.setting.page.theme!);
-  //   html.className = user.setting.page.theme!;
-  // });
+  // 主题切换，数据驱动，外面只用改数据
+  const isDark = useDark()
+    /** 是否是暗黑模式 */
+    // const isDark = computed<boolean>({
+    //   get: () => user.setting.page.theme === 'dark',
+    //   set: v => (user.setting.page.theme = v ? 'dark' : 'light'),
+    // })
+  watch(
+    () => user.setting.page.theme,
+    () => {
+      console.log('🐤', isDark.value)
+      if (!import.meta.server) {
+        localStorage.setItem('theme', user.setting.page.theme)
+        // document.getElementsByTagName('html')[0].className =
+        //   user.setting.page.theme
+      }
+    },
+    { immediate: true }
+  )
 
   const isLogined = computed(() => user.id !== 0)
 
   return {
     user,
     isLogined,
-    isDark,
   }
 })
 
