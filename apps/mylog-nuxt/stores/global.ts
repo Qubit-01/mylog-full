@@ -18,9 +18,16 @@ interface Global {
   //   isDark: boolean
 }
 
-export const useGlobalStore = defineStore('global', () => {
-  // const { data } = useFetch('localhost:3000/user/get_user')
-  // console.log('🐤', data)
+export const useGlobalStore = defineStore('global', async () => {
+  const headers = useRequestHeaders(['cookie'])
+  const { data, refresh } =  await useFetch('https://mylog.cool:3000/user/get_user', {
+    method: 'POST',
+    headers: headers,
+  })
+  // if (import.meta.client) {
+  //   window.lsq = refresh
+  // }
+  // console.log('🐤123', data)
   // user的数据得做默认值，因为数据库里面的数据是不全的
   // 设置默认值后，从获取的数据中覆盖
   const user = reactive<User>({
@@ -47,11 +54,11 @@ export const useGlobalStore = defineStore('global', () => {
 
   // 主题切换，数据驱动，外面只用改数据
   const isDark = useDark()
-    /** 是否是暗黑模式 */
-    // const isDark = computed<boolean>({
-    //   get: () => user.setting.page.theme === 'dark',
-    //   set: v => (user.setting.page.theme = v ? 'dark' : 'light'),
-    // })
+  /** 是否是暗黑模式 */
+  // const isDark = computed<boolean>({
+  //   get: () => user.setting.page.theme === 'dark',
+  //   set: v => (user.setting.page.theme = v ? 'dark' : 'light'),
+  // })
   watch(
     () => user.setting.page.theme,
     () => {
@@ -68,6 +75,7 @@ export const useGlobalStore = defineStore('global', () => {
   const isLogined = computed(() => user.id !== 0)
 
   return {
+    data,
     user,
     isLogined,
   }

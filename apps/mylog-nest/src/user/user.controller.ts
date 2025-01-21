@@ -21,7 +21,13 @@ export class UserController {
   async getToken(
     @Body() body: { unionidQq: string } | { name: string; pswd: string },
   ) {
-    const userid = await this.getUserid(body);
+    console.log('🐤token: ', body);
+    let userid: number | undefined;
+    if ('unionidQq' in body) {
+      userid = await this.getUseridByUnionidQq(body.unionidQq);
+    } else if ('name' in body) {
+      userid = await this.getUseridByPswd(body.name, body.pswd);
+    }
     return userid ? sign(userid) : undefined;
   }
 
@@ -37,13 +43,14 @@ export class UserController {
     @Cookies('token') token: string,
     @Body() body: { id: number } | { name: string },
   ) {
+    console.log('🐤get_user', token, body);
     if ('id' in body) {
       return this.prisma.user.findUnique({
         where: { userid: Number(body.id) },
       });
     } else if ('name' in body) {
       return this.prisma.user.findUnique({ where: { name: body.name } });
-    } else if ('token' in body) {
+    } else if (token) {
       return this.prisma.user.findUnique({
         where: { userid: verify(token) },
       });
@@ -92,25 +99,28 @@ export class UserController {
   }
 
   /**
-   * 通过login表获取userid，这个先不暴露，需要复用的话再提取service
-   * @param body unionidQq > name+pswd
-   * @returns 用户id，没有返回undefined
+   * 获取用户id
+   * @param body 用户名&密码
+   * @returns 用户id
    */
-  async getUserid(
-    body: { unionidQq: string } | { name: string; pswd: string },
-  ) {
-    if ('unionidQq' in body) {
-      return (
-        await this.prisma.userlogin.findUnique({
-          select: { id: true },
-          where: { unionid_qq: body.unionidQq },
-        })
-      )?.id;
-    } else if ('name' in body) {
-      const user = (
-        await this.prisma.$queryRawTyped(getUseridByPswd(body.name, body.pswd))
-      )[0];
-      return user ? Number(user.id) : undefined;
-    }
+  async getUseridByPswd(name: string, pswd: string) {
+    const user = (
+      await this.prisma.$queryRawTyped(getUseridByPswd(name, pswd))
+    )[0];
+    return user ? Number(user.id) : undefined;
+  }
+
+  /**
+   * 获取用户id
+   * @param unionidQq QQ的unionid
+   * @returns 用户id
+   */
+  async getUseridByUnionidQq(unionidQq: string) {
+    return (
+      await this.prisma.userlogin.findUnique({
+        select: { id: true },
+        where: { unionid_qq: unionidQq },
+      })
+    )?.id;
   }
 }
