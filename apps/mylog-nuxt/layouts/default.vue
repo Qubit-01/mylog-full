@@ -7,19 +7,21 @@ import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'
 
 // 判断是否在dev环境
 const dev: boolean = import.meta.dev
+const { user, isLogined } = useGlobalStore()
+
+const replace = (to: string) => navigateTo(to, { replace: true })
 
 const webRuntime = ref([0, 0, 0, 0])
 const serverTime = ref([0, 0, 0, 0])
 const pageRuntime = ref([0, 0, 0, 0])
-let timer: NodeJS.Timeout
 
 onMounted(() => {
   // 用户注册时间
-  const userCreatetime = dayjs('2021-11-21T22:25:20.000Z').valueOf() // todo dayjs(User.createtime).valueOf()
+  const userCreatetime = dayjs(user.createtime).valueOf()
   const startTime = dayjs('2021-11-21T22:25:20.000Z').valueOf() // 建站时间
   const pageTime = dayjs().valueOf()
 
-  timer = setInterval(() => {
+  const timer = setInterval(() => {
     let time = dayjs().valueOf()
     // 建站运行时间
     let lenth = Math.floor((time - startTime) / 1000)
@@ -46,34 +48,33 @@ onMounted(() => {
     lenth %= 60
     serverTime.value = [d, h, m, lenth]
   }, 1000)
-})
 
-onBeforeUnmount(() => clearInterval(timer))
+  onBeforeUnmount(() => clearInterval(timer))
+})
 </script>
 <template>
   <div class="default-layout">
     <header>
       <div class="center">
         <div class="left">
-          <div class="logo" @click="$router.push('/')">
+          <div class="logo" @click="replace('/')">
             <img src="/favicon.png" />
             多元记
             <div class="env" v-if="dev">DEV</div>
           </div>
         </div>
         <nav>
-          <el-button text to="/mylog">记录</el-button>
-          <el-button text to="/album">相册</el-button>
-          <el-button text to="/map">地图</el-button>
-          <el-button text to="/relation">人脉</el-button>
+          <el-button text @click="replace('/mylog')">记录</el-button>
+          <el-button text @click="replace('/album')">相册</el-button>
+          <el-button text @click="replace('/map')">地图</el-button>
+          <el-button text @click="replace('/relation')">人脉</el-button>
         </nav>
         <div class="right">
           <div class="mix">
-            <!-- <el-button v-if="User.isLogined" class="user" to="/logger">
-              {{ User.name }}
-            </el-button> -->
-            <!-- @click="$router.push('login')" -->
-            <el-button text type="primary" to="/relation">去登录</el-button>
+            <el-button v-if="isLogined" text @click="replace('/logger')">
+              {{ user.name }}
+            </el-button>
+            <el-button v-else text type="primary" to="/login">去登录</el-button>
             <ThemeSwitch />
           </div>
         </div>
@@ -196,7 +197,7 @@ onBeforeUnmount(() => clearInterval(timer))
         height: var(--header-height);
         min-width: 330px; // 按钮宽58*5 + 间隔10*4 = 330 预计只有5个按钮
 
-        > * {
+        > .el-button {
           margin: 0;
           color: inherit;
         }
@@ -253,11 +254,9 @@ onBeforeUnmount(() => clearInterval(timer))
           height: var(--header-height);
           width: var(--lan-width);
 
-          // .theme-switch {
-          //   --el-switch-on-color: #2c2c2c;
-          //   --el-switch-off-color: #f2f2f255;
-          //   --color: #333;
-          // }
+          > .el-button {
+            color: var(--el-color-primary);
+          }
         }
       }
     }
