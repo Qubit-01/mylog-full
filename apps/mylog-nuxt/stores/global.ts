@@ -55,5 +55,10 @@ export const useGlobalStore = defineStore('global', () => {
   }
 })
 
-/** 这个是可以通过结构使用的store */
+/**
+ * 这个是可以通过结构使用的store
+ * 但是拿不到 store 中定义的方法
+ *
+ * 如果只是在模板中使用，使用这个API直接解构会更简洁，不用每次都写.value，也不用每次都 Store 名打头
+ */
 export const refsGlobalStore = () => storeToRefs(useGlobalStore())
