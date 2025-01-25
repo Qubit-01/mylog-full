@@ -24,6 +24,13 @@ const userInit: User = {
   createtime: dayjs().valueOf(),
 }
 
+/**
+ * 全局数据store
+ *
+ * user 用户数据，
+ * 1. 由于服务端数据是不对齐的，要覆盖initUser
+ * 2. 必须等服务器获取到用户数据
+ */
 export const useGlobalStore = defineStore('global', () => {
   const { data } = useFetch<User>('https://mylog.cool:3000/user/get_user', {
     method: 'POST',

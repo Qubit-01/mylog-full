@@ -43,7 +43,7 @@ export class UserController {
     @Cookies('token') token: string,
     @Body() body: { id: number } | { name: string },
   ) {
-    console.log('🐤get_user', token, body);
+    console.log('🐤get_user: ', token, body);
     if ('id' in body) {
       return this.prisma.user.findUnique({
         where: { userid: Number(body.id) },
