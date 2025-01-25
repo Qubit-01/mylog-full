@@ -20,4 +20,9 @@ export default defineNuxtConfig({
   },
   modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt'],
   elementPlus: {},
+  runtimeConfig: {
+    public: {
+      baseURL: 'https://mylog.cool:3000',
+    },
+  },
 })

@@ -49,5 +49,3 @@ export const useGlobalStore = defineStore('global', () => {
     isLogined,
   }
 })
-
-export default useGlobalStore
