@@ -143,6 +143,9 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
+      dplayer:
+        specifier: ^1.27.1
+        version: 1.27.1
       element-plus:
         specifier: ^2.9.3
         version: 2.9.3(@vue/composition-api@1.7.2(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3))
@@ -161,6 +164,10 @@ importers:
       vue-router:
         specifier: latest
         version: 4.5.0(vue@3.5.13(typescript@5.7.3))
+    devDependencies:
+      '@types/dplayer':
+        specifier: ^1.25.5
+        version: 1.25.5
 
   apps/mylog-trpc-prisma:
     dependencies:
@@ -204,6 +211,9 @@ importers:
       '@prisma/client':
         specifier: ^5.22.0
         version: 5.22.0(prisma@6.2.1)
+      cos-js-sdk-v5:
+        specifier: ^1.8.7
+        version: 1.8.7
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -3220,6 +3230,9 @@ packages:
   '@types/cors@2.8.17':
     resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
 
+  '@types/dplayer@1.25.5':
+    resolution: {integrity: sha512-p/7O94dHDo0Irn2KWIqFE+fBCA4DS7QL3jfCOjCUPBAOgppyyTjmNZjKEfiJa1M3n1oVQqG7xnPwhiIuCqOzkQ==}
+
   '@types/emscripten@1.39.13':
     resolution: {integrity: sha512-cFq+fO/isvhvmuP/+Sl4K4jtU6E23DoivtbO4r50e3odaxAiVdbfSYRDdJ4gCdxx+3aRjhphS5ZMwIH4hFy/Cw==}
 
@@ -3950,6 +3963,9 @@ packages:
     resolution: {integrity: sha512-NZKeq9AfyQvEeNlN0zSYAaWrmBffJh3IELMZfRpJVWgrpEbtEpnjvzqBPf+mxoI287JohRDoa+/nsfqqiZmF6g==}
     engines: {node: '>= 6.0.0'}
 
+  axios@1.2.3:
+    resolution: {integrity: sha512-pdDkMYJeuXLZ6Xj/Q5J3Phpe+jbGdsSzlQaFVkMQzRUL05+6+tetX8TV3p4HrU4kzuO9bt+io/yGQxuyxA/xcw==}
+
   axios@1.7.9:
     resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
 
@@ -4036,6 +4052,9 @@ packages:
 
   balanced-match@2.0.0:
     resolution: {integrity: sha512-1ugUSr8BHXRnK23KfuYS+gVMC3LB8QGH9W1iGtDPsNWoQbgtXSExkBu2aDR4epiGWZOjZsj6lDl/N/AqqTC3UA==}
+
+  balloon-css@1.2.0:
+    resolution: {integrity: sha512-urXwkHgwp6GsXVF+it01485Z2Cj4pnW02ICnM0TemOlkKmCNnDLmyy+ZZiRXBpwldUXO+aRNr7Hdia4CBvXJ5A==}
 
   bare-events@2.5.4:
     resolution: {integrity: sha512-+gFfDkR8pj4/TrWCGUGWmJIkBwuxPS5F+a5yWjOHQt2hHvNZd5YLzadjmDUtFmMM4y429bnKLa8bYBMHcYdnQA==}
@@ -4576,6 +4595,9 @@ packages:
     resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
     engines: {node: '>= 0.10'}
 
+  cos-js-sdk-v5@1.8.7:
+    resolution: {integrity: sha512-KK3PYbUiLxcjvVhyvEeBQRWzDgAmuldDZQL1lTRM0aeQaI+hlm84xQQQyv+oIRxPnnAIleZF2vUgB4sJFUzcxQ==}
+
   cosmiconfig@5.2.1:
     resolution: {integrity: sha512-H65gsXo1SKjf8zmrJ67eJk8aIRKV5ff2D4uKZIBZShbhGSpEmsQOPW/SKMKYhSTrqR7ufy6RP69rPogdaPh/kA==}
     engines: {node: '>=4'}
@@ -4948,6 +4970,9 @@ packages:
   dotenv@16.4.7:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
+
+  dplayer@1.27.1:
+    resolution: {integrity: sha512-2laBMXs5V1B9zPwJ7eAIw/OBo+Xjvy03i4GHTk3Cg+IWbrq8rKMFO0fFr6ClAYotYOCcFGOvaJDkOZcgKllsCA==}
 
   drizzle-orm@0.38.4:
     resolution: {integrity: sha512-s7/5BpLKO+WJRHspvpqTydxFob8i1vo2rEx4pY6TGY7QSMuUfWUuzaY0DIpXCkgHOo37BaFC+SJQb99dDUXT3Q==}
@@ -5446,6 +5471,10 @@ packages:
 
   fast-xml-parser@4.4.1:
     resolution: {integrity: sha512-xkjOecfnKGkSsOwtZ5Pz7Us/T6mrbPQrq0nh+aCO5V9nk5NLWmasAHumTKjiPJPWANe+kAZ84Jc8ooJkzZ88Sw==}
+    hasBin: true
+
+  fast-xml-parser@4.5.0:
+    resolution: {integrity: sha512-/PlTQCI96+fZMAOLMZK4CWG1ItCbfZ/0jx7UIJFChPNrx7tcEgerUgWbeieCM9MfHInUDyK8DWYZ+YrywDJuTg==}
     hasBin: true
 
   fast-xml-parser@4.5.1:
@@ -8152,6 +8181,9 @@ packages:
 
   promise-limit@2.7.0:
     resolution: {integrity: sha512-7nJ6v5lnJsXwGprnGXga4wx6d1POjvi5Qmf1ivTRxTjH4Z/9Czja/UCMLVmB9N93GeWOU93XaFaEt6jbuoagNw==}
+
+  promise-polyfill@8.3.0:
+    resolution: {integrity: sha512-H5oELycFml5yto/atYqmjyigJoAo3+OXwolYiH7OfQuYlAqhxNvTfiNMbV9hsC6Yp83yE5r2KTVmtrG6R9i6Pg==}
 
   promise-retry@2.0.1:
     resolution: {integrity: sha512-y+WKFlBR8BGXnsNlIHFGPZmyDf3DFMoLhaflAnyZgV6rG6xu+JwesTo2Q9R6XwYmtmwAFCkAk3e35jEdoeh/3g==}
@@ -14412,6 +14444,8 @@ snapshots:
       '@types/node': 22.10.7
     optional: true
 
+  '@types/dplayer@1.25.5': {}
+
   '@types/emscripten@1.39.13':
     optional: true
 
@@ -15450,6 +15484,14 @@ snapshots:
   aws-ssl-profiles@1.1.2:
     optional: true
 
+  axios@1.2.3:
+    dependencies:
+      follow-redirects: 1.15.9
+      form-data: 4.0.1
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axios@1.7.9:
     dependencies:
       follow-redirects: 1.15.9
@@ -15604,6 +15646,8 @@ snapshots:
 
   balanced-match@2.0.0:
     optional: true
+
+  balloon-css@1.2.0: {}
 
   bare-events@2.5.4:
     optional: true
@@ -16260,6 +16304,10 @@ snapshots:
       object-assign: 4.1.1
       vary: 1.1.2
 
+  cos-js-sdk-v5@1.8.7:
+    dependencies:
+      fast-xml-parser: 4.5.0
+
   cosmiconfig@5.2.1:
     dependencies:
       import-fresh: 2.0.0
@@ -16631,6 +16679,14 @@ snapshots:
     optional: true
 
   dotenv@16.4.7: {}
+
+  dplayer@1.27.1:
+    dependencies:
+      axios: 1.2.3
+      balloon-css: 1.2.0
+      promise-polyfill: 8.3.0
+    transitivePeerDependencies:
+      - debug
 
   drizzle-orm@0.38.4(lsqsvd3o2av3h4rddhrpeijxyi):
     optionalDependencies:
@@ -17273,6 +17329,10 @@ snapshots:
       strnum: 1.0.5
     optional: true
 
+  fast-xml-parser@4.5.0:
+    dependencies:
+      strnum: 1.0.5
+
   fast-xml-parser@4.5.1:
     dependencies:
       strnum: 1.0.5
@@ -17437,8 +17497,7 @@ snapshots:
   flow-parser@0.259.1:
     optional: true
 
-  follow-redirects@1.15.9:
-    optional: true
+  follow-redirects@1.15.9: {}
 
   fontfaceobserver@2.3.0:
     optional: true
@@ -20773,6 +20832,8 @@ snapshots:
   promise-limit@2.7.0:
     optional: true
 
+  promise-polyfill@8.3.0: {}
+
   promise-retry@2.0.1:
     dependencies:
       err-code: 2.0.3
@@ -20824,8 +20885,7 @@ snapshots:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
 
-  proxy-from-env@1.1.0:
-    optional: true
+  proxy-from-env@1.1.0: {}
 
   prr@1.0.1:
     optional: true
@@ -21874,8 +21934,7 @@ snapshots:
     dependencies:
       js-tokens: 9.0.1
 
-  strnum@1.0.5:
-    optional: true
+  strnum@1.0.5: {}
 
   strtok3@9.1.1:
     dependencies:

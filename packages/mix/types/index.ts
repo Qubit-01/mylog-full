@@ -112,71 +112,71 @@ export type LogFilter = {
 };
 
 
-//   /** 用户可以设置的项 */
-//   export type LogItem =
-//     | 'content'
-//     | 'info'
-//     | 'logtime'
-//     | 'tags'
-//     | 'imgs'
-//     | 'videos'
-//     | 'audios'
-//     | 'files'
-//     | 'location'
-//     | 'people'
+  /** 用户可以设置的项 */
+  export type LogItem =
+    | 'content'
+    | 'info'
+    | 'logtime'
+    | 'tags'
+    | 'imgs'
+    | 'videos'
+    | 'audios'
+    | 'files'
+    | 'location'
+    | 'people'
 
 
 
-//   /**
-//    * log中代表文件的项，需要和COS交互的属性
-//    * 方便一些方法循环
-//    */
-//   export type LogFileItem = 'imgs' | 'videos' | 'audios' | 'files'
+  /**
+   * log中代表文件的项，需要和COS交互的属性
+   * 方便一些方法循环
+   */
+  export type LogFileItem = 'imgs' | 'videos' | 'audios' | 'files'
 
-//   type LogFileTypes = {
-//     imgs: LogImgFile[]
-//     videos: KeyFile[]
-//     audios: KeyFile[]
-//     files: KeyFile[]
-//   }
+  // type LogFileTypes = {
+  //   imgs: LogImgFile[]
+  //   videos: KeyFile[]
+  //   audios: KeyFile[]
+  //   files: KeyFile[]
+  // }
 
-//   /**
-//    * log上传前的文件类型要求（最后都是COS文件）
-//    */
-//   export type LogFiles = {
-//     [K in LogFileItem]: LogFileTypes[K]
-//   }
+  /**
+   * log上传前的文件类型要求（最后都是COS文件）
+   */
+  export type LogFiles = {
+    [K in LogFileItem]: LogFileTypes[K]
+  }
 
-//   /**
-//    * 编辑中的log类型，只能填入log属性
-//    */
-//   export type LogEdit = Partial<Log>
+  /**
+   * 编辑中的log类型，只能填入log属性
+   */
+  export type LogEdit = Partial<Log>
 
-//   /**
-//    * 编辑中的log类型，只能填入log属性
-//    */
-//   export type RelationEdit = Partial<Relation>
+  /**
+   * 编辑中的log类型，只能填入log属性
+   */
+  // export type RelationEdit = Partial<Relation>
 
-//   /**
-//    * 普通文件，加入上传要用的key，
-//    * key为：文件名，上传时间-序号-文件名，
-//    * 避免上传到COS时，文件名重复覆盖
-//    */
-//   export interface KeyFile extends UploadFile {
-//     key?: string
-//   }
+  /**
+   * 普通文件，加入上传要用的key，
+   * key为：文件名，上传时间-序号-文件名，
+   * 避免上传到COS时，文件名重复覆盖
+   */
+  // export interface KeyFile extends UploadFile {
+  //   key?: string
+  // }
 
-//   /**
-//    * 图片文件：原图，压缩图，95压缩图
-//    */
-//   export interface LogImgFile extends KeyFile {
-//     raw?: ExifUploadRawFile
-//     compressImg?: ExifImgFile // 压缩文件
-//     compressImg95?: ExifImgFile // 95压缩文件
-//   }
+  /**
+   * 图片文件：原图，压缩图，95压缩图
+   */
+  // export interface LogImgFile extends KeyFile {
+  //   raw?: ExifUploadRawFile
+  //   compressImg?: ExifImgFile // 压缩文件
+  //   compressImg95?: ExifImgFile // 95压缩文件
+  // }
 
-//   /**
-//    * 结合 El的UploadRawFile 和 ExifImgFile，
-//    * 就是有EXIF信息的El Raw文件
-//    */
-//   export interface ExifUploadRawFile extends UploadRawFile, ExifImgFile {}
+  /**
+   * 结合 El的UploadRawFile 和 ExifImgFile，
+   * 就是有EXIF信息的El Raw文件
+   */
+  // export interface ExifUploadRawFile extends UploadRawFile, ExifImgFile {}
