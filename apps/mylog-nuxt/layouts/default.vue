@@ -6,7 +6,7 @@ import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'
 
 // 判断是否在dev环境
 const dev: boolean = import.meta.dev
-const { user, isLogined } = useGlobalStore()
+const { user, isLogined } = refsGlobalStore()
 
 const replace = (to: string) => navigateTo(to, { replace: true })
 
@@ -16,7 +16,7 @@ const pageRuntime = ref([0, 0, 0, 0])
 
 onMounted(() => {
   // 用户注册时间
-  const userCreatetime = dayjs(user.createtime).valueOf()
+  const userCreatetime = dayjs(user.value.createtime).valueOf()
   const startTime = dayjs('2021-11-21T22:25:20.000Z').valueOf() // 建站时间
   const pageTime = dayjs().valueOf()
 

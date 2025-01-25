@@ -10,7 +10,13 @@ async function bootstrap() {
       key: fs.readFileSync('./cert/mylog.cool.key'),
       cert: fs.readFileSync('./cert/mylog.cool.crt'),
     },
-    cors: { origin: ['https://mylog.cool', 'https://www.mylog.cool'] },
+    cors: {
+      origin: [
+        'https://mylog.cool',
+        'https://www.mylog.cool',
+        'http://localhost:3000',
+      ],
+    },
   });
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));

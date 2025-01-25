@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-const { user } = useGlobalStore()
-
+const { user } = refsGlobalStore()
 </script>
 
 <template>
@@ -13,5 +12,6 @@ const { user } = useGlobalStore()
 </template>
 
 <style lang="scss" scoped>
-.logger-page {}
+.logger-page {
+}
 </style>

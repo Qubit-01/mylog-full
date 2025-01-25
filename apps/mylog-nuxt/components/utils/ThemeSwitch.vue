@@ -3,7 +3,7 @@
  -->
 <script setup lang="ts">
 import { Sunny, Moon } from '@element-plus/icons-vue'
-const { user } = useGlobalStore()
+const { user } = refsGlobalStore()
 </script>
 
 <template>

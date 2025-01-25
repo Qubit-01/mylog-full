@@ -21,10 +21,10 @@ const userInit: User = {
     },
   },
   createtime: dayjs().valueOf(),
-}
+} as const
 
 /**
- * 全局数据store
+ * 全局数据store，这个不能解构
  *
  * user 用户数据，
  * 1. 由于服务端数据是不对齐的，要覆盖initUser
@@ -38,6 +38,7 @@ export const useGlobalStore = defineStore('global', () => {
 
   const user = computed<User>(() => ({ ...userInit, ...data.value }))
   const isLogined = computed(() => user.value.id !== 0)
+
   // 主题切换
   const link = computed(() => {
     const theme = user.value.setting.page.theme
@@ -53,3 +54,6 @@ export const useGlobalStore = defineStore('global', () => {
     isLogined,
   }
 })
+
+/** 这个是可以通过结构使用的store */
+export const refsGlobalStore = () => storeToRefs(useGlobalStore())

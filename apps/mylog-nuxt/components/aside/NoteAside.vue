@@ -1,9 +1,7 @@
 <!-- 公告栏 -->
 <script setup lang="ts">
 import Popup from '~/components/utils/Popup.vue'
-
-// import useGlobalStore from '@/stores/global'
-const Global = undefined // useGlobalStore() // todo
+const { user } = refsGlobalStore()
 const showBeg = ref(false)
 </script>
 <template>
@@ -16,7 +14,7 @@ const showBeg = ref(false)
       <a href="https://gitee.com/bit-01/mylog-full" target="_black">
         <img
           :src="`https://gitee.com/bit-01/mylog-full/badge/star.svg?theme=${
-            Global?.isDark ? 'dark' : 'white'
+            user.setting.page.theme === 'dark' ? 'dark' : 'white'
           }`"
           alt="star"
         />
