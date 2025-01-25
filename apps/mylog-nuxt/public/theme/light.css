@@ -1,0 +1,63 @@
+/* 日间 */
+:root {
+  /* 背景颜色 */
+  --body-back-color: var(--el-bg-color);
+
+  /* 文字颜色 */
+  --font-color: var(--el-color-black);
+  /* 小文本的颜色 */
+  --mini-text-color: #333;
+
+  /* 模块颜色 */
+  --model-back-color: rgba(255, 255, 255, 0.4);
+  --model-back-color-hover: rgba(255, 255, 255, 0.5);
+  /* 模块边框颜色 */
+  --model-border-color: var(--el-border-color);
+  /* 模块边框 */
+  --model-border: 1px solid var(--model-border-color);
+  /* 阴影 */
+  --model-shadow: 1px 1px 10px -4px black;
+  --model-shadow-hover: 1px 1px 10px -7px black;
+
+  /* 按钮颜色 */
+  --btn-color: #93b0e3;
+  /* 按钮悬停颜色，要选用hoverBottom类 */
+  --hoverBottom-color: rgba(200, 200, 200, 0.4);
+
+  /* 左栏标签数字底色 */
+  --class-span-color: #e0e0e0;
+
+  /* 滚动条滚动槽 */
+  --scrollbar-color: transparent;
+  /* 滚动条滑块 */
+  --scrollbar-thumb-color: #7d7d7d;
+
+  /* 改ElementUI里面的属性 */
+  --el-fill-color-blank: var(--model-back-color) !important;
+
+  /* 二级字体颜色 */
+  --color-2: #111a;
+
+  /* -m 模块 */
+  /* --m-background-color: #eee5; */
+  --m-background-color: hsla(0, 0%, 100%, 0.4);
+  --m-border: 1px solid #fff5;
+  --m-shadow: var(--el-box-shadow-lighter);
+  --m-hover-shadow: var(--el-box-shadow-light);
+
+  /* 滚动槽颜色 */
+  --scrollbar-background: #9995;
+  /* 滚动滑块颜色 */
+  --scrollbar-thumb-background: #999a;
+
+  /* 修改element一些的样式 */
+  /* 大部分组件背景色 */
+  --el-fill-color-blank: #fff5;
+  /* 加载遮罩层颜色 */
+  --el-mask-color: rgba(255, 255, 255, 0.5);
+}
+
+body {
+  background-color: #ccc;
+  background-image: url(https://cos.mylog.cool/web-files/img/bg-light.jpg);
+}

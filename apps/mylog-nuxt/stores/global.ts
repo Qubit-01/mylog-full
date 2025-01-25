@@ -24,8 +24,6 @@ const userInit: User = {
   createtime: dayjs().valueOf(),
 }
 
-
-
 export const useGlobalStore = defineStore('global', () => {
   const { data } = useFetch<User>('https://mylog.cool:3000/user/get_user', {
     method: 'POST',
@@ -34,17 +32,15 @@ export const useGlobalStore = defineStore('global', () => {
 
   const user = computed<User>(() => ({ ...userInit, ...data.value }))
   const isLogined = computed(() => user.value.id !== 0)
-
-
-
-  // 主题切换，数据驱动，外面只用改数据
-  // const isDark = useDark()
-  /** 是否是暗黑模式 */
-  // const isDark = computed<boolean>({
-  //   get: () => user.setting.page.theme === 'dark',
-  //   set: v => (user.setting.page.theme = v ? 'dark' : 'light'),
-  // })
-
+  // 主题切换
+  const link = computed(() => {
+    const theme = user.value.setting.page.theme
+    if (import.meta.client) document.documentElement.className = theme
+    return [
+      { rel: 'stylesheet', href: `https://mylog.cool/theme/${theme}.css` },
+    ]
+  })
+  useHead({ link })
 
   return {
     /** 用户全数据 */

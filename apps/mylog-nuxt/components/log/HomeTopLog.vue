@@ -12,16 +12,16 @@ const loginTest = () => { // todo
   <div class="top-log _m">
     <el-carousel height="270px" class="carousel">
       <el-carousel-item>
-        <img :src="BucketCDN + 'web-files/carousel-0.jpg'" />
+        <img :src="BucketCDN + 'web-files/img/carousel-0.jpg'" />
       </el-carousel-item>
       <el-carousel-item>
-        <img :src="BucketCDN + 'web-files/carousel-1.jpg'" />
+        <img :src="BucketCDN + 'web-files/img/carousel-1.jpg'" />
       </el-carousel-item>
       <el-carousel-item>
-        <img :src="BucketCDN + 'web-files/carousel-2.jpg'" />
+        <img :src="BucketCDN + 'web-files/img/carousel-2.jpg'" />
       </el-carousel-item>
       <el-carousel-item>
-        <img :src="BucketCDN + 'web-files/bg-light.jpg'" />
+        <img :src="BucketCDN + 'web-files/img/bg-light.jpg'" />
       </el-carousel-item>
       <div class="title">✨多元记2.0 全新亮相 ~</div>
     </el-carousel>

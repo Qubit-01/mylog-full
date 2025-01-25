@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
-import '~/assets/css/light.scss'
 import OneSentence from '~/components/aside/OneSentence.vue'
 import NoteAside from '~/components/aside/NoteAside.vue'
 import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'

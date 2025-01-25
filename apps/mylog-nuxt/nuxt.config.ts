@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  css: ['~/assets/css/base.scss'],
+  css: ['~/assets/css/base.scss', 'element-plus/theme-chalk/dark/css-vars.css'],
   vite: {
     css: {
       preprocessorOptions: {

@@ -3,27 +3,24 @@
  -->
 <script setup lang="ts">
 import { Sunny, Moon } from '@element-plus/icons-vue'
-const Global = useGlobalStore()
-
-/** 是否是暗黑模式 */
-const isDark = computed<boolean>({
-  get: () => Global.user.setting.page.theme === 'dark',
-  set: v => (Global.user.setting.page.theme = v ? 'dark' : 'light'),
-})
+const { user } = useGlobalStore()
 </script>
 
 <template>
-  <ElSwitch
-    v-model="isDark"
+  <el-switch
+    v-model="user.setting.page.theme"
     class="theme-switch"
     :active-action-icon="Moon"
     :inactive-action-icon="Sunny"
+    active-value="dark"
+    inactive-value="light"
   />
 </template>
 
 <style scoped lang="scss">
 .theme-switch {
-  --el-switch-on-color: #2b2f3d;
-  --el-switch-off-color: #69929c;
+  --el-switch-on-color: #2c2c2c;
+  --el-switch-off-color: #f2f2f255;
+  --color: #333;
 }
 </style>
