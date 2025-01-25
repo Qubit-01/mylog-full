@@ -5,21 +5,15 @@ const Home = useHomeStore()
 </script>
 
 <template>
-  <!-- 
-     -->
   <div
     class="home-page"
     v-infinite-scroll="Home.addLogs"
-    :infinite-scroll-disabled="Home.status !== 'success'"
+    :infinite-scroll-disabled="Home.status === 'pending'"
   >
     <HomeTopLog />
     <div @click="Home.addLogs">123</div>
 
-    <div v-for="log in Home.logs" :key="log.id" class="_m">
-      {{ log.id }}
-    </div>
-
-    <!-- <Log v-for="log in home.list" :key="log.id" :log="log" /> -->
+    <Log v-for="log in Home.logs" :key="log.id" :log="log" />
 
     <!-- <LogLoading v-if="home.loading" /> -->
   </div>

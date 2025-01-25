@@ -3,32 +3,21 @@ import type { LogVO as Log } from '@mylog-full/mix/types'
 export const useHomeStore = defineStore('home', () => {
   const logs = reactive<Log[]>([])
   const params = reactive({ skip: 0, limit: 5 })
-  const { data, status } = useFetch<Log[]>(
+  const { status } = useFetch<Log[]>(
     'https://mylog.cool:20914/log/get_publics',
     {
       method: 'POST',
       body: params,
+      onResponse({ response }) {
+        logs.push(...(response._data ?? []))
+      },
     },
   )
 
-  /**
-   * 这里是一个触发器，用于请求下一页数据
-   */
+  /** 这里是一个触发器，用于请求下一页数据 */
   const addLogs = () => {
     params.skip += params.limit
   }
-
-  watch(
-    status,
-    (value) => {
-      if (value === 'success') {
-        logs.push(...(data.value ?? []))
-      }
-    },
-    { immediate: true },
-  )
-
-  //   const logs = reactive([])
 
   return {
     /** 主页所有的log */
