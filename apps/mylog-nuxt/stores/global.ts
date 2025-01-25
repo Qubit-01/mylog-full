@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import { type UserVO as User } from '@mylog-full/mix/types'
-// import { useDark, useToggle } from '@vueuse/core'
 
 const userInit: User = {
   id: 0,
@@ -32,7 +31,7 @@ const userInit: User = {
  * 2. 必须等服务器获取到用户数据
  */
 export const useGlobalStore = defineStore('global', () => {
-  const { data } = useFetch<User>('https://mylog.cool:3000/user/get_user', {
+  const { data } = useFetch<User>('https://mylog.cool:20914/user/get_user', {
     method: 'POST',
     headers: useRequestHeaders(['cookie']),
   })
@@ -43,9 +42,7 @@ export const useGlobalStore = defineStore('global', () => {
   const link = computed(() => {
     const theme = user.value.setting.page.theme
     if (import.meta.client) document.documentElement.className = theme
-    return [
-      { rel: 'stylesheet', href: `https://mylog.cool/theme/${theme}.css` },
-    ]
+    return [{ rel: 'stylesheet', href: `/theme/${theme}.css` }]
   })
   useHead({ link })
 
