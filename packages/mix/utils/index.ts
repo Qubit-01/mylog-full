@@ -25,6 +25,25 @@ export const vEllipsis: Directive = (el, { value = 1 }) => {
 }
 
 /**
+ * 重试加载图片指令
+ * 参数是一个数组，第一个是重试次数，第二个是重试间隔，默认是3次，间隔3秒
+ * 用于阿里云刚刚才存储图片，这边就开始访问
+ */
+export const vErrorRetry: Directive = {
+  created(
+    imgDom: HTMLImageElement,
+    { value = [3, 3000] }: { value: [number, number] },
+  ) {
+    let errortime = 0
+    imgDom.onerror = () => {
+      if (errortime < value![0])
+        setTimeout(() => (imgDom.src = imgDom.src), value![1])
+      errortime++
+    }
+  },
+}
+
+/**
  * 通过图片地址，给img设置不同的属性
  * QQ图片需要设置referrerPolicy
  * @param value 图片地址
@@ -46,7 +65,7 @@ export const vImgSrc: Directive = (el, { value }) => {
  */
 export const vDblclick: Directive = (el: HTMLDivElement, { value }) => {
   // 去除双击选中文本
-  el.addEventListener('mousedown', e => {
+  el.addEventListener('mousedown', (e) => {
     // detail 是短时间连击次数
     if (e.detail > 1) e.preventDefault()
   })
@@ -63,7 +82,7 @@ export const vDblclick: Directive = (el: HTMLDivElement, { value }) => {
  */
 export function deepMerge(
   target: { [attrName: string]: any },
-  source: { [attrName: string]: any }
+  source: { [attrName: string]: any },
 ) {
   for (const key in source) {
     if (source[key] instanceof Object) {
@@ -149,8 +168,8 @@ export function Encode64(str: string) {
       function toSolidBytes(match, p1) {
         // @ts-ignore
         return String.fromCharCode('0x' + p1)
-      }
-    )
+      },
+    ),
   )
 }
 
@@ -167,7 +186,7 @@ export function Decode64(str: string) {
       .map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
       })
-      .join('')
+      .join(''),
   )
 }
 
@@ -207,7 +226,7 @@ export const saveAs = (blob: Blob, filename: string) => {
  */
 export const downloadFile = (url: string, filename?: string) => {
   if (!filename) filename = url.substring(url.lastIndexOf('/') + 1)
-  getBlob(url).then(blob => {
+  getBlob(url).then((blob) => {
     saveAs(blob, filename!)
   })
 }

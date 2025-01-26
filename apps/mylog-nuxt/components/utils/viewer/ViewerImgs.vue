@@ -5,98 +5,76 @@
   主要用到 viewerjs， 相关文档：
   https://blog.csdn.net/xingmeiok/article/details/127556464
  -->
-<script lang="ts" setup >
+<script lang="tsx" setup>
 import type { LogVO as Log } from '@mylog-full/mix/types'
 import Viewer from 'viewerjs'
-import 'viewerjs/dist/viewer.css'
-import { toFileUrl } from '@/utils/cos'
-import { vImgSrc } from '@/utils/directives'
+// import 'viewerjs/dist/viewer.css'
+import { toFileUrl, vImgSrc, vErrorRetry } from '@mylog-full/mix/utils'
 
+/** imgs是图片列表 */
+const props = defineProps<{ imgs?: string[] }>()
 // 从父组件拿到log，主要是获取userId
 const log: Log = inject('log')!
-
-/**
- * imgs是图片列表
- */
-const props = defineProps<{ imgs?: string[] }>()
-// 计算从哪里取属性
-const imgs = computed(() => props.imgs || log.imgs)
-
-// 传入的图片要处理，如果不是http开头，那么就加上OOS地址，否则直接用，而且要改为https
+// props.imgs > log.imgs
+const imgs = computed(() => props.imgs ?? log.imgs)
+// 传入的图片转为正常的url
 const imgUrls = ref<string[]>(
-  toFileUrl(imgs.value, 'compress-imgs/', log.userid)
+  toFileUrl(imgs.value, 'compress-imgs/', log.userid!.toString()),
 )
 
-const viewer = ref<Viewer>() // viewerjs对象
-const viewerDom = ref<HTMLElement>() // 用于装载用ref属性获取的Dom
-const rawBtuDom = ref<HTMLElement>() // 查看原图按钮的DOM
+let viewer: Viewer | null = null // viewerjs对象
+const viewerDom = useTemplateRef('viewerDom') // 用于装载用ref属性获取的Dom
+// const rawBtuDom = useTemplateRef('rawBtuDom') // 查看原图按钮的DOM
 
 onMounted(() => {
+  if (!viewerDom.value) return
   // 3句话，让viewer为我打工
-  viewer.value = new Viewer(viewerDom.value!, {
+  {
     // button: false, //右上角关闭按钮
     // title: false, // 图片标题
-    shown() {
-      // 大图展示时，加入查看原图按钮
-      ;(viewer.value as any).toolbar
-        .querySelector('ul')
-        .appendChild(rawBtuDom.value)
-    },
-  })
+    // shown() {
+    //   // 大图展示时，加入查看原图按钮
+    //   viewer.value!.toolbar.querySelector('ul').appendChild(rawBtuDom.value)
+    // },
+  }
+  viewer = new Viewer(viewerDom.value)
+  console.log('🐔', viewer)
 })
 
 watch(imgs, () => {
-  imgUrls.value = toFileUrl(imgs.value, 'compress-imgs/', log.userid)
-  nextTick(() => viewer.value!.update())
+  imgUrls.value = toFileUrl(
+    imgs.value,
+    'compress-imgs/',
+    log.userid!.toString(),
+  )
+  nextTick(() => viewer?.update())
 })
 
 // 点击加载原图
 const loadRaw = () => {
-  const i = (viewer.value as any).index
-  const newImg = toFileUrl(imgs.value[i], 'imgs/', log.userid)
+  const i = (viewer as any).index
+  const newImg = toFileUrl(imgs.value[i], 'imgs/', log.userid!.toString())
   if (imgUrls.value[i] !== newImg) {
     imgUrls.value[i] = newImg
-    nextTick(() => viewer.value!.update()) // .view(i)
+    nextTick(() => viewer!.update()) // .view(i)
   }
 }
-
-/**
- * 重试加载图片指令
- * 参数是一个数组，第一个是重试次数，第二个是重试间隔，默认是3次，间隔3秒
- * 用于阿里云刚刚才存储图片，这边就开始访问
- */
-const vErrorRetry = {
-  created(
-    imgDom: HTMLImageElement,
-    { value = [3, 3000] }: { value: [number, number] }
-  ) {
-    let errortime = 0
-    imgDom.onerror = () => {
-      if (errortime < value![0])
-        setTimeout(() => (imgDom.src = imgDom.src), value![1])
-      errortime++
-    }
-  },
-}
-
-defineExpose({ vErrorRetry })
 </script>
 
 <template>
   <div class="viewer-imgs" ref="viewerDom" @click.stop>
     <template v-for="img in imgUrls" :key="img">
-      <!-- QQ图片要单独去除 referrer -->
       <img v-img-src="img" v-error-retry />
     </template>
   </div>
 
   <!-- 要插入viewer中的查看原图按钮 -->
-  <template v-show="false">
+  <!-- <template v-show="false">
     <li ref="rawBtuDom" class="viewer-raw" @click="loadRaw">查看原图</li>
-  </template>
+  </template> -->
 </template>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 .viewer-imgs {
   white-space: nowrap;
   overflow-y: hidden;
@@ -124,26 +102,26 @@ defineExpose({ vErrorRetry })
   line-height: 24px;
 }
 
-:global(body) {
-  /* viewer的按钮设置: 由于viwer是直接生成新dom到根下，只能写在这里 */
-  > .viewer-container > .viewer-footer {
-    /* 工具栏 */
-    .viewer-toolbar {
-      // 放大
-      .viewer-zoom-in,
-      // 缩小
-      .viewer-zoom-out,
-      // 中间幻灯片播放
-      .viewer-play,
-      // 逆时针旋转
-      .viewer-rotate-left,
-      // 水平旋转
-      .viewer-flip-horizontal,
-      // 垂直旋转
-      .viewer-flip-vertical {
-        display: none;
-      }
-    }
-  }
-}
+// :global(body) {
+//   /* viewer的按钮设置: 由于viwer是直接生成新dom到根下，只能写在这里 */
+//   > .viewer-container > .viewer-footer {
+//     /* 工具栏 */
+//     .viewer-toolbar {
+//       // 放大
+//       .viewer-zoom-in,
+//       // 缩小
+//       .viewer-zoom-out,
+//       // 中间幻灯片播放
+//       .viewer-play,
+//       // 逆时针旋转
+//       .viewer-rotate-left,
+//       // 水平旋转
+//       .viewer-flip-horizontal,
+//       // 垂直旋转
+//       .viewer-flip-vertical {
+//         display: none;
+//       }
+//     }
+//   }
+// }
 </style>

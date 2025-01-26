@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { LogVO as Log } from '@mylog-full/mix/types'
-// import ViewerImgs from '~/components/utils/viewer/ViewerImgs.vue'
-import ViewerVideos from '~/components/utils/viewer/ViewerVideos.vue'
+import ViewerImgs from '~/components/utils/viewer/ViewerImgs.vue'
+// import ViewerVideos from '~/components/utils/viewer/ViewerVideos.vue'
 
 const log = inject<Log>('log')!
 const isExpand = inject<boolean>('isExpand')!
@@ -10,8 +10,8 @@ const isExpand = inject<boolean>('isExpand')!
 <template>
   <!-- 图片和视频放在一起 -->
   <div class="block-media">
-    <!-- <ViewerImgs v-if="log.imgs.length" /> -->
-    <ViewerVideos v-if="log.videos.length" />
+    <ViewerImgs v-if="log.imgs.length" />
+    <!-- <ViewerVideos v-if="log.videos.length" /> -->
   </div>
 
   <!-- 音频 和 文件 -->
