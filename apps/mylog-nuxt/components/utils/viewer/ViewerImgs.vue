@@ -8,7 +8,7 @@
 <script lang="tsx" setup>
 import type { LogVO as Log } from '@mylog-full/mix/types'
 import Viewer from 'viewerjs'
-// import 'viewerjs/dist/viewer.css'
+import 'viewerjs/dist/viewer.css'
 import { toFileUrl, vImgSrc, vErrorRetry } from '@mylog-full/mix/utils'
 
 /** imgs是图片列表 */
@@ -24,21 +24,20 @@ const imgUrls = ref<string[]>(
 
 let viewer: Viewer | null = null // viewerjs对象
 const viewerDom = useTemplateRef('viewerDom') // 用于装载用ref属性获取的Dom
-// const rawBtuDom = useTemplateRef('rawBtuDom') // 查看原图按钮的DOM
+const rawBtuDom = useTemplateRef('rawBtuDom') // 查看原图按钮的DOM
 
 onMounted(() => {
   if (!viewerDom.value) return
   // 3句话，让viewer为我打工
-  {
+  viewer = new Viewer(viewerDom.value, {
     // button: false, //右上角关闭按钮
     // title: false, // 图片标题
-    // shown() {
-    //   // 大图展示时，加入查看原图按钮
-    //   viewer.value!.toolbar.querySelector('ul').appendChild(rawBtuDom.value)
-    // },
-  }
-  viewer = new Viewer(viewerDom.value)
-  console.log('🐔', viewer)
+    shown() {
+      // todo 只有cos图才能查看原图
+      // 大图展示时，加入查看原图按钮，toolbar 只有在shown时才有
+      ;(viewer as any)!.toolbar.querySelector('ul').appendChild(rawBtuDom.value)
+    },
+  })
 })
 
 watch(imgs, () => {
@@ -63,15 +62,10 @@ const loadRaw = () => {
 
 <template>
   <div class="viewer-imgs" ref="viewerDom" @click.stop>
-    <template v-for="img in imgUrls" :key="img">
-      <img v-img-src="img" v-error-retry />
-    </template>
-  </div>
-
-  <!-- 要插入viewer中的查看原图按钮 -->
-  <!-- <template v-show="false">
+    <img v-for="img in imgUrls" :key="img" v-img-src="img" v-error-retry />
+    <!-- 要插入viewer中的查看原图按钮，不会再页面中展示 -->
     <li ref="rawBtuDom" class="viewer-raw" @click="loadRaw">查看原图</li>
-  </template> -->
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -84,12 +78,16 @@ const loadRaw = () => {
   display: flex;
   gap: var(--block-gap);
 
-  img {
+  > img {
     flex-shrink: 0;
     object-fit: cover;
     height: var(--block-height);
     width: var(--block-height);
     border-radius: var(--block-border-radius);
+  }
+
+  > .viewer-raw {
+    display: none;
   }
 }
 
@@ -101,27 +99,29 @@ const loadRaw = () => {
   width: 80px;
   line-height: 24px;
 }
+</style>
 
-// :global(body) {
-//   /* viewer的按钮设置: 由于viwer是直接生成新dom到根下，只能写在这里 */
-//   > .viewer-container > .viewer-footer {
-//     /* 工具栏 */
-//     .viewer-toolbar {
-//       // 放大
-//       .viewer-zoom-in,
-//       // 缩小
-//       .viewer-zoom-out,
-//       // 中间幻灯片播放
-//       .viewer-play,
-//       // 逆时针旋转
-//       .viewer-rotate-left,
-//       // 水平旋转
-//       .viewer-flip-horizontal,
-//       // 垂直旋转
-//       .viewer-flip-vertical {
-//         display: none;
-//       }
-//     }
-//   }
-// }
+<style lang="scss">
+body {
+  /* viewer的按钮设置: 由于viwer是直接生成新dom到根下，只能写在这里 */
+  > .viewer-container > .viewer-footer {
+    /* 工具栏 */
+    .viewer-toolbar {
+      // 放大
+      .viewer-zoom-in,
+      // 缩小
+      .viewer-zoom-out,
+      // 中间幻灯片播放
+      .viewer-play,
+      // 逆时针旋转
+      .viewer-rotate-left,
+      // 水平旋转
+      .viewer-flip-horizontal,
+      // 垂直旋转
+      .viewer-flip-vertical {
+        display: none;
+      }
+    }
+  }
+}
 </style>

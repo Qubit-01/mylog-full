@@ -5,10 +5,7 @@ import UserAside from '~/components/aside/UserAside.vue'
 import NoteAside from '~/components/aside/NoteAside.vue'
 import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'
 
-// 判断是否在dev环境
-const dev: boolean = import.meta.dev
 const { user, isLogined } = refsGlobalStore()
-
 const replace = (to: string) => navigateTo(to, { replace: true })
 
 const webRuntime = ref([0, 0, 0, 0])
@@ -60,7 +57,9 @@ onMounted(() => {
           <div class="logo" @click="replace('/')">
             <img src="/favicon.png" />
             多元记
-            <div class="env" v-if="dev">DEV</div>
+            <DevOnly>
+              <div class="env">DEV</div>
+            </DevOnly>
           </div>
         </div>
         <nav>

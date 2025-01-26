@@ -6,6 +6,5 @@ useGlobalStore()
   <NuxtLayout>
     <NuxtPage />
     <!-- <NuxtWelcome /> -->
-    <!-- <NuxtRouteAnnouncer /> -->
   </NuxtLayout>
 </template>

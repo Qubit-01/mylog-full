@@ -112,7 +112,7 @@ export const getKey = (filename: string) =>
  * @param userid 要插入其中的用户id，如果不传用当前用户id
  * @returns 返回链接字符串
  */
-export const cosPath = (userid: string) => `users/${userid}/mylog/`
+export const cosPath = (userid: number) => `users/${userid}/mylog/`
 
 /**
  * 处理文件地址
@@ -125,7 +125,7 @@ export const cosPath = (userid: string) => `users/${userid}/mylog/`
 export const toFileUrl = <T extends string | string[]>(
   file: T,
   prefix: string = '',
-  userid: string,
+  userid: number,
 ): T => {
   if (Array.isArray(file)) {
     return file.map((f) => toFileUrl(f, prefix, userid)) as T
