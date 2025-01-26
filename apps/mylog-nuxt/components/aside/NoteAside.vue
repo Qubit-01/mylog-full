@@ -1,5 +1,5 @@
 <!-- 公告栏 -->
-<script setup lang="ts">
+<script lang="ts" setup>
 import Popup from '~/components/utils/Popup.vue'
 const { user } = refsGlobalStore()
 const showBeg = ref(false)
@@ -29,7 +29,7 @@ const showBeg = ref(false)
   </Popup>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .note-lan {
   border-radius: var(--border-radius);
   padding: var(--border-radius);

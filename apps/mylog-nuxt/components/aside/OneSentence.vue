@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 const { data, refresh } = useFetch<any>('https://v2.jinrishici.com/one.json')
 </script>
 
@@ -9,7 +9,7 @@ const { data, refresh } = useFetch<any>('https://v2.jinrishici.com/one.json')
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .one-sentence {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,4 @@
-<script setup lang="ts"></script>
+<script lang="ts" setup></script>
 
 <template>
   <div class="beg-page">
@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .beg-page {
   position: relative;
   background: linear-gradient(#000046, #1cb5e0);

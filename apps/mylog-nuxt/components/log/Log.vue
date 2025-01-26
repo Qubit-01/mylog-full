@@ -7,7 +7,7 @@
   2. 视频记录首帧, 展示在图片后面是最好的方式, 但工作量大
       现在采用更多来下拉展示
  -->
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { LogVO as Log } from '@mylog-full/mix/types'
 import { Star, Share } from '@element-plus/icons-vue'
 import LogContent from './comp/LogContent.vue'
@@ -47,7 +47,7 @@ const expand = () => (isExpand.value = !isExpand.value)
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .log {
   border-radius: var(--border-radius);
   padding: var(--padding);

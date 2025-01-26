@@ -1,7 +1,7 @@
 <!-- 
   主题切换组件，直接引入就能用
  -->
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Sunny, Moon } from '@element-plus/icons-vue'
 const { user } = refsGlobalStore()
 </script>
@@ -17,7 +17,7 @@ const { user } = refsGlobalStore()
   />
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .theme-switch {
   --el-switch-on-color: #2c2c2c;
   --el-switch-off-color: #f2f2f255;

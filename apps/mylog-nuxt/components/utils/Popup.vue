@@ -2,7 +2,7 @@
   自己用v-if或v-show控制显示
   close事件是点击背景遮罩的事件
  -->
-<script setup lang="ts">
+<script lang="ts" setup>
 const emit = defineEmits(['close'])
 </script>
 
@@ -16,7 +16,7 @@ const emit = defineEmits(['close'])
   </teleport>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .mask {
   position: fixed;
   z-index: 1000;

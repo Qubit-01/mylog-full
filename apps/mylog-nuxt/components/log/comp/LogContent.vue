@@ -1,7 +1,7 @@
 <!-- 
   抽取Log的内容
  -->
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { LogVO as Log } from '@mylog-full/mix/types'
 import { vEllipsis } from '@mylog-full/mix/utils'
 
@@ -20,7 +20,7 @@ const isExpand = inject<Ref<boolean>>('isExpand')!
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .log-content {
   display: flex;
   flex-wrap: wrap;

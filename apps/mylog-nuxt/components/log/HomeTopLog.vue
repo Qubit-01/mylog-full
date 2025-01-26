@@ -1,5 +1,5 @@
 <!-- 主页的置顶模块 -->
-<script setup lang="ts">
+<script lang="ts" setup>
 import { BucketCDN } from '@mylog-full/mix/utils'
 // import { loginTest } from '@/stores/user'
 
@@ -47,7 +47,7 @@ const loginTest = () => { // todo
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .top-log {
   overflow: hidden;
   border-radius: var(--border-radius);

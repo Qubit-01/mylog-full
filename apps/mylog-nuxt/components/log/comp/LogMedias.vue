@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { LogVO as Log } from '@mylog-full/mix/types'
 // import ViewerImgs from '~/components/utils/viewer/ViewerImgs.vue'
 import ViewerVideos from '~/components/utils/viewer/ViewerVideos.vue'
@@ -21,7 +21,7 @@ const isExpand = inject<boolean>('isExpand')!
   </template> -->
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .block-media {
   --block-height: 6rem;
   --block-border-radius: 6px;

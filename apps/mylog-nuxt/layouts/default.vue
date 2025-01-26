@@ -1,6 +1,7 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import dayjs from 'dayjs'
 import OneSentence from '~/components/aside/OneSentence.vue'
+import UserAside from '~/components/aside/UserAside.vue'
 import NoteAside from '~/components/aside/NoteAside.vue'
 import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'
 
@@ -88,7 +89,7 @@ onMounted(() => {
           <slot />
         </div>
         <aside class="left">
-          <!-- <UserLan /> -->
+          <UserAside />
           <NoteAside />
         </aside>
         <aside class="right">

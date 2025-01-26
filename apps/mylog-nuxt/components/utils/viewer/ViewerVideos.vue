@@ -7,7 +7,7 @@
   详细API文档：https://cloud.tencent.com/document/product/436/104530
   
  -->
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { LogVO as Log } from '@mylog-full/mix/types'
 import { toFileUrl } from '@mylog-full/mix/utils'
 // import VideoDplayer from '~/components/utils/viewer/VideoDplayer.vue'
@@ -62,7 +62,7 @@ const videoSrc = ref('')
   </TeleportBody>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .viewer-videos {
   white-space: nowrap;
   overflow-y: hidden;

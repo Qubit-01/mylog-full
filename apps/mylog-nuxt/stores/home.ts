@@ -2,7 +2,9 @@ import type { LogVO as Log } from '@mylog-full/mix/types'
 
 export const useHomeStore = defineStore('home', () => {
   const logs = reactive<Log[]>([])
-  const params = reactive({ skip: 0, limit: 5 })
+  const params = reactive({ skip: 0, limit: 10 })
+
+  // 每次触发请求，都会自动 push 在 logs 最后
   const { status } = useFetch<Log[]>(
     'https://mylog.cool:20914/log/get_publics',
     {
