@@ -1,11 +1,6 @@
 <!-- 主页的置顶模块 -->
 <script lang="ts" setup>
 import { BucketCDN } from '@mylog-full/mix/utils'
-// import { loginTest } from '@/stores/user'
-
-const loginTest = () => { // todo
-  alert('请先注册账号，然后登录')
-}
 </script>
 
 <template>
@@ -41,7 +36,8 @@ const loginTest = () => { // todo
       </div>
       <div>
         如果你想快速体验本网站功能，可以点击
-        <a href="" @click="loginTest">登录测试账号</a>
+        <!-- todo 登录测试账号 signinTest -->
+        <a href="" @click="">登录测试账号</a>
       </div>
     </div>
   </div>

@@ -56,6 +56,19 @@ export const useGlobalStore = defineStore('global', () => {
 })
 
 /**
+ * 退出登录方法
+ * 退出登录，删除 token、pageSetting
+ * @param to 跳转的页面， 不传跳主页，传空串刷新当前页，传路径跳指定
+ */
+export const signout = (to: string = '/') => {
+  const token = useCookie('token')
+  token.value = null
+  // QC.Login.signOut()
+  if (to !== '') location.href = '/' + to
+  else location.reload()
+}
+
+/**
  * 这个是可以通过结构使用的store
  * 但是拿不到 store 中定义的方法
  *

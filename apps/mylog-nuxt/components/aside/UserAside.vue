@@ -24,7 +24,7 @@ const { user, isLogined } = refsGlobalStore()
       </div>
     </template>
     <div class="items" v-else>
-      <ElButton type="primary" @click="navigateTo('/login')">登录</ElButton>
+      <ElButton type="primary" @click="navigateTo('/signin')">登录</ElButton>
     </div>
   </div>
 </template>

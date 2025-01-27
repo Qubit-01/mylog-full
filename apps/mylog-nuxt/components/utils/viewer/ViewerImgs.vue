@@ -19,7 +19,7 @@ const log: Log = inject('log')!
 const imgs = computed(() => props.imgs ?? log.imgs)
 // 传入的图片转为正常的url
 const imgUrls = ref<string[]>(
-  toFileUrl(imgs.value, 'compress-imgs/', log.userid!.toString()),
+  toFileUrl(imgs.value, 'compress-imgs/', log.userid!),
 )
 
 let viewer: Viewer | null = null // viewerjs对象
@@ -44,7 +44,7 @@ watch(imgs, () => {
   imgUrls.value = toFileUrl(
     imgs.value,
     'compress-imgs/',
-    log.userid!.toString(),
+    log.userid!,
   )
   nextTick(() => viewer?.update())
 })
@@ -52,7 +52,7 @@ watch(imgs, () => {
 // 点击加载原图
 const loadRaw = () => {
   const i = (viewer as any).index
-  const newImg = toFileUrl(imgs.value[i], 'imgs/', log.userid!.toString())
+  const newImg = toFileUrl(imgs.value[i], 'imgs/', log.userid!)
   if (imgUrls.value[i] !== newImg) {
     imgUrls.value[i] = newImg
     nextTick(() => viewer!.update()) // .view(i)

@@ -5,7 +5,7 @@ const { data, refresh } = useFetch<any>('https://v2.jinrishici.com/one.json')
 <template>
   <div class="one-sentence _m" @click="refresh()">
     <div class="title">一言</div>
-    <div class="items">{{ data.data?.content }}</div>
+    <div class="items">{{ data?.data?.content }}</div>
   </div>
 </template>
 

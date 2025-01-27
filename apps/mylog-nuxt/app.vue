@@ -3,8 +3,10 @@ useGlobalStore()
 </script>
 
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-    <!-- <NuxtWelcome /> -->
-  </NuxtLayout>
+  <div class="app">
+    <NuxtLayout>
+      <NuxtPage />
+      <!-- <NuxtWelcome /> -->
+    </NuxtLayout>
+  </div>
 </template>

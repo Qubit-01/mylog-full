@@ -6,7 +6,6 @@ import NoteAside from '~/components/aside/NoteAside.vue'
 import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'
 
 const { user, isLogined } = refsGlobalStore()
-const replace = (to: string) => navigateTo(to, { replace: true })
 
 const webRuntime = ref([0, 0, 0, 0])
 const serverTime = ref([0, 0, 0, 0])
@@ -70,10 +69,12 @@ onMounted(() => {
         </nav>
         <div class="right">
           <div class="mix">
-            <el-button v-if="isLogined" text @click="replace('/logger')">
+            <el-button v-if="isLogined" text @click="navigateTo('/logger')">
               {{ user.name }}
             </el-button>
-            <el-button v-else text type="primary" to="/login">去登录</el-button>
+            <el-button v-else text type="primary" @click="navigateTo('/signin')">
+              去登录
+            </el-button>
             <ThemeSwitch />
           </div>
         </div>
