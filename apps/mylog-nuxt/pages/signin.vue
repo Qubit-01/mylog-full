@@ -98,9 +98,9 @@ const { isLogined } = refsGlobalStore()
       }
 
       // 这里统一写内部的样式
-      :deep(.signin-comp),
-      :deep(.signup-comp),
-      :deep(.qq-redirect-comp) {
+      :deep(.signin),
+      :deep(.signup),
+      :deep(.qq-redirect) {
         height: 100%;
         display: flex;
         flex-direction: column;

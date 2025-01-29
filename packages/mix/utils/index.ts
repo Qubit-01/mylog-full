@@ -1,7 +1,8 @@
 import type { Directive } from 'vue'
 
-export * from './constant'
-export * from './cos'
+export * from './constant' // 常量
+export * from './cos' // 腾讯云对象存储
+export * from './qq-connect' // QQ互联
 
 /**
  * 超出省略号，传入行数，默认一行，0就啥都不干
