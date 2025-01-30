@@ -20,11 +20,6 @@ const qqLogin = () => {
     redirectURI,
   )}&state=${state}`
 }
-
-const loginTest = async () => {
-  loginData.name = 'sybit'
-  loginData.pswd = '12345qaZ'
-}
 </script>
 
 <template>
@@ -50,11 +45,11 @@ const loginTest = async () => {
     <div class="text-link">
       <span>
         没有账号？
-        <el-button text @click="replace('/login/signin')" type="primary">
+        <el-button link @click="replace('/signin/signup')" type="primary">
           去注册
         </el-button>
         或
-        <el-button text @click="loginTest" type="primary">
+        <el-button link @click="loginTest" type="primary">
           登录测试账号
         </el-button>
       </span>

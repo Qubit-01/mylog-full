@@ -1,6 +1,6 @@
 export const appId = '102099147'
 export const appKey = 'RnwueATZXHm23pNh'
-export const redirectURI = 'https://mylog.cool/login/qq-redirect?q=1' // 可以自己加参数
+export const redirectURI = 'https://mylog.cool/signin/qq-redirect?diyLsq=1' // 可以自己加参数
 
 /**
  * 用户身份的唯一标识。
@@ -146,7 +146,7 @@ interface Response {
   seq: number
 }
 
-const QC = (import.meta.env.SSR ? undefined : window.QC) as QQConnect
+export const QC = (import.meta.env.SSR ? undefined : window.QC) as QQConnect
 
 // https://graph.qq.com/oauth2.0/show?which=Login&display=pc&client_id=100490701&redirect_uri=https%3A%2F%2Fwww.zhihu.com%2Foauth%2Fcallback%2Fqqconn%3Faction%3Dlogin%26from%3D&response_type=code&scope=get_info%2Cget_user_info%2Cget_other_info%2Cadd_t%2Cadd_pic_t%2Cget_fanslist%2Cget_idollist%2Cadd_idol%2Cadd_share
 

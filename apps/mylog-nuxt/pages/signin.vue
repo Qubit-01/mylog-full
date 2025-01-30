@@ -1,6 +1,17 @@
 <script lang="ts" setup>
 import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'
 definePageMeta({ layout: false })
+// QQ登录 重定向后data-callback="true"?
+useHead({
+  script: [
+    {
+      type: 'text/javascript',
+      src: 'https://connect.qq.com/qc_jssdk.js',
+      'data-appid': '102099147',
+      'data-redirecturi': 'https://mylog.cool/login/qq-redirect',
+    },
+  ],
+})
 const { isLogined } = refsGlobalStore()
 </script>
 
