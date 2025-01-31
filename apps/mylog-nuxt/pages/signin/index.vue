@@ -8,9 +8,8 @@ const doLogin = async () => {
     method: 'POST',
     body: loginData,
   })
-
   if (token) loginByToken(token)
-  else console.log('🐔用户名或密码错误')
+  else ElMessage.error('用户名或密码错误')
 }
 
 /** 跳转QQ登录 */

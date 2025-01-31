@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { QC } from '@mylog-full/mix/utils'
+import { ArrowLeftBold } from '@element-plus/icons-vue'
 const state = ref(0) // 0加载 1选择（没找到用户） 2登录 3注册
 // 存储QQ登录的用户信息
 const user = reactive<{ data: any; unionidQq: string }>({
@@ -9,7 +10,7 @@ const user = reactive<{ data: any; unionidQq: string }>({
 
 // 先获取用户基本信息，再用jsonp获取unionid
 onMounted(() => {
-  // @ts-ignore 获取 unionid
+  // @ts-ignore 获取 unionid，会被下面的外部script调用
   window.callback = async (res: any) => {
     user.unionidQq = res.unionid
     // 先看数据库有没有这个openId
@@ -17,8 +18,7 @@ onMounted(() => {
       method: 'POST',
       body: { unionidQq: user.unionidQq },
     })
-    if (token)
-      loginByToken(token) // 有账号就登录
+    if (token) loginByToken(token)
     else state.value = 1 // 没找到用户，选择
   }
 
@@ -38,7 +38,7 @@ onMounted(() => {
 })
 
 // 选择绑定时的输入数据
-const input = reactive({ name: '', pswd: '', captcha: '' })
+const input = reactive({ name: '', pswd: '' })
 // 确认密码独立出来
 const pswd2 = ref('')
 const qqImg = ref(false)
@@ -48,39 +48,44 @@ const bd = async () => {
   // 先登录获取token，再token和openid一起绑定
   const token = await $fetch<string>('https://mylog.cool:20914/user/token', {
     method: 'POST',
-    body: { name: input.name, pswd: input.pswd },
+    body: input,
   })
   if (token) {
-    console.log('🐔', token)
-
-    // 先绑定平台，再更新头像
-    await $fetch<string>('https://mylog.cool:20914/user/set_userlogin', {
-      method: 'POST',
-      body: { token, unionidQq: user.unionidQq },
-    })
-    if (qqImg.value) {
-      await $fetch<string>('https://mylog.cool:20914/user/set_user', {
+    loginByToken(token, async () => {
+      // 先绑定平台，再更新头像
+      await $fetch<string>('https://mylog.cool:20914/user/set_userlogin', {
         method: 'POST',
-        body: { img: user.data.figureurl_qq },
+        body: { unionidQq: user.unionidQq },
       })
-    }
-    loginByToken(token, '/')
+      if (qqImg.value) {
+        await $fetch<string>('https://mylog.cool:20914/user/set_user', {
+          method: 'POST',
+          body: { img: user.data.figureurl_qq },
+        })
+      }
+      return '/'
+    })
   } else {
-    console.log('🐔用户名或密码错误')
+    ElMessage.error('用户名或密码错误')
     return
-    // return ElMessage.error("用户名或密码不正确");
   }
 }
 </script>
 <template>
-  <div class="qq-redirect">
-    <!-- {{ user }} -->
+  <div
+    class="qq-redirect"
+    v-loading="state === 0"
+    element-loading-text="正在联系腾讯..."
+    element-loading-background="transparent"
+  >
     <div class="title">
-      <n-button circle quaternary @click="state = 1" style="margin-right: 12px">
-        <template #icon>
-          <n-icon><ArrowBack /></n-icon>
-        </template>
-      </n-button>
+      <el-button
+        v-show="state > 1"
+        text
+        circle
+        :icon="ArrowLeftBold"
+        @click="state = 1"
+      />
       QQ登录
       <div style="flex: 1"></div>
       <div class="right">
@@ -89,15 +94,11 @@ const bd = async () => {
       </div>
     </div>
 
-    <!-- 
-      v-loading="state === 0"
-      element-loading-background="transparent" -->
-
     <form v-if="state === 1">
       <div class="title2">没有找到对应的用户</div>
-      <div>以前有注册过本网站吗？可以直接进行绑定</div>
-      <n-button @click="state = 2" size="large">绑定已有账号</n-button>
-      <!-- <n-button @click="handleNew" size="large">注册新用户</n-button> -->
+      <div>以前注册过本网站吗？</div>
+      <el-button @click="state = 2" size="large">绑定已有账号</el-button>
+      <!-- <el-button @click="handleNew" size="large">注册新用户</el-button> -->
     </form>
 
     <!-- 绑定已有 -->
@@ -115,14 +116,14 @@ const bd = async () => {
         v-model="input.pswd"
         placeholder="密码"
       />
-      <div><n-switch v-model:value="qqImg" />&nbsp;&nbsp;使用QQ头像</div>
-      <n-button
+      <div><el-switch v-model="qqImg" />&nbsp;&nbsp;使用QQ头像</div>
+      <el-button
         @click="bd"
         size="large"
         :disabled="!input.name.trim() || !input.pswd.trim()"
       >
         绑定并登录
-      </n-button>
+      </el-button>
     </form>
 
     <!-- 注册新用户 -->
@@ -155,7 +156,7 @@ const bd = async () => {
           />
           <img ref="captchaDom" alt="验证码看不清，换一张" @click="changeImg" />
         </div>
-        <n-button
+        <el-button
           class="btn"
           @click="zc"
           size="large"
@@ -164,7 +165,7 @@ const bd = async () => {
           "
         >
           注册并登录
-        </n-button>
+        </el-button>
       </form> -->
   </div>
 </template>

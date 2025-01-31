@@ -2,19 +2,26 @@
  * 通过token登录
  * 不管是什么登录方式，最终都会拿到token，然后调用这个方法
  * @param token 用户token
- * @param to 跳转的位置，不传跳主页，传空串刷新当前页，传路径跳指定
+ * @param to 传入函数，跳转的位置
+ *   - 不传，默认() => '/' 跳转主页
+ *   - () => undefined 刷新当前页
+ *   - () => string 传路径跳指定
  */
-export const loginByToken = (token: string, to: string = '/') => {
-  const tokenCookie = useCookie('token')
+export const loginByToken = async (
+  token: string,
+  to: () => string | void | Promise<string | void> = () => '/',
+) => {
+  const tokenCookie = useCookie('token', {
+    maxAge: 60 * 60 * 24 * 60, // 秒
+    secure: true, // 仅https
+    sameSite: 'strict', // 防止CSRF攻击和用户追踪
+    domain: '.mylog.cool',
+    path: '/',
+  })
   tokenCookie.value = token
-  // Cookies.set("token", token, {
-  //   expires: 60,
-  //   path: "/",
-  //   domain: ".mylog.cool",
-  //   secure: true, // 仅https
-  //   sameSite: "strict", // 防止CSRF攻击和用户追踪
-  // });
-  if (to !== '') location.href = to
+  await nextTick()
+  const path = await to()
+  if (path) location.href = path
   else location.reload()
 }
 

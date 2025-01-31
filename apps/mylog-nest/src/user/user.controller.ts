@@ -51,9 +51,7 @@ export class UserController {
     } else if ('name' in body) {
       return this.prisma.user.findUnique({ where: { name: body.name } });
     } else if (token) {
-      return this.prisma.user.findUnique({
-        where: { userid: verify(token) },
-      });
+      return this.prisma.user.findUnique({ where: { userid: verify(token) } });
     }
   }
 
@@ -66,15 +64,11 @@ export class UserController {
   async setUser(
     @Cookies('token') token: string,
     @Body()
-    body: {
-      data: { img?: string; info?: string; setting?: string };
-    },
+    body: { img?: string; info?: string; setting?: string },
   ) {
+    console.log('🐔设置用户信息: ', token, body);
     const userid = verify(token);
-    await this.prisma.user.update({
-      where: { userid },
-      data: body.data,
-    });
+    await this.prisma.user.update({ where: { userid }, data: body });
   }
 
   /**
@@ -88,6 +82,7 @@ export class UserController {
     @Cookies('token') token: string,
     @Body() body: { unionidQq?: string; unionidWeixin?: string },
   ) {
+    console.log('🐔设置用户登录数据', token, body);
     const userid = verify(token);
     await this.prisma.userlogin.update({
       where: { id: userid },
