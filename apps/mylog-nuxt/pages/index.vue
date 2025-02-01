@@ -6,7 +6,6 @@ const Home = useHomeStore()
 </script>
 
 <template>
-  123{{ Home.status }}123
   <div
     class="home-page"
     v-infinite-scroll="Home.addLogs"
