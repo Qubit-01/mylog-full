@@ -6,16 +6,17 @@ const Home = useHomeStore()
 </script>
 
 <template>
+  123{{ Home.status }}123
   <div
     class="home-page"
     v-infinite-scroll="Home.addLogs"
-    :infinite-scroll-disabled="Home.status === 'pending'"
+    :infinite-scroll-disabled="Home.status !== 'success'"
   >
     <HomeTopLog />
 
     <Log v-for="log in Home.logs" :key="log.id" :log="log" />
 
-    <LogLoading v-if="Home.status === 'pending'" />
+    <LogLoading :status="Home.status" />
   </div>
 </template>
 
