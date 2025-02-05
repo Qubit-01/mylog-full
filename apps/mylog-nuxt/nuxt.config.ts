@@ -2,11 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   // devServer: {
-  //   host: 'mylog.cool',
+  //   host: 'mylog.ink',
   //   port: 5173,
   //   https: {
-  //     key: './cert/mylog.cool.key',
-  //     cert: './cert/mylog.cool.crt',
+  //     key: '../../cert/mylog.ink.key',
+  //     cert: '../../cert/mylog.ink.crt',
   //   },
   // },
   devtools: { enabled: true },
@@ -22,8 +22,8 @@ export default defineNuxtConfig({
   elementPlus: {},
   runtimeConfig: {
     public: {
-      webURL: 'https://mylog.cool',
-      baseURL: 'https://mylog.cool:20914',
+      webURL: 'https://mylog.ink',
+      baseURL: 'https://mylog.ink:20914',
     },
   },
 })

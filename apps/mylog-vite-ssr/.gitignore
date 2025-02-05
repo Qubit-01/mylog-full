@@ -26,6 +26,3 @@ dist-ssr
 
 auto-imports.d.ts
 components.d.ts
-
-# 证书
-cert

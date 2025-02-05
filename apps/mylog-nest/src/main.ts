@@ -7,13 +7,13 @@ import * as fs from 'fs';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     httpsOptions: {
-      key: fs.readFileSync('./cert/mylog.cool.key'),
-      cert: fs.readFileSync('./cert/mylog.cool.crt'),
+      key: fs.readFileSync('../../cert/mylog.ink.key'),
+      cert: fs.readFileSync('../../cert/mylog.ink.crt'),
     },
     cors: {
       origin: [
-        'https://mylog.cool',
-        'https://www.mylog.cool',
+        'https://mylog.ink',
+        'https://www.mylog.ink',
         'http://localhost:3000',
       ],
     },
