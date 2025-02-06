@@ -7,7 +7,7 @@ export const BaseURL = WebURL + ':20914'
 export const Bucket = 'bit-1310383539' /* 存储桶 */
 export const Region = 'ap-chengdu' /* 所在地域 */
 export const BucketURL = Bucket + '.cos.' + Region + '.myqcloud.com/'
-export const BucketCDN = 'https://cos.mylog.cool/' // CDN加速域名
+export const BucketCDN = 'https://cos.mylog.ink/' // CDN加速域名
 
 // 这里files必须放在最后，遍历时兜底
 // export const logFileItem: LogFileItem[] = ['imgs', 'videos', 'audios', 'files']

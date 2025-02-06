@@ -1,14 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-  // devServer: {
-  //   host: 'mylog.ink',
-  //   port: 5173,
-  //   https: {
-  //     key: '../../cert/mylog.ink.key',
-  //     cert: '../../cert/mylog.ink.crt',
-  //   },
-  // },
+  devServer: {
+    host: 'mylog.ink',
+    port: 443,
+    https: {
+      key: '../../cert/mylog.ink.key',
+      cert: '../../cert/mylog.ink.crt',
+    },
+  },
   devtools: { enabled: true },
   css: ['~/assets/css/base.scss', 'element-plus/theme-chalk/dark/css-vars.css'],
   vite: {
