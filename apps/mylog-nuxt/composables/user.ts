@@ -15,7 +15,7 @@ export const loginByToken = async (
     maxAge: 60 * 60 * 24 * 60, // 秒
     secure: true, // 仅https
     sameSite: 'strict', // 防止CSRF攻击和用户追踪
-    domain: '.' + Domain, // 二级域名共享
+    domain: '.mylog.ink', // 二级域名共享
     path: '/',
   })
   tokenCookie.value = token

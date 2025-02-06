@@ -1,11 +1,10 @@
 // import type { LogFileItem } from "@/types"
 
-export const Domain = 'mylog.ink'
-export const WebURL = 'https://' + Domain
-// export const WebURL = "https://localhost"
-export const BaseURL = WebURL + ':20914'
-export const Bucket = 'bit-1310383539' /* 存储桶 */
-export const Region = 'ap-chengdu' /* 所在地域 */
+const Domain = 'mylog.ink'
+export const BaseURL = 'https://www.' + Domain + ':20914'
+
+const Bucket = 'bit-1310383539' /* 存储桶 */
+const Region = 'ap-chengdu' /* 所在地域 */
 export const BucketURL = Bucket + '.cos.' + Region + '.myqcloud.com/'
 export const BucketCDN = 'https://cos.mylog.ink/' // CDN加速域名
 
