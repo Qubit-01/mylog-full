@@ -8,7 +8,7 @@ useHead({
       type: 'text/javascript',
       src: 'https://connect.qq.com/qc_jssdk.js',
       'data-appid': '102099147',
-      'data-redirecturi': 'https://mylog.cool/login/qq-redirect',
+      'data-redirecturi': 'https://mylog.ink/login/qq-redirect',
     },
   ],
 })

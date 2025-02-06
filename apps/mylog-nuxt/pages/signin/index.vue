@@ -4,7 +4,7 @@ import { appId, redirectURI } from '@mylog-full/mix/utils'
 const loginData = reactive({ name: '', pswd: '' })
 
 const doLogin = async () => {
-  const token = await $fetch<string>('https://mylog.cool:20914/user/token', {
+  const token = await $fetch<string>(BaseURL + '/user/token', {
     method: 'POST',
     body: loginData,
   })

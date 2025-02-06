@@ -1,12 +1,13 @@
 // import type { LogFileItem } from "@/types"
 
-export const webURL = "https://mylog.cool"
-// export const webURL = "https://localhost"
-export const baseURL = webURL + ":20914"
-export const Bucket = "bit-1310383539" /* 存储桶 */
-export const Region = "ap-chengdu" /* 所在地域 */
-export const BucketURL = Bucket + ".cos." + Region + ".myqcloud.com/"
-export const BucketCDN = "https://cos.mylog.cool/" // CDN加速域名
+export const Domain = 'mylog.ink'
+export const WebURL = 'https://' + Domain
+// export const WebURL = "https://localhost"
+export const BaseURL = WebURL + ':20914'
+export const Bucket = 'bit-1310383539' /* 存储桶 */
+export const Region = 'ap-chengdu' /* 所在地域 */
+export const BucketURL = Bucket + '.cos.' + Region + '.myqcloud.com/'
+export const BucketCDN = 'https://cos.mylog.cool/' // CDN加速域名
 
 // 这里files必须放在最后，遍历时兜底
 // export const logFileItem: LogFileItem[] = ['imgs', 'videos', 'audios', 'files']

@@ -21,9 +21,6 @@ export default defineNuxtConfig({
   modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt'],
   elementPlus: {},
   runtimeConfig: {
-    public: {
-      webURL: 'https://mylog.ink',
-      baseURL: 'https://mylog.ink:20914',
-    },
+    public: {},
   },
 })

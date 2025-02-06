@@ -15,7 +15,7 @@ export const loginByToken = async (
     maxAge: 60 * 60 * 24 * 60, // 秒
     secure: true, // 仅https
     sameSite: 'strict', // 防止CSRF攻击和用户追踪
-    domain: '.mylog.cool',
+    domain: '.' + Domain, // 二级域名共享
     path: '/',
   })
   tokenCookie.value = token
@@ -41,7 +41,7 @@ export const signout = (to: string = '/') => {
  * 登录测试账号
  */
 export const loginTest = async () => {
-  const res = await $fetch<string>('https://mylog.cool:20914/user/token', {
+  const res = await $fetch<string>(BaseURL + '/user/token', {
     method: 'POST',
     body: { name: '测试账号', pswd: '12345qaZ' },
   })

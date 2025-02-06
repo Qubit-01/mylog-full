@@ -5,16 +5,13 @@ export const useHomeStore = defineStore('home', () => {
   const params = reactive({ skip: 0, limit: 10 })
 
   // 每次触发请求，都会自动 push 在 logs 最后
-  const { status } = useFetch<Log[]>(
-    'https://mylog.cool:20914/log/get_publics',
-    {
-      method: 'POST',
-      body: params,
-      onResponse({ response }) {
-        logs.push(...(response._data ?? []))
-      },
+  const { status } = useFetch<Log[]>(BaseURL + '/log/get_publics', {
+    method: 'POST',
+    body: params,
+    onResponse({ response }) {
+      logs.push(...(response._data ?? []))
     },
-  )
+  })
 
   /** 这里是一个触发器，用于请求下一页数据 */
   const addLogs = () => {

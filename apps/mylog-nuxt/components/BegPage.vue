@@ -6,14 +6,14 @@
       <div>
         <div class="box box1">
           <img
-            src="https://cos.mylog.cool/web-files/contact&pay/pay-wechat.png"
+            src="https://cos.mylog.ink/web-files/contact&pay/pay-wechat.png"
           />
 
           <el-tooltip>
             <template #content>
               <img
                 style="height: 150px"
-                src="https://cos.mylog.cool/web-files/contact&pay/contact-wechat.png"
+                src="https://cos.mylog.ink/web-files/contact&pay/contact-wechat.png"
               />
             </template>
             <span>微信号：QQ_0xAE8A9951</span>
@@ -26,12 +26,12 @@
 
       <div>
         <div class="box box3">
-          <img src="https://cos.mylog.cool/web-files/contact&pay/pay-qq.png" />
+          <img src="https://cos.mylog.ink/web-files/contact&pay/pay-qq.png" />
           <el-tooltip>
             <template #content>
               <img
                 style="height: 150px"
-                src="https://cos.mylog.cool/web-files/contact&pay/contact-qq.jpg"
+                src="https://cos.mylog.ink/web-files/contact&pay/contact-qq.jpg"
               />
             </template>
             <span>QQ号：2928318801</span>
@@ -44,7 +44,7 @@
 
       <div>
         <div class="box box2">
-          <img src="https://cos.mylog.cool/web-files/contact&pay/pay-ali.jpg" />
+          <img src="https://cos.mylog.ink/web-files/contact&pay/pay-ali.jpg" />
           <span>昵称：Qubit</span>
           <h2>支付宝</h2>
         </div>
