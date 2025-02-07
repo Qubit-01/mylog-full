@@ -1,6 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { LogService } from './log.service';
 import { PrismaClient } from '@prisma/client';
+import { Cookies } from 'src/utils';
+import { verify } from 'src/utils/jwt';
 
 @Controller('log')
 export class LogController {
@@ -31,12 +33,12 @@ export class LogController {
   async getPublics(
     @Body() body: { userid?: number; skip: number; limit: number },
   ) {
-    console.log('🐔', body.userid, body.skip, body.limit);
+    console.log('🐔', JSON.stringify(body));
 
     const logs = await this.prisma.log.findMany({
       where: { userid: body.userid, type: 'public' },
       skip: body.skip,
-      take: body.limit,
+      take: body.limit ?? 10,
       orderBy: {
         sendtime: 'desc',
       },
@@ -52,15 +54,17 @@ export class LogController {
    */
   @Post('get_mylogs')
   async getMylogs(
-    @Body() body: { userid?: number; skip: number; limit: number },
+    @Cookies('token') token: string,
+    @Body() body: { skip: number; limit: number },
   ) {
+    const userid = verify(token);
+    console.log('🐔', userid, body);
+
     const logs = await this.prisma.log.findMany({
-      where: { userid: body.userid },
+      where: { userid },
       skip: body.skip,
-      take: body.limit,
-      orderBy: {
-        logtime: 'desc',
-      },
+      take: body.limit ?? 10,
+      orderBy: { logtime: 'desc' },
     });
     return logs;
   }

@@ -54,11 +54,7 @@ onMounted(() => {
       <div class="center">
         <div class="left">
           <div class="logo" @click="replace('/')">
-            <img src="/favicon.png" />
-            多元记
-            <DevOnly>
-              <div class="env">DEV</div>
-            </DevOnly>
+            <img src="/favicon.png" />多元记
           </div>
         </div>
         <nav>
@@ -72,7 +68,12 @@ onMounted(() => {
             <el-button v-if="isLogined" text @click="navigateTo('/logger')">
               {{ user.name }}
             </el-button>
-            <el-button v-else text type="primary" @click="navigateTo('/signin')">
+            <el-button
+              v-else
+              text
+              type="primary"
+              @click="navigateTo('/signin')"
+            >
               去登录
             </el-button>
             <ThemeSwitch />
@@ -225,18 +226,6 @@ onMounted(() => {
             left: 80px;
             top: 25px;
             opacity: 0.7;
-          }
-
-          .env {
-            position: absolute;
-            top: 6px;
-            left: 12px;
-            line-height: 14px;
-            height: 16px;
-            font-size: 10px;
-            padding: 0 6px;
-            border-radius: 10px;
-            background: #f55a;
           }
         }
       }

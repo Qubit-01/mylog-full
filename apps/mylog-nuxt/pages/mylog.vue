@@ -1,13 +1,28 @@
 <script lang="ts" setup>
-
+const tab = ref('mylog')
+// const tab = computed<string>({
+//   get: () => route.name as string,
+//   set: (v) => router.push({ name: v }),
+// })
 </script>
 
 <template>
   <div class="mylog-page">
-    记录页
+    <el-radio-group v-model="tab">
+      <!-- size="large" -->
+      <el-radio-button label="时间线" value="mylog" />
+      <el-radio-button label="待办" value="todo" />
+      <el-radio-button label="日历" value="calendar" />
+    </el-radio-group>
+
+    <NuxtPage />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.mylog-page {}
+.mylog-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
 </style>
