@@ -30,8 +30,8 @@ export const loginByToken = async (
  * @param to 跳转的页面，不传跳主页，传空串刷新当前页，传路径跳指定
  */
 export const signout = async (to: string = '/') => {
-  const token = useCookie('token')
-  token.value = null
+  const tokenCookie = useCookie('token', { domain: '.mylog.ink' })
+  tokenCookie.value = null
   // QC.Login.signOut()
   await nextTick()
   if (to !== '') location.href = to
