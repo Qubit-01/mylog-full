@@ -5,7 +5,7 @@ export const useHomeStore = defineStore('home', () => {
   const params = reactive({ skip: 0, limit: 10 })
 
   // 每次触发请求，都会自动 push 在 logs 最后
-  const { status } = useFetch<Log[]>(BaseURL + '/log/get_publics', {
+  const { status, refresh } = useFetch<Log[]>(BaseURL + '/log/get_publics', {
     method: 'POST',
     body: params,
     onResponse({ response }) {
@@ -27,6 +27,8 @@ export const useHomeStore = defineStore('home', () => {
     status,
     /** 触发请求数据，会自动 push 在 logs 最后 */
     addLogs,
+    /** 刷新 */
+    refresh,
   }
 })
 

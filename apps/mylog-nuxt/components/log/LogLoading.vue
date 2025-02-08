@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-defineProps<{
-  status: 'idle' | 'pending' | 'success' | 'error'
-}>()
+defineProps<{ status: 'idle' | 'pending' | 'success' | 'error' }>()
+const emits = defineEmits<{ (e: 'retry'): void }>()
 </script>
 
 <template>
@@ -19,9 +18,9 @@ defineProps<{
       title="加载失败"
       sub-title="去检查一下网络"
     >
-      <!-- <template #extra>
-        <el-button type="primary">重试</el-button>
-      </template> -->
+      <template #extra>
+        <el-button type="primary" @click="emits('retry')">重试</el-button>
+      </template>
     </el-result>
   </div>
 </template>

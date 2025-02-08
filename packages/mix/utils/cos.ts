@@ -115,8 +115,8 @@ export const getKey = (filename: string) =>
 export const cosPath = (userid: number) => `users/${userid}/mylog/`
 
 /**
- * 处理文件地址
- * 若是http开头，就转https然后直接用
+ * 处理文件地址 \
+ * 若是http开头，就转https然后直接用 \
  * 否则加上OOS地址 `${BucketCDN}${cosPath(userid)}${prefix}${file}`
  * @param file 可以传入单个字符串，或者字符串数组
  * @param prefix 一般是文件类型 如 img/
