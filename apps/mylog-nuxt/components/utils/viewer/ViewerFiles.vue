@@ -16,7 +16,7 @@ const props = defineProps<{ files?: string[] }>()
 const files = computed(() => props.files || log.files)
 
 // 传入的图片要处理，如果不是http开头，那么就加上OOS地址，否则直接用，而且要改为https
-const fileUrls = ref<string[]>(toFileUrl(files.value, 'files/', log.userid!))
+const fileUrls = ref<string[]>(toFileUrl(files.value, 'files/', log.userid))
 
 // watch(files, () => {
 //   fileUrls.value = toFileUrl(files.value, 'files/', log.userid)

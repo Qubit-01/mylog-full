@@ -45,8 +45,8 @@ export type UserVO = {
  */
 export type LogVO = {
   id: number
-  /** log发送者的id，为空就是用户已注销 */
-  userid?: number
+  /** log发送者的id */
+  userid: number
   type: 'public' | 'log' | 'tag' | 'todo'
   sendtime: dayjs.Dayjs // 发送时间
   logtime: dayjs.Dayjs // 记录时间

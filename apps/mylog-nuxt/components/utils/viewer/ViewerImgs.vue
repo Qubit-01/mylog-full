@@ -18,10 +18,10 @@ const log: Log = inject('log')!
 const imgs = computed(() => props.imgs ?? log.imgs)
 // 传入的图片转为正常的url
 const imgUrls = ref<string[]>(
-  toFileUrl(imgs.value, 'compress-imgs/', log.userid!),
+  toFileUrl(imgs.value, 'compress-imgs/', log.userid),
 )
 watch(imgs, () => {
-  imgUrls.value = toFileUrl(imgs.value, 'compress-imgs/', log.userid!)
+  imgUrls.value = toFileUrl(imgs.value, 'compress-imgs/', log.userid)
   nextTick(() => viewer?.update())
 })
 
@@ -36,7 +36,7 @@ onMounted(() => {
   rawBtn.classList.add('viewer-raw')
   rawBtn.addEventListener('click', () => {
     const i = (viewer as any).index
-    const newImg = toFileUrl(imgs.value[i], 'imgs/', log.userid!)
+    const newImg = toFileUrl(imgs.value[i], 'imgs/', log.userid)
     if (imgUrls.value[i] !== newImg) {
       imgUrls.value[i] = newImg
       nextTick(() => viewer!.update()) // .view(i)
