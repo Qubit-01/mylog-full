@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
+import LogLoading from '~/components/log/LogLoading.vue'
 const Mylog = useMylogStore()
 </script>
 
@@ -42,6 +43,16 @@ const Mylog = useMylogStore()
         </el-timeline-item>
       </template>
 
+      <!-- 加载态节点 -->
+      <el-timeline-item
+        v-show="Mylog.status !== 'success'"
+        timestamp="loading..."
+        placement="top"
+      >
+        <LogLoading :status="Mylog.status" @retry="Mylog.refresh" />
+      </el-timeline-item>
+
+      <!-- 最底部的节点 -->
       <el-timeline-item timestamp="origin" placement="top" />
     </el-timeline>
   </div>
