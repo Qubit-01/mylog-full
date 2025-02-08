@@ -15,7 +15,7 @@ import { LogVO } from '@mylog-full/mix/types';
 export function toLogVO4PO(log: LogPO): LogVO {
   const logVO: LogVO = {
     ...log,
-    userid: log.userid || undefined,
+    userid: log.userid,
     type: log.type as LogVO['type'],
     logtime: dayjs(log.logtime),
     sendtime: dayjs(log.sendtime),
