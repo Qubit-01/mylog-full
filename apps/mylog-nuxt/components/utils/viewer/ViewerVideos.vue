@@ -8,7 +8,6 @@
   
  -->
 <script lang="ts" setup>
-import type { LogVO as Log } from '@mylog-full/mix/types'
 import { toFileUrl } from '@mylog-full/mix/utils'
 // import VideoDplayer from '~/components/utils/viewer/VideoDplayer.vue'
 // import DPlayer from 'dplayer'
@@ -26,7 +25,7 @@ const videos = computed(() => props.videos || log.videos)
  * 传入的文件要处理，如果不是http开头，那么就加上OOS地址，否则直接用，而且要改为https
  */
 const videoUrls = computed(() =>
-  toFileUrl(videos.value, 'videos/', log.userid!.toString()),
+  toFileUrl(videos.value, 'videos/', log.userid!),
 )
 
 /** 当前播放的是视频地址，控制播放器的显示与否 */

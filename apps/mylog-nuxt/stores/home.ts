@@ -1,5 +1,3 @@
-import type { LogVO as Log } from '@mylog-full/mix/types'
-
 export const useHomeStore = defineStore('home', () => {
   const logs = reactive<Log[]>([])
   const params = reactive({ skip: 0, limit: 10 })
@@ -27,7 +25,7 @@ export const useHomeStore = defineStore('home', () => {
     status,
     /** 触发请求数据，会自动 push 在 logs 最后 */
     addLogs,
-    /** 刷新 */
+    /** 重新请求 */
     refresh,
   }
 })

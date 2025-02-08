@@ -6,7 +6,6 @@
   https://blog.csdn.net/xingmeiok/article/details/127556464
  -->
 <script lang="tsx" setup>
-import type { LogVO as Log } from '@mylog-full/mix/types'
 import Viewer from 'viewerjs'
 import 'viewerjs/dist/viewer.css'
 import { toFileUrl, vImgSrc, vErrorRetry } from '@mylog-full/mix/utils'

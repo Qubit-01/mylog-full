@@ -1,11 +1,9 @@
-import type { LogVO as Log } from '@mylog-full/mix/types'
-
 export const useMylogStore = defineStore('mylog', () => {
   const logs = reactive<Log[]>([])
   const params = reactive({ skip: 0, limit: 10 })
 
   // 每次触发请求，都会自动 push 在 logs 最后
-  const { status } = useFetch<Log[]>(BaseURL + '/log/get_mylogs', {
+  const { status, refresh } = useFetch<Log[]>(BaseURL + '/log/get_mylogs', {
     method: 'POST',
     headers: useRequestHeaders(['cookie']),
     body: params,
@@ -28,6 +26,8 @@ export const useMylogStore = defineStore('mylog', () => {
     status,
     /** 触发请求数据，会自动 push 在 logs 最后 */
     addLogs,
+    /** 重新请求 */
+    refresh,
   }
 })
 

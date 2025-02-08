@@ -2,7 +2,6 @@
   抽取Log的内容
  -->
 <script lang="ts" setup>
-import type { LogVO as Log } from '@mylog-full/mix/types'
 import { vEllipsis } from '@mylog-full/mix/utils'
 
 const log = inject<Log>('log')!

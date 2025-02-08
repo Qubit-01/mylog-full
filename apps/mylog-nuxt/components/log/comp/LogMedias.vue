@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { LogVO as Log } from '@mylog-full/mix/types'
 import ViewerImgs from '~/components/utils/viewer/ViewerImgs.vue'
 // import ViewerVideos from '~/components/utils/viewer/ViewerVideos.vue'
 import ViewerFiles from '~/components/utils/viewer/ViewerFiles.vue'

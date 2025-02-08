@@ -5,9 +5,8 @@ const Mylog = useMylogStore()
 
 <template>
   <div class="timeline">
-    <!-- <LogRelease ref="logReleaseDom" /> -->
-
-    <!-- <LogFilter /> -->
+    <div>编辑模块</div>
+    <div>筛选模块</div>
 
     <el-timeline
       v-infinite-scroll="Mylog.addLogs"
@@ -16,7 +15,7 @@ const Mylog = useMylogStore()
       <!-- 时间线开始 -->
       <template v-for="(log, i) in Mylog.logs" :key="log.id">
         <!-- 年份节点 -->
-        <ElTimelineItem
+        <el-timeline-item
           v-if="
             i == 0 ||
             !dayjs(log.logtime).isSame(Mylog.logs[i - 1].logtime, 'year')
@@ -28,7 +27,7 @@ const Mylog = useMylogStore()
         />
 
         <!-- 日期节点 -->
-        <ElTimelineItem
+        <el-timeline-item
           v-if="
             i == 0 ||
             !dayjs(log.logtime).isSame(Mylog.logs[i - 1].logtime, 'day')
@@ -38,13 +37,12 @@ const Mylog = useMylogStore()
         />
 
         <!-- Log节点  :color="log.type === 'public' ? 'var(--el-color-warning)' : 'transparent'"-->
-        <ElTimelineItem hide-timestamp center color="transparent">
+        <el-timeline-item hide-timestamp center color="transparent">
           <Log :id="log.id" :log="log" />
-        </ElTimelineItem>
-        <!-- {{ log }} -->
+        </el-timeline-item>
       </template>
 
-      <ElTimelineItem timestamp="origin" placement="top" />
+      <el-timeline-item timestamp="origin" placement="top" />
     </el-timeline>
   </div>
 </template>

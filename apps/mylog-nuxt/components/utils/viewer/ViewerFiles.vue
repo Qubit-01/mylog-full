@@ -2,7 +2,6 @@
   文件预览组件
  -->
 <script setup lang="ts">
-import type { LogVO as Log } from '@mylog-full/mix/types'
 // myGetObjectUrl
 import { cosPath, toFileUrl } from '@mylog-full/mix/utils'
 
