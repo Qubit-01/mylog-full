@@ -1,11 +1,11 @@
 // import type { LogFileItem } from "@/types"
 
-const Domain = 'mylog.ink'
-export const BaseURL = 'https://www.' + Domain + ':20914'
+const domain = 'mylog.ink'
+export const baseURL = 'https://www.' + domain + ':20914'
 
-const Bucket = 'bit-1310383539' /* 存储桶 */
-const Region = 'ap-chengdu' /* 所在地域 */
-export const BucketURL = Bucket + '.cos.' + Region + '.myqcloud.com/'
+export const Bucket = 'bit-1310383539' /* 存储桶 */
+export const Region = 'ap-chengdu' /* 所在地域 */
+export const bucketURL = Bucket + '.cos.' + Region + '.myqcloud.com/'
 export const BucketCDN = 'https://cos.mylog.ink/' // CDN加速域名
 
 // 这里files必须放在最后，遍历时兜底

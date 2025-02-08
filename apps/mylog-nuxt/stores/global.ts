@@ -31,8 +31,9 @@ const userInit: User = {
  * 2. 必须等服务器获取到用户数据
  */
 export const useGlobalStore = defineStore('global', () => {
-  const { data } = useFetch<User>(BaseURL + '/user/get_user', {
+  const { data } = useFetch<User>('/user/get_user', {
     method: 'POST',
+    baseURL,
     headers: useRequestHeaders(['cookie']),
   })
 

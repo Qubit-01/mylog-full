@@ -4,8 +4,9 @@ import { appId, redirectURI } from '@mylog-full/mix/utils'
 const loginData = reactive({ name: '', pswd: '' })
 
 const doLogin = async () => {
-  const token = await $fetch<string>(BaseURL + '/user/token', {
+  const token = await $fetch<string>('/user/token', {
     method: 'POST',
+    baseURL,
     body: loginData,
   })
   if (token) loginByToken(token)
@@ -38,17 +39,17 @@ const qqLogin = () => {
         type="password"
         autocomplete="on"
       />
-      <el-button @click="doLogin" size="large">登录</el-button>
+      <el-button size="large" @click="doLogin">登录</el-button>
     </form>
 
     <div class="text-link">
       <span>
         没有账号？
-        <el-button link @click="replace('/signin/signup')" type="primary">
+        <el-button link type="primary" @click="replace('/signin/signup')">
           去注册
         </el-button>
         或
-        <el-button link @click="loginTest" type="primary">
+        <el-button link type="primary" @click="loginTest">
           登录测试账号
         </el-button>
       </span>

@@ -1,7 +1,5 @@
 <!-- 主页的置顶模块 -->
-<script lang="ts" setup>
-import { BucketCDN } from '@mylog-full/mix/utils'
-</script>
+<script lang="ts" setup></script>
 
 <template>
   <div class="top-log _m">
@@ -18,7 +16,7 @@ import { BucketCDN } from '@mylog-full/mix/utils'
       <el-carousel-item>
         <img :src="BucketCDN + 'web-files/img/bg-light.jpg'" />
       </el-carousel-item>
-      <div class="title">✨多元记2.0 全新亮相 ~</div>
+      <div class="title">✨宇宙很大，生活更大</div>
     </el-carousel>
     <div class="text">
       <div>
@@ -35,9 +33,10 @@ import { BucketCDN } from '@mylog-full/mix/utils'
         </a>
       </div>
       <div>
-        如果你想快速体验本网站功能，可以点击
-        <!-- todo 登录测试账号 signinTest -->
-        <a href="" @click="">登录测试账号</a>
+        如果想快速体验本网站功能，可以点击
+        <el-button link type="primary" @click="loginTest">
+          登录测试账号
+        </el-button>
       </div>
     </div>
   </div>

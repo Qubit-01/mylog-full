@@ -11,7 +11,7 @@ const pswd2 = ref('')
 
 //刷新验证码
 // const changeImg = () => {
-//   captchaDom.value!.src = BaseURL + '/user/signin/captcha_img?' + Math.random()
+//   captchaDom.value!.src = baseURL + '/user/signin/captcha_img?' + Math.random()
 // }
 // onMounted(changeImg)
 

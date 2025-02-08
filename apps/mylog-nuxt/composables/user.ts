@@ -42,8 +42,9 @@ export const signout = async (to: string = '/') => {
  * 登录测试账号
  */
 export const loginTest = async () => {
-  const res = await $fetch<string>(BaseURL + '/user/token', {
+  const res = await $fetch<string>('/user/token', {
     method: 'POST',
+    baseURL,
     body: { name: '测试账号', pswd: '12345qaZ' },
   })
   loginByToken(res)

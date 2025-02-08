@@ -3,9 +3,10 @@ export const useMylogStore = defineStore('mylog', () => {
   const params = reactive({ skip: 0, limit: 10 })
 
   // 每次触发请求，都会自动 push 在 logs 最后
-  const { status, refresh } = useFetch<Log[]>(BaseURL + '/log/get_mylogs', {
+  const { status, refresh } = useFetch<Log[]>('/log/get_mylogs', {
     method: 'POST',
     headers: useRequestHeaders(['cookie']),
+    baseURL,
     body: params,
     onResponse({ response }) {
       logs.push(...(response._data ?? []))
