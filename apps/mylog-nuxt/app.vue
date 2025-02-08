@@ -17,6 +17,7 @@ useGlobalStore()
 
 <style lang="scss" scoped>
 .app {
+  min-width: 300px;
   .env {
     position: fixed;
     bottom: 6px;

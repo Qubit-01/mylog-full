@@ -173,6 +173,7 @@ onMounted(() => {
     position: fixed;
     z-index: 50;
     width: 100vw;
+    min-width: 330px;
     background-color: var(--m-background-color);
     border-bottom: var(--m-border);
     box-shadow: var(--m-shadow);
@@ -374,7 +375,7 @@ onMounted(() => {
 
   @media (max-width: 1424px) {
     /* 页面宽度在小挡位时的宽度 */
-    --center-width: calc(100vw - var(--gap) * 2);
+    --center-width: calc(100% - var(--gap) * 2);
   }
 
   // nav330 + 左右栏130*2 + margin10*2
