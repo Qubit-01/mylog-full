@@ -8,10 +8,10 @@
       现在采用更多来下拉展示
  -->
 <script lang="ts" setup>
-import type { LogVO as Log } from '@mylog-full/mix/types'
 import { Star, Share } from '@element-plus/icons-vue'
 import LogContent from './comp/LogContent.vue'
 import LogMedias from './comp/LogMedias.vue'
+import LogBottom from './comp/LogBottom.vue'
 // import { vDblclick } from '@/utils/directives'
 
 const { log } = defineProps<{ log: Log }>()
@@ -29,10 +29,8 @@ const expand = () => (isExpand.value = !isExpand.value)
     <!-- {{ log }} -->
     <LogContent />
     <LogMedias />
-    <!-- 
-    <LogTags noPublic />
-
-    <LogBottom /> -->
+    <!-- <LogTags noPublic /> -->
+    <LogBottom />
 
     <!-- StarFilled -->
     <!-- <ElButtonGroup class="buttons">
