@@ -36,8 +36,8 @@ export function toLogVO4PO(log: LogPO): LogVO {
  * @see https://docs.nestjs.com/techniques/cookies#creating-a-custom-decorator-cross-platform
  */
 export const Cookies = createParamDecorator(
-  (data: string, ctx: ExecutionContext) => {
+  (key: string, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    return data ? request.cookies?.[data] : request.cookies;
+    return key ? request.cookies?.[key] : request.cookies;
   },
 );

@@ -1,15 +1,30 @@
 <script lang="ts" setup>
+const { refresh } = useFetch<Log[]>('/test/hello', {
+  method: 'POST',
+  credentials: 'include',
+  baseURL,
+  onResponse({ response }) {
+    console.log('🐤 ', response._data)
+  },
+})
+const test = () => {
+  const cookie = useRequestHeaders(['cookie'])
+  console.log('🐔 useRequestHeaders', cookie)
+  const tokenCookie = useCookie('token')
+  console.log('🐔 useCookie(token)', tokenCookie.value)
+  refresh()
+}
 
+test()
 </script>
 
 <template>
-  <div class="test-page">
-
+  <div class="test-page _m">
+    <el-button @click="test">test</el-button>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .test-page {
-
 }
 </style>

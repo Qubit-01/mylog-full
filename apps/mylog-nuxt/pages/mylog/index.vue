@@ -18,7 +18,7 @@ const Mylog = useMylogStore()
         <!-- 年份节点 -->
         <el-timeline-item
           v-if="
-            i == 0 ||
+            i === 0 ||
             !dayjs(log.logtime).isSame(Mylog.logs[i - 1].logtime, 'year')
           "
           :timestamp="dayjs(log.logtime).year().toString()"
@@ -30,7 +30,7 @@ const Mylog = useMylogStore()
         <!-- 日期节点 -->
         <el-timeline-item
           v-if="
-            i == 0 ||
+            i === 0 ||
             !dayjs(log.logtime).isSame(Mylog.logs[i - 1].logtime, 'day')
           "
           :timestamp="dayjs(log.logtime).format('YYYY-MM-DD')"
