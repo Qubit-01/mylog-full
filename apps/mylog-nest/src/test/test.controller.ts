@@ -8,7 +8,6 @@ export class TestController {
    * @returns "Hello World!"
    */
   @Get('hello')
-  @Post('hello')
   hello(@Cookies() cookies: string) {
     console.log('🐤 Hello World! get');
     console.log('🐤 Cookies', cookies);
@@ -19,10 +18,10 @@ export class TestController {
    * 测试后端服务是否正常
    * @returns "Hello World!"
    */
-  // @Post('hello-post')
-  // helloPost(@Cookies() cookies: string) {
-  //   console.log('🐤 Hello World! post');
-  //   console.log('🐤 Cookies', cookies);
-  //   return '🐤 Hello World!';
-  // }
+  @Post('hello-post')
+  helloPost(@Cookies() cookies: string) {
+    console.log('🐤 Hello World! post');
+    console.log('🐤 Cookies', cookies);
+    return '🐤 Hello World!';
+  }
 }
