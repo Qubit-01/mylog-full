@@ -33,8 +33,11 @@ const userInit: User = {
 export const useGlobalStore = defineStore('global', () => {
   const { data } = useFetch<User>('/user/get_user', {
     method: 'POST',
+    credentials: 'include',
     baseURL,
-    headers: useRequestHeaders(['cookie']),
+    headers: {
+      cookie: `token=${useCookie('token').value}`,
+    },
   })
 
   const user = computed<User>(() => ({ ...userInit, ...data.value }))
