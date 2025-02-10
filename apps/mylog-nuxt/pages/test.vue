@@ -13,8 +13,7 @@ const { refresh } = useFetch<Log[]>('/test/hello', {
 const test = () => {
   const cookie = useRequestHeaders(['cookie'])
   console.log('🐔 useRequestHeaders', cookie)
-  const tokenCookie = useCookie('token')
-  console.log('🐔 useCookie(token)', tokenCookie.value)
+  console.log('🐔 useCookie(token)', useCookie('token').value)
   refresh()
 }
 
