@@ -1,7 +1,7 @@
 // import type { LogFileItem } from "@/types"
 
 const domain = 'mylog.ink'
-export const baseURL = 'https://www.' + domain + ':20914'
+export const baseURL = 'https://' + domain + ':20914'
 
 export const Bucket = 'bit-1310383539' /* 存储桶 */
 export const Region = 'ap-chengdu' /* 所在地域 */
