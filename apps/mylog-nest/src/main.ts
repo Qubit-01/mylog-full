@@ -16,7 +16,7 @@ async function bootstrap() {
         'https://www.mylog.ink',
         'http://localhost:3000',
       ],
-      // credentials: true,
+      credentials: true,
     },
   });
   app.use(cookieParser());
