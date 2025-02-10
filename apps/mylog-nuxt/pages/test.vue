@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-const { refresh } = useFetch<Log[]>('/test/hello', {
+const { refresh } = useFetch<Log[]>('/test/hello-post', {
   method: 'POST',
   // credentials: 'include',
-  headers: {
-    cookie: 'token=' + useCookie('token').value,
-  },
+  // headers: {
+  //   cookie: 'token=' + useCookie('token').value,
+  // },
   baseURL,
   onResponse({ response }) {
     console.log('🐤 ', response._data)
@@ -17,7 +17,7 @@ const test = () => {
   refresh()
 }
 
-test()
+// test()
 </script>
 
 <template>
