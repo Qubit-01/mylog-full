@@ -17,6 +17,8 @@ export class LogController {
    */
   @Post('get_public')
   async getPublic(@Body() body: { id: number }) {
+    console.log('🐔 get_public: ', body);
+
     const log = await this.prisma.log.findUnique({
       where: { id: body.id, type: 'public' },
     });
@@ -33,7 +35,7 @@ export class LogController {
   async getPublics(
     @Body() body: { userid?: number; skip: number; limit: number },
   ) {
-    console.log('🐔get_publics', JSON.stringify(body));
+    console.log('🐔get_publics: ', body);
 
     const logs = await this.prisma.log.findMany({
       where: { userid: body.userid, type: 'public' },
@@ -57,8 +59,9 @@ export class LogController {
     @Cookies('token') token: string,
     @Body() body: { skip: number; limit: number },
   ) {
+    console.log('🐔get_mylogs: ', token, body);
     const userid = verify(token);
-    console.log('🐔get_mylogs', userid, body);
+    console.log('🐔 ', userid);
 
     const logs = await this.prisma.log.findMany({
       where: { userid },

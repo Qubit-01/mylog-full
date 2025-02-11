@@ -21,7 +21,8 @@ export class UserController {
   async getToken(
     @Body() body: { unionidQq: string } | { name: string; pswd: string },
   ) {
-    console.log('🐤token: ', body);
+    console.log('🐔 token: ', body);
+
     let userid: number | undefined;
     if ('unionidQq' in body) {
       userid = await this.getUseridByUnionidQq(body.unionidQq);
@@ -43,7 +44,8 @@ export class UserController {
     @Cookies('token') token: string,
     @Body() body: { id: number } | { name: string },
   ) {
-    console.log('🐤get_user: ', token, body);
+    console.log('🐔 get_user: ', token, body);
+
     if ('id' in body) {
       return this.prisma.user.findUnique({
         where: { userid: Number(body.id) },
@@ -66,7 +68,7 @@ export class UserController {
     @Body()
     body: { img?: string; info?: string; setting?: string },
   ) {
-    console.log('🐔设置用户信息: ', token, body);
+    console.log('🐔 set_user: ', token, body);
     const userid = verify(token);
     await this.prisma.user.update({ where: { userid }, data: body });
   }
@@ -82,7 +84,7 @@ export class UserController {
     @Cookies('token') token: string,
     @Body() body: { unionidQq?: string; unionidWeixin?: string },
   ) {
-    console.log('🐔设置用户登录数据', token, body);
+    console.log('🐔 set_userlogin: ', token, body);
     const userid = verify(token);
     await this.prisma.userlogin.update({
       where: { id: userid },
