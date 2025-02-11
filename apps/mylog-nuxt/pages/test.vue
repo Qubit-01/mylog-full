@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-// const token = useCookie('token')
 const { refresh } = useFetch<Log[]>('/test/hello-post', {
   method: 'POST',
   credentials: 'include',

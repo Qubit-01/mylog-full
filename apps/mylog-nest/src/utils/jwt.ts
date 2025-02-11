@@ -25,15 +25,18 @@ export function sign(id: number): string {
 }
 
 /**
- * 验证用户jwt，目前就只返回用户id，没有就抛出异常
+ * 验证用户jwt，目前就只返回用户id
+ * 如果传入预期外的数据或验证失败，会返回undefined
  * @param token 用户jwt
- * @returns 返回用户id，0表示验证失败
+ * @returns 返回用户id，undefined表示验证失败
  */
-export function verify(token: string): number {
+export function verify(token: string): number | undefined {
+  if (!token) return undefined;
   try {
     const tokenObj = jwt.verify(token, secretKey) as JwtPayload;
     return tokenObj.id;
   } catch (e) {
-    throw new Error('token验证失败' + e);
+    console.log('🐔 Token验证失败', token, e);
+    return undefined;
   }
 }

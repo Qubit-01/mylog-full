@@ -2,8 +2,8 @@ import { Controller, Post, Body } from '@nestjs/common';
 import { UserService } from './user.service';
 import { getUseridByPswd } from '@prisma/client/sql';
 import { PrismaClient } from '@prisma/client';
-import { sign, verify } from 'src/utils/jwt';
-import { Cookies } from 'src/utils';
+import { sign } from 'src/utils/jwt';
+import { Userid } from 'src/utils';
 
 @Controller('user')
 export class UserController {
@@ -41,19 +41,19 @@ export class UserController {
    */
   @Post('get_user')
   getUser(
-    @Cookies('token') token: string,
+    @Userid() userid: number,
     @Body() body: { id: number } | { name: string },
   ) {
-    console.log('🐔 get_user: ', token, body);
+    console.log('🐔 get_user: ', userid, body);
 
     if ('id' in body) {
       return this.prisma.user.findUnique({
-        where: { userid: Number(body.id) },
+        where: { userid },
       });
     } else if ('name' in body) {
       return this.prisma.user.findUnique({ where: { name: body.name } });
-    } else if (token) {
-      return this.prisma.user.findUnique({ where: { userid: verify(token) } });
+    } else if (userid) {
+      return this.prisma.user.findUnique({ where: { userid } });
     }
   }
 
@@ -64,12 +64,11 @@ export class UserController {
    */
   @Post('set_user')
   async setUser(
-    @Cookies('token') token: string,
+    @Userid() userid: number,
     @Body()
     body: { img?: string; info?: string; setting?: string },
   ) {
-    console.log('🐔 set_user: ', token, body);
-    const userid = verify(token);
+    console.log('🐔 set_user: ', userid, body);
     await this.prisma.user.update({ where: { userid }, data: body });
   }
 
@@ -81,11 +80,10 @@ export class UserController {
    */
   @Post('set_userlogin')
   async setUserLogin(
-    @Cookies('token') token: string,
+    @Userid() userid: number,
     @Body() body: { unionidQq?: string; unionidWeixin?: string },
   ) {
-    console.log('🐔 set_userlogin: ', token, body);
-    const userid = verify(token);
+    console.log('🐔 set_userlogin: ', userid, body);
     await this.prisma.userlogin.update({
       where: { id: userid },
       data: {

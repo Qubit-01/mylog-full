@@ -2,6 +2,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import dayjs from 'dayjs';
 import type { log as LogPO } from '@prisma/client';
 import { LogVO } from '@mylog-full/mix/types';
+import { verify } from './jwt';
 
 /**
  * 数据库转VO对象，主要后端用
@@ -39,5 +40,16 @@ export const Cookies = createParamDecorator(
   (key: string, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     return key ? request.cookies?.[key] : request.cookies;
+  },
+);
+
+/**
+ * 从请求的 Cookie.token 中获取 Userid
+ */
+export const Userid = createParamDecorator(
+  (key: string, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    console.log('🐔 @Userid: token: ', request.cookies?.token);
+    return verify(request.cookies?.token);
   },
 );
