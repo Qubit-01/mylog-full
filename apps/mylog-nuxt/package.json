@@ -1,5 +1,8 @@
 {
-  "name": "nuxt-app",
+  "name": "mylog-nuxt",
+  "version": "0.0.1",
+  "description": "Mylog Nuxtjs前端",
+  "author": "bit",
   "private": true,
   "type": "module",
   "scripts": {

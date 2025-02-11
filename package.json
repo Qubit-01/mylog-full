@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "restart": "git pull && pnpm -F mylog-nest build && pnpm -F mylog-nuxt build && pm2 restart all"
   },
   "keywords": [],
   "author": "",
