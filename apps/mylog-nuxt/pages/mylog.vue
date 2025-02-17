@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+definePageMeta({ middleware: 'auth' })
 const tab = ref('mylog')
 // const tab = computed<string>({
 //   get: () => route.name as string,

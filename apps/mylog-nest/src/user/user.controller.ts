@@ -61,7 +61,7 @@ export class UserController {
 
     const setting = user.setting as UserVO['setting'];
 
-    // 覆盖算法有待优化
+    // 覆盖算法
     return {
       id: user.id ?? 0,
       name: user.name ?? '',
