@@ -16,12 +16,10 @@ const props = defineProps<{ imgs?: string[] }>()
 const log: Log = inject('log')!
 // props.imgs > log.imgs
 const imgs = computed(() => props.imgs ?? log.imgs)
-// 传入的图片转为正常的url
-const imgUrls = ref<string[]>(
-  toFileUrl(imgs.value, 'compress-imgs/', log.userid),
-)
+// 传入的地址转为正常的url
+const urls = ref<string[]>(toFileUrl(imgs.value, 'compress-imgs/', log.userid))
 watch(imgs, () => {
-  imgUrls.value = toFileUrl(imgs.value, 'compress-imgs/', log.userid)
+  urls.value = toFileUrl(imgs.value, 'compress-imgs/', log.userid)
   nextTick(() => viewer?.update())
 })
 
@@ -37,8 +35,8 @@ onMounted(() => {
   rawBtn.addEventListener('click', () => {
     const i = (viewer as any).index
     const newImg = toFileUrl(imgs.value[i], 'imgs/', log.userid)
-    if (imgUrls.value[i] !== newImg) {
-      imgUrls.value[i] = newImg
+    if (urls.value[i] !== newImg) {
+      urls.value[i] = newImg
       nextTick(() => viewer!.update()) // .view(i)
     }
   })
@@ -70,7 +68,7 @@ onMounted(() => {
 
 <template>
   <div class="viewer-imgs" ref="viewerDom" @click.stop>
-    <img v-for="img in imgUrls" :key="img" v-img-src="img" v-error-retry />
+    <img v-for="url in urls" :key="url" v-img-src="url" v-error-retry />
   </div>
 </template>
 

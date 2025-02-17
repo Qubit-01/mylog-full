@@ -5,6 +5,9 @@
 
   腾讯云推荐的播放器：https://cloud.tencent.com/act/pro/cos-video?player=tcplayer&mode=mp4
   详细API文档：https://cloud.tencent.com/document/product/436/104530
+  视频截帧：// todo
+  https://cloud.tencent.com/document/product/436/101440
+  https://cloud.tencent.com/document/product/460/47505
   
  -->
 <script lang="ts" setup>
@@ -12,19 +15,19 @@ import { toFileUrl } from '@mylog-full/mix/utils'
 // import VideoDplayer from '~/components/utils/viewer/VideoDplayer.vue'
 // import DPlayer from 'dplayer'
 
-// 从父组件拿到log，主要是获取userId
-const log: Log = inject('log')!
-
 /** files是视频列表，不传就用父组件注入的log.videos */
 const props = defineProps<{ videos?: string[] }>()
-/** 视频名称列表，计算从哪里取属性 */
-const videos = computed(() => props.videos || log.videos)
-
-/**
- * 真正的视频URL列表
- * 传入的文件要处理，如果不是http开头，那么就加上OOS地址，否则直接用，而且要改为https
- */
-const videoUrls = computed(() => toFileUrl(videos.value, 'videos/', log.userid))
+// 从父组件拿到log，主要是获取userId
+const log: Log = inject('log')!
+// props.videos > log.videos
+const videos = computed(() => props.videos ?? log.videos)
+// 传入的地址转为正常的url
+const urls = ref<string[]>(
+  toFileUrl(videos.value, 'compress-imgs/', log.userid),
+)
+watch(videos, () => {
+  urls.value = toFileUrl(videos.value, 'compress-imgs/', log.userid)
+})
 
 /** 当前播放的是视频地址，控制播放器的显示与否 */
 const videoSrc = ref('')
@@ -33,16 +36,39 @@ const videoSrc = ref('')
 <template>
   <div class="viewer-videos">
     <div
-      v-for="video in videoUrls"
-      :key="video"
+      v-for="url in urls"
+      :key="url"
       class="video"
-      @click.stop="videoSrc = video"
+      @click.stop="videoSrc = url"
     >
-      <video>
-        <source :src="video" />
-      </video>
-      <VideoPlay class="video-icon" />
+      <img :src="url + '?format=jpg'" alt="视频封面" />
     </div>
+    <!-- 
+      ?q-sign-algorithm=sha1
+      &q-ak=AKID2N8QnaC0-BGh-zaZ2U5y5iw9pzHbP9tcdcRdZ2IVfcVbYxzvlCTcoEJsk7RZNqcK
+      &q-sign-time=1739794856;1739798456
+      &q-key-time=1739794856;1739798456
+      &q-header-list=
+      &q-url-param-list=
+      &q-signature=8391ba3fcf83a4332d2d95ed9ab32b9e3a191acd
+      &x-cos-security-token=Ej132PaZwGJ8S3HTkmyCeeHAoi9wfJza52d901436d71858e40c75d0e38f5af669SMNoe4TAb63napvhkJ81E-V2DY-W5g5oWgUjU5eMtXSe0IhddmhaOFdWzaikN58RFyU8s3GaRWVO71EXcIcBxC-sWjE0EltupB5BR79tTSg8tPwm_brEvNcm6y_clxUGdTuc3H40AgTpDP4s71FRZaXIYtbpyIzch-joJuJZhXqZ2eoV_9DXixvrdvo0K9bM4NrzE2BG2oUtawte7re0w
+      &ci-process=snapshot
+      &time=1
+      &format=jpg 
+    -->
+    <!-- 
+      ?q-sign-algorithm=sha1
+      &q-ak=AKIDoLmnbG1G6SIeuRjpbSkvMhJoVIr7NVFZF7dJ6xh9RsbaSzocHO73hZMghYh-nbrs
+      &q-sign-time=1739796027;1739799627
+      &q-key-time=1739796027;1739799627
+      &q-header-list=
+      &q-url-param-list=
+      &q-signature=5a4b3b46f3529f32d098f3d45f1462952ced7b0c
+      &x-cos-security-token=Ej132PaZwGJ8S3HTkmyCeeHAoi9wfJza46e763194756f6295a1f090449c5a1c19SMNoe4TAb63napvhkJ81JBJA2-ow2I2Bs02QJ8WVprV7cmT_tfyVxdJSJrlytGoqYD6aryPGmqIM7e4R8gtjqaySUlg2Eet0Hnu4UTIQ41VcsSCZMLFS-MVcQgsB4qNVB6ampLZsnPYeCqIcRQnvO9oaAT2MYQL2ChqHyyWSPE-PsamM-Do6XCARDmOz1ez8Q1AI5fxR0InVvAp5-ikdg
+      &ci-process=snapshot
+      &time=1
+      &format=jpg
+    -->
   </div>
 
   <!-- 真正用来播放的 -->
@@ -54,9 +80,9 @@ const videoSrc = ref('')
       metadata:播放前不会下载视频资源，但是会获取资源的元数据；
       auto:根据实际情况动态决定
     -->
-  <TeleportBody v-if="videoSrc" @close="videoSrc = ''">
+  <!-- <TeleportBody v-if="videoSrc" @close="videoSrc = ''">
     <VideoDplayer :videoSrc class="video-play" autoplay />
-  </TeleportBody>
+  </TeleportBody> -->
 </template>
 
 <style lang="scss" scoped>
@@ -73,7 +99,7 @@ const videoSrc = ref('')
     position: relative;
     height: var(--block-height);
 
-    video {
+    img {
       object-fit: cover;
       height: var(--block-height);
       width: var(--block-height);

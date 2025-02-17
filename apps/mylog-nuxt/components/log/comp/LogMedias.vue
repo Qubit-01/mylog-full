@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ViewerImgs from '~/components/utils/viewer/ViewerImgs.vue'
-// import ViewerVideos from '~/components/utils/viewer/ViewerVideos.vue'
+import ViewerVideos from '~/components/utils/viewer/ViewerVideos.vue'
 import ViewerFiles from '~/components/utils/viewer/ViewerFiles.vue'
 
 const log = inject<Log>('log')!
@@ -11,7 +11,7 @@ const isExpand = inject<boolean>('isExpand')!
   <!-- 图片和视频放在一起 -->
   <div class="block-media">
     <ViewerImgs v-if="log.imgs.length" />
-    <!-- <ViewerVideos v-if="log.videos.length" /> -->
+    <ViewerVideos v-if="log.videos.length" />
   </div>
 
   <!-- 音频 和 文件 -->
