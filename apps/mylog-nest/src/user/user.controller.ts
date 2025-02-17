@@ -70,16 +70,16 @@ export class UserController {
       createtime: user.createtime ?? dayjs().valueOf(),
       setting: {
         page: {
-          theme: setting?.page.theme ?? 'light',
+          theme: setting?.page?.theme ?? 'light',
         },
         mylog: {
-          tags: setting?.mylog.tags ?? [],
-          filters: setting?.mylog.filters ?? [],
-          filterIndex: setting?.mylog.filterIndex ?? 0,
-          calendarTags: setting?.mylog.calendarTags ?? [],
+          tags: setting?.mylog?.tags ?? [],
+          filters: setting?.mylog?.filters ?? [],
+          filterIndex: setting?.mylog?.filterIndex ?? 0,
+          calendarTags: setting?.mylog?.calendarTags ?? [],
         },
         map: {
-          diyPoints: setting?.map.diyPoints ?? [],
+          diyPoints: setting?.map?.diyPoints ?? [],
         },
       },
     };
