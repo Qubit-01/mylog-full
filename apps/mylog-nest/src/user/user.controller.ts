@@ -42,7 +42,7 @@ export class UserController {
    * @returns 用户信息
    */
   @Post('get_user')
-  getUser(
+  async getUser(
     @Userid() userid: number,
     @Body() body: { id: number } | { name: string },
   ) {
@@ -50,43 +50,39 @@ export class UserController {
 
     let user;
     if ('id' in body) {
-      user = this.prisma.user.findUnique({ where: { userid } });
+      user = await this.prisma.user.findUnique({ where: { userid } });
     } else if ('name' in body) {
-      user = this.prisma.user.findUnique({ where: { name: body.name } });
+      user = await this.prisma.user.findUnique({ where: { name: body.name } });
     } else if (userid) {
-      user = this.prisma.user.findUnique({ where: { userid } });
+      user = await this.prisma.user.findUnique({ where: { userid } });
     }
 
-    const userInit: UserVO = {
-      id: 0,
-      name: '',
-      img: '',
-      info: {},
-      setting: {
-        page: {
-          theme: 'light',
-        },
-        mylog: {
-          tags: [],
-          filters: [],
-          filterIndex: 0,
-          calendarTags: [],
-        },
-        map: {
-          diyPoints: [],
-        },
-      },
-      createtime: dayjs().valueOf(),
-    } as const;
+    if (!user) return;
+
+    const setting = user.setting as UserVO['setting'];
 
     // 覆盖算法有待优化
-    const setting = {
-      page: { ...userInit.setting.page, ...user.setting.page },
-      mylog: { ...userInit.setting.mylog, ...user.setting.mylog },
-      map: { ...userInit.setting.map, ...user.setting.map },
+    return {
+      id: user.id ?? 0,
+      name: user.name ?? '',
+      img: user.img ?? '',
+      info: user.info ?? {},
+      createtime: user.createtime ?? dayjs().valueOf(),
+      setting: {
+        page: {
+          theme: setting?.page.theme ?? 'light',
+        },
+        mylog: {
+          tags: setting?.mylog.tags ?? [],
+          filters: setting?.mylog.filters ?? [],
+          filterIndex: setting?.mylog.filterIndex ?? 0,
+          calendarTags: setting?.mylog.calendarTags ?? [],
+        },
+        map: {
+          diyPoints: setting?.map.diyPoints ?? [],
+        },
+      },
     };
-
-    return { ...userInit, ...user, setting: setting };
   }
 
   /**
