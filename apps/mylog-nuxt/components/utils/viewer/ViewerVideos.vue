@@ -11,7 +11,7 @@
   
  -->
 <script lang="ts" setup>
-import { toFileUrl } from '@mylog-full/mix/utils'
+import COS, { toFileUrl } from '@mylog-full/mix/cos'
 // import VideoDplayer from '~/components/utils/viewer/VideoDplayer.vue'
 // import DPlayer from 'dplayer'
 
@@ -41,7 +41,10 @@ const videoSrc = ref('')
       class="video"
       @click.stop="videoSrc = url"
     >
-      <img :src="url + '?format=jpg'" alt="视频封面" />
+      <img
+        :src="url + '?ci-process=snapshot&time=1&format=jpg'"
+        alt="视频封面"
+      />
     </div>
     <!-- 
       ?q-sign-algorithm=sha1

@@ -1,48 +1,43 @@
 import COS from 'cos-js-sdk-v5'
-import { Bucket, Region, BucketCDN } from './constant'
+import { baseURL, Bucket, Region, BucketCDN } from './constant'
 import dayjs from 'dayjs'
 // import type { LogFiles } from '@/types'
 import { downloadFile } from '.'
 
-/**
- * 获取临时密钥接口 API
- * @param data log要是json字符串
- * @returns 新建log的id
- */
-const getCredential = (data?: { token?: string }): Promise<any> => {
-  return fetch('cos/get_credential', {
-    method: 'get',
-    // params: { token: Global.token, ...data }, // todo 接入fetch访问
-  })
-}
+const cos = new COS({
+  /**
+   * 异步获取临时密钥 getAuthorization 必选参数
+   * 初始化时不会调用，只有调用 cos 方法（例如 cos.putObject）时才会进入
+   */
+  getAuthorization: function (options, callback) {
+    console.log('🐔请求');
+    
+    // 获取临时密钥接口 API
+    fetch(baseURL + '/cos/get_credential', { method: 'POST' }).then(
+      (data: any) => {
+        console.log('🐔22', data)
 
-// const cos = new COS({
-//   /**
-//    * 异步获取临时密钥 getAuthorization 必选参数
-//    * 初始化时不会调用，只有调用 cos 方法（例如 cos.putObject）时才会进入
-//    * @param options
-//    * @param callback
-//    */
-//   getAuthorization: function (options, callback) {
-//     getCredential().then(data => {
-//       if (!data) {
-//         console.error('credentials invalid:\n' + JSON.stringify(data, null, 2))
-//         return
-//       }
+        if (!data) {
+          console.error(
+            'credentials invalid:\n' + JSON.stringify(data, null, 2),
+          )
+          return
+        }
 
-//       callback({
-//         TmpSecretId: data.credentials.tmpSecretId,
-//         TmpSecretKey: data.credentials.tmpSecretKey,
-//         SecurityToken: data.credentials.sessionToken,
-//         // 建议返回服务器时间作为签名的开始时间，避免用户浏览器本地时间偏差过大导致签名错误
-//         StartTime: data.startTime, // 时间戳，单位秒，如：1580000000
-//         ExpiredTime: data.expiredTime, // 时间戳，单位秒，如：1580000000
-//       })
-//     })
-//   },
-// })
+        callback({
+          TmpSecretId: data.credentials.tmpSecretId,
+          TmpSecretKey: data.credentials.tmpSecretKey,
+          SecurityToken: data.credentials.sessionToken,
+          // 建议返回服务器时间作为签名的开始时间，避免用户浏览器本地时间偏差过大导致签名错误
+          StartTime: data.startTime, // 时间戳，单位秒，如：1580000000
+          ExpiredTime: data.expiredTime, // 时间戳，单位秒，如：1580000000
+        })
+      },
+    )
+  },
+})
 
-// export default cos
+export default cos
 
 let index = 1 // 文件名的索引
 /**
@@ -179,54 +174,54 @@ export const toFileUrl = <T extends string | string[]>(
  * @param params 文件上传参数，{files[]文件对象列表，SliceSize? 触发分块的大小，onProgress? 进度条方法}
  * @returns Promise 所有文件上传完成调用then
  */
-// export const myUploadFiles = (
-//   params: COS.UploadFilesParams
-// ): Promise<COS.UploadFilesResult> => {
-//   return new Promise((resolve, reject) => {
-//     // 没有文件，直接返回成功
-//     if (params.files.length === 0) return resolve({ files: [] })
-//     cos.uploadFiles(
-//       {
-//         SliceSize: 1024 * 1024 * 5,
-//         onProgress: function (info) {
-//           var percent = info.percent * 100
-//           var speed = info.speed / 1024
-//           console.log('进度：' + percent + '%; 速度：' + speed + 'KB/s')
-//         },
-//         ...params,
-//       },
-//       (err, data) => {
-//         // 所有上传完成后的回调
-//         if (err) reject(err)
-//         resolve(data)
-//       }
-//     )
-//   })
-// }
+export const myUploadFiles = (
+  params: COS.UploadFilesParams,
+): Promise<COS.UploadFilesResult> => {
+  return new Promise((resolve, reject) => {
+    // 没有文件，直接返回成功
+    if (params.files.length === 0) return resolve({ files: [] })
+    cos.uploadFiles(
+      {
+        SliceSize: 1024 * 1024 * 5,
+        onProgress: function (info) {
+          var percent = info.percent * 100
+          var speed = info.speed / 1024
+          console.log('进度：' + percent + '%; 速度：' + speed + 'KB/s')
+        },
+        ...params,
+      },
+      (err, data) => {
+        // 所有上传完成后的回调
+        if (err) reject(err)
+        resolve(data)
+      },
+    )
+  })
+}
 
 /**
  * 自己封装的文件删除方法
  * @param objects 传入形如 { Key: '1.jpg' } 的数组
  */
-// export const myDeleteFiles = (
-//   Objects: { Key: string }[]
-// ): Promise<COS.DeleteMultipleObjectResult> => {
-//   return new Promise((resolve, reject) => {
-//     // 没有文件直接返回成功
-//     if (Objects.length === 0) return resolve({ Deleted: [], Error: [] })
-//     cos.deleteMultipleObject(
-//       {
-//         Bucket,
-//         Region,
-//         Objects,
-//       },
-//       (err, data) => {
-//         if (err) reject(err)
-//         resolve(data)
-//       }
-//     )
-//   })
-// }
+export const myDeleteFiles = (
+  Objects: { Key: string }[],
+): Promise<COS.DeleteMultipleObjectResult> => {
+  return new Promise((resolve, reject) => {
+    // 没有文件直接返回成功
+    if (Objects.length === 0) return resolve({ Deleted: [], Error: [] })
+    cos.deleteMultipleObject(
+      {
+        Bucket,
+        Region,
+        Objects,
+      },
+      (err, data) => {
+        if (err) reject(err)
+        resolve(data)
+      },
+    )
+  })
+}
 
 /**
  * 获取文件下载链接，默认有效期60s
@@ -237,36 +232,36 @@ export const toFileUrl = <T extends string | string[]>(
  * @param download 是否触发下载
  * @returns
  */
-// export const myGetObjectUrl = (
-//   Key: string,
-//   download: boolean = true
-// ): Promise<string> => {
-//   return new Promise((resolve, reject) => {
-//     cos.getObjectUrl(
-//       {
-//         Bucket,
-//         Region,
-//         Key,
-//         Sign: true,
-//         Expires: 600, // 单位秒
-//       },
-//       (err, data) => {
-//         if (err) return reject(err)
-//         else {
-//           // 补充强制下载的参数
-//           let url =
-//             data.Url +
-//             (data.Url.indexOf('?') > -1 ? '&' : '?') +
-//             'response-content-disposition=attachment'
-//           // 可拼接 filename 来实现下载时重命名myname就是文件名
-//           const filename = Key.substring(
-//             Key.indexOf('-', Key.lastIndexOf('/')) + 1
-//           )
-//           // downloadUrl += `;filename=${filename}` // url会进行中文转码，不适用
-//           if (download) downloadFile(url, filename)
-//           resolve(url)
-//         }
-//       }
-//     )
-//   })
-// }
+export const myGetObjectUrl = (
+  Key: string,
+  download: boolean = true,
+): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    cos.getObjectUrl(
+      {
+        Bucket,
+        Region,
+        Key,
+        Sign: true,
+        Expires: 600, // 单位秒
+      },
+      (err, data) => {
+        if (err) return reject(err)
+        else {
+          // 补充强制下载的参数
+          let url =
+            data.Url +
+            (data.Url.indexOf('?') > -1 ? '&' : '?') +
+            'response-content-disposition=attachment'
+          // 可拼接 filename 来实现下载时重命名myname就是文件名
+          const filename = Key.substring(
+            Key.indexOf('-', Key.lastIndexOf('/')) + 1,
+          )
+          // downloadUrl += `;filename=${filename}` // url会进行中文转码，不适用
+          if (download) downloadFile(url, filename)
+          resolve(url)
+        }
+      },
+    )
+  })
+}
