@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { appId, redirectURI } from '@mylog-full/mix/utils'
+import { appId, redirectURI } from '@mylog-full/mix/qq-connect'
 
 const loginData = reactive({ name: '', pswd: '' })
 

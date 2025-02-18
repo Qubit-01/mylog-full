@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { QC } from '@mylog-full/mix/utils'
+import { QC } from '@mylog-full/mix/qq-connect'
 import { ArrowLeftBold } from '@element-plus/icons-vue'
 const state = ref(0) // 0加载 1选择（没找到用户） 2登录 3注册
 // 存储QQ登录的用户信息

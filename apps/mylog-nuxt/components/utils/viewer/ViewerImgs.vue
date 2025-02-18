@@ -8,7 +8,8 @@
 <script lang="tsx" setup>
 import Viewer from 'viewerjs'
 import 'viewerjs/dist/viewer.css'
-import { toFileUrl, vImgSrc, vErrorRetry } from '@mylog-full/mix/utils'
+import { vImgSrc, vErrorRetry } from '@mylog-full/mix/utils'
+import { toFileUrl } from '@mylog-full/mix/cos'
 
 /** imgs是图片列表 */
 const props = defineProps<{ imgs?: string[] }>()

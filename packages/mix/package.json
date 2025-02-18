@@ -12,7 +12,10 @@
   },
   "exports": {
     "./types": "./types/index.ts",
-    "./utils": "./utils/index.ts"
+    "./utils": "./utils/index.ts",
+    "./constant": "./utils/constant.ts",
+    "./qq-connect": "./utils/qq-connect.ts",
+    "./cos": "./utils/cos.ts"
   },
   "devDependencies": {
     "typescript": "^5.5.3"

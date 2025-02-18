@@ -1,4 +1,4 @@
-export { baseURL, BucketCDN } from '@mylog-full/mix/utils'
+export { baseURL, BucketCDN } from '@mylog-full/mix/constant'
 
 export const replace = (to: string) => navigateTo(to, { replace: true })
 

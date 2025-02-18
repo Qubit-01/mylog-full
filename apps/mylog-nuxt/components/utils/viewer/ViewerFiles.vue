@@ -3,7 +3,7 @@
  -->
 <script setup lang="ts">
 // myGetObjectUrl
-import { cosPath, toFileUrl } from '@mylog-full/mix/utils'
+import { cosPath, toFileUrl } from '@mylog-full/mix/cos'
 
 // 从父组件拿到log，主要是获取userId
 const log: Log = inject('log')!
