@@ -59,6 +59,7 @@ export class LogController {
     @Body() body: { skip: number; limit: number },
   ) {
     console.log('🐔get_mylogs: ', userid, body);
+    if (!userid) return;
 
     const logs = await this.prisma.log.findMany({
       where: { userid },

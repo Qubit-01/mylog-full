@@ -50,7 +50,7 @@ export class UserController {
 
     let user;
     if ('id' in body) {
-      user = await this.prisma.user.findUnique({ where: { userid } });
+      user = await this.prisma.user.findUnique({ where: { userid: body.id } });
     } else if ('name' in body) {
       user = await this.prisma.user.findUnique({ where: { name: body.name } });
     } else if (userid) {
@@ -97,6 +97,7 @@ export class UserController {
     body: { img?: string; info?: string; setting?: string },
   ) {
     console.log('🐔 set_user: ', userid, body);
+    if (!userid) return;
     await this.prisma.user.update({ where: { userid }, data: body });
   }
 
@@ -112,6 +113,7 @@ export class UserController {
     @Body() body: { unionidQq?: string; unionidWeixin?: string },
   ) {
     console.log('🐔 set_userlogin: ', userid, body);
+    if (!userid) return;
     await this.prisma.userlogin.update({
       where: { id: userid },
       data: {
