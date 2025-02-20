@@ -21,13 +21,16 @@ useGlobalStore()
   .env {
     position: fixed;
     bottom: 6px;
-    left: 12px;
-    line-height: 14px;
+    left: 6px;
+    z-index: 999;
     height: 16px;
+
+    line-height: 14px;
     font-size: 10px;
     padding: 0 6px;
     border-radius: 10px;
     background: #f55a;
+    pointer-events: none;
   }
 }
 </style>
