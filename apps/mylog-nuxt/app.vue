@@ -18,6 +18,9 @@ useGlobalStore()
 <style lang="scss" scoped>
 .app {
   min-width: 300px;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: auto;
   .env {
     position: fixed;
     top: 4px;

@@ -8,16 +8,16 @@ const emit = defineEmits(['close'])
 
 <template>
   <teleport to="body">
-    <div class="mask" @click.self="emit('close')">
+    <div class="popup" @click.self="emit('close')">
       <div class="window">
-        <slot>弹窗内容</slot>
+        <slot />
       </div>
     </div>
   </teleport>
 </template>
 
 <style lang="scss" scoped>
-.mask {
+.popup {
   position: fixed;
   z-index: 1000;
   top: 0;

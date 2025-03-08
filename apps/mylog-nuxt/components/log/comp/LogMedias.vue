@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import ViewerImgs from '~/components/utils/viewer/ViewerImgs.vue'
-import ViewerVideos from '~/components/utils/viewer/ViewerVideos.vue'
-import ViewerFiles from '~/components/utils/viewer/ViewerFiles.vue'
+import ViewerImgs from '~/components/viewer/ViewerImgs.vue'
+import ViewerVideos from '~/components/viewer/ViewerVideos.vue'
+import ViewerFiles from '~/components/viewer/ViewerFiles.vue'
 
 const log = inject<Log>('log')!
 const isExpand = inject<boolean>('isExpand')!

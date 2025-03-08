@@ -12,7 +12,9 @@
  -->
 <script lang="ts" setup>
 import COS, { toFileUrl } from '@mylog-full/mix/cos'
-// import VideoDplayer from '~/components/utils/viewer/VideoDplayer.vue'
+import { VideoPlay } from '@element-plus/icons-vue'
+import Popup from '~/components/utils/Popup.vue';
+import VideoDplayer from '~/components/viewer/VideoDplayer.vue'
 // import DPlayer from 'dplayer'
 
 /** files是视频列表，不传就用父组件注入的log.videos */
@@ -22,20 +24,30 @@ const log: Log = inject('log')!
 // props.videos > log.videos
 const videos = computed(() => props.videos ?? log.videos)
 // 传入的地址转为正常的url
-const urls = ref<string[]>(
-  toFileUrl(videos.value, 'compress-imgs/', log.userid),
-)
+const urls = ref<string[]>(toFileUrl(videos.value, 'videos/', log.userid))
 watch(videos, () => {
-  urls.value = toFileUrl(videos.value, 'compress-imgs/', log.userid)
+  urls.value = toFileUrl(videos.value, 'videos/', log.userid)
 })
 
 /** 当前播放的是视频地址，控制播放器的显示与否 */
-const videoSrc = ref('')
+const curUrl = ref('')
 </script>
 
 <template>
   <div class="viewer-videos">
     <div
+      v-for="url in urls"
+      :key="url"
+      class="video"
+      @click.stop="curUrl = url"
+    >
+      <video>
+        <source :src="url" />
+      </video>
+      <VideoPlay class="video-icon" />
+    </div>
+
+    <!-- <div
       v-for="url in urls"
       :key="url"
       class="video"
@@ -45,7 +57,7 @@ const videoSrc = ref('')
         :src="url + '?ci-process=snapshot&time=1&format=jpg'"
         alt="视频封面"
       />
-    </div>
+    </div> -->
     <!-- 
       ?q-sign-algorithm=sha1
       &q-ak=AKID2N8QnaC0-BGh-zaZ2U5y5iw9pzHbP9tcdcRdZ2IVfcVbYxzvlCTcoEJsk7RZNqcK
@@ -75,17 +87,9 @@ const videoSrc = ref('')
   </div>
 
   <!-- 真正用来播放的 -->
-  <!--
-      autoplay 自动开始播放 controls 显示播放器控件
-      poster 视频封面 loop 循环播放
-      muted 默认静音 preload 页面加载时加载，并预备播放
-      none:播放前不会预先下载视频资源，用户不点击播放时会省宽带；
-      metadata:播放前不会下载视频资源，但是会获取资源的元数据；
-      auto:根据实际情况动态决定
-    -->
-  <!-- <TeleportBody v-if="videoSrc" @close="videoSrc = ''">
-    <VideoDplayer :videoSrc class="video-play" autoplay />
-  </TeleportBody> -->
+  <Popup v-if="curUrl" @close="curUrl = ''">
+    <VideoDplayer :url="curUrl" class="video-play" autoplay />
+  </Popup>
 </template>
 
 <style lang="scss" scoped>
@@ -100,14 +104,25 @@ const videoSrc = ref('')
 
   .video {
     position: relative;
+    width: var(--block-height);
     height: var(--block-height);
 
-    img {
+    border-radius: var(--block-border-radius);
+    overflow: hidden;
+    flex-shrink: 0;
+
+    video {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      height: var(--block-height);
-      width: var(--block-height);
-      border-radius: var(--block-border-radius);
     }
+
+    // img {
+    //   object-fit: cover;
+    //   height: var(--block-height);
+    //   width: var(--block-height);
+    //   border-radius: var(--block-border-radius);
+    // }
 
     // 图标
     .video-icon {
@@ -119,10 +134,10 @@ const videoSrc = ref('')
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-    }
 
-    &:hover .video-icon {
-      opacity: 1;
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }
