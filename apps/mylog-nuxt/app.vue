@@ -20,14 +20,14 @@ useGlobalStore()
   min-width: 300px;
   .env {
     position: fixed;
-    bottom: 6px;
-    left: 6px;
+    top: 4px;
+    left: 4px;
     z-index: 999;
-    height: 16px;
+    height: 12px;
 
-    line-height: 14px;
-    font-size: 10px;
-    padding: 0 6px;
+    line-height: 12px;
+    font-size: 8px;
+    padding: 0 4px;
     border-radius: 10px;
     background: #f55a;
     pointer-events: none;
