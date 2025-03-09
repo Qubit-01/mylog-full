@@ -12,7 +12,7 @@ import { Star, Share } from '@element-plus/icons-vue'
 import LogContent from './comp/LogContent.vue'
 import LogMedias from './comp/LogMedias.vue'
 import LogBottom from './comp/LogBottom.vue'
-// import { vDblclick } from '@/utils/directives'
+import { vDblclick } from '@mylog-full/mix/utils'
 
 const { log } = defineProps<{ log: Log }>()
 provide('log', log) // 暴露给子组件
@@ -24,8 +24,7 @@ const expand = () => (isExpand.value = !isExpand.value)
 </script>
 
 <template>
-  <!-- v-dblclick="expand" -->
-  <div class="log _m" :id="`log${log.id}`">
+  <div class="log _m" :id="`log${log.id}`" v-dblclick="expand">
     <!-- {{ log }} -->
     <LogContent />
     <LogMedias />

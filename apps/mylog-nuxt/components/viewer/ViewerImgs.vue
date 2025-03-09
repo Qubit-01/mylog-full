@@ -11,8 +11,10 @@ import 'viewerjs/dist/viewer.css'
 import { vImgSrc, vErrorRetry } from '@mylog-full/mix/utils'
 import { toFileUrl } from '@mylog-full/mix/cos'
 
-/** imgs是图片列表 */
-const props = defineProps<{ imgs?: string[] }>()
+const props = defineProps<{
+  /** 图片列表 */
+  imgs?: string[]
+}>()
 // 从父组件拿到log，主要是获取userId
 const log: Log = inject('log')!
 // props.imgs > log.imgs

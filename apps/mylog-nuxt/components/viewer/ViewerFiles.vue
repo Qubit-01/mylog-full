@@ -1,84 +1,84 @@
 <!-- 
   文件预览组件
  -->
-<script setup lang="ts">
+<script lang="ts" setup>
 // myGetObjectUrl
 import { cosPath, toFileUrl } from '@mylog-full/mix/cos'
+import { Document, Download } from '@element-plus/icons-vue'
 
+const props = defineProps<{
+  /** 文件列表 */
+  files?: string[]
+}>()
 // 从父组件拿到log，主要是获取userId
 const log: Log = inject('log')!
-
-/**
- * 文件列表，没传就用log.files
- */
-const props = defineProps<{ files?: string[] }>()
 // 计算从哪里取属性
 const files = computed(() => props.files || log.files)
-
 // 传入的图片要处理，如果不是http开头，那么就加上OOS地址，否则直接用，而且要改为https
-const fileUrls = ref<string[]>(toFileUrl(files.value, 'files/', log.userid))
-
-// watch(files, () => {
-//   fileUrls.value = toFileUrl(files.value, 'files/', log.userid)
-// })
+const urls = ref<string[]>(toFileUrl(files.value, 'files/', log.userid))
+watch(files, () => {
+  urls.value = toFileUrl(files.value, 'files/', log.userid)
+})
 
 // 下载文件
-// const download = (file: string) => {
-//   const key = cosPath(log.userid) + 'files/' + file
-//   // console.log(key)
-//   myGetObjectUrl(key)
-// }
+const download = (file: string) => {
+  const key = cosPath(log.userid) + 'files/' + file
+  console.log(key)
+  // myGetObjectUrl(key)
+}
 </script>
 
 <template>
   <div class="viewer-files" @click.stop>
-    <!-- 模仿element upload组件的卡片 -->
-    <ul class="el-upload-list el-upload-list--text">
-      <li
-        v-for="(fileUrl, index) in fileUrls"
-        :key="fileUrl"
-        class="el-upload-list__item is-ready"
-      >
-        <div class="el-upload-list__item-info">
-          <a class="el-upload-list__item-name">
-            <ElIcon><Document /></ElIcon>
-            <span class="el-upload-list__item-file-name">
-              {{ files[index] }}
-            </span>
-          </a>
-        </div>
-        <!-- @click="download(files[index])" -->
-        <ElIcon class="el-icon--close">
-          <Download />
-        </ElIcon>
-      </li>
-    </ul>
+    <div
+      v-for="(url, index) in urls"
+      :key="url"
+      class="file"
+      @click="download(files[index])"
+    >
+      <Document class="icon" />
+      <div class="name">
+        {{ url }}
+        <!-- {{ url[index] }} -->
+      </div>
+      <Download class="icon" />
+    </div>
   </div>
 </template>
 
-<style scoped lang="less">
+<style lang="scss" scoped>
 .viewer-files {
-  // white-space: nowrap;
-  // overflow-y: hidden;
-  // width: fit-content;
-  // max-width: 100%;
-
   display: flex;
   flex-direction: column;
-  gap: var(--block-gap);
+  gap: 2px;
 
-  ul.el-upload-list {
-    margin: 0;
+  .file {
+    height: 28px;
+    padding: 0 8px;
+
+    border-radius: 8px;
+    background-color: #0001;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 4px;
 
-    gap: var(--block-gap);
-    > * {
-      margin: 0;
+    .icon {
+      width: 16px;
+      height: 16px;
     }
 
-    &:empty {
-      display: none;
+    .name {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background-color: #0002;
     }
   }
 }
