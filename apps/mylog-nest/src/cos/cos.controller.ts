@@ -128,10 +128,11 @@ export class CosController {
         {
           secretId: config.secretId,
           secretKey: config.secretKey,
+          region: 'ap-chengdu',
+          policy,
           proxy: config.proxy,
           durationSeconds: config.durationSeconds,
           endpoint: config.endpoint,
-          policy,
         },
         function (err, tempKeys) {
           resolve(err || tempKeys);

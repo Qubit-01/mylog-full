@@ -1,8 +1,10 @@
-import * as jwt from 'jsonwebtoken';
+import JWT from 'jsonwebtoken';
+
+type JwtExpiresIn = Parameters<typeof JWT.sign>[2]['expiresIn'];
 
 // 从env中获取配置
 const secretKey = process.env.JwtSecretKey!;
-const expiresIn = process.env.JwtExpiresIn!;
+const expiresIn = process.env.JwtExpiresIn! as JwtExpiresIn;
 
 /** JwtPayload类型 */
 type JwtPayload = {
@@ -21,7 +23,7 @@ type JwtPayload = {
  * @returns 用户jwt
  */
 export function sign(id: number): string {
-  return jwt.sign({ id }, secretKey, { expiresIn });
+  return JWT.sign({ id }, secretKey, { expiresIn });
 }
 
 /**
@@ -33,7 +35,7 @@ export function sign(id: number): string {
 export function verify(token: string): number | undefined {
   if (!token) return undefined;
   try {
-    const tokenObj = jwt.verify(token, secretKey) as JwtPayload;
+    const tokenObj = JWT.verify(token, secretKey) as JwtPayload;
     return tokenObj.id;
   } catch (e) {
     console.log('🐔 Token验证失败', token, e);
