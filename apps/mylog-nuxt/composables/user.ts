@@ -11,14 +11,15 @@ export const loginByToken = async (
   token: string,
   to: () => string | void | Promise<string | void> = () => '/',
 ) => {
-  const tokenCookie = useCookie('token', {
-    maxAge: 60 * 60 * 24 * 60, // 秒
-    secure: true, // 仅https
-    sameSite: 'strict', // 防止CSRF攻击和用户追踪
-    domain: '.mylog.ink', // 二级域名共享
-    path: '/',
-  })
-  tokenCookie.value = token
+  // 后端来设置cookie
+  // const tokenCookie = useCookie('token', {
+  //   maxAge: 60 * 60 * 24 * 60, // 秒
+  //   secure: true, // 仅https
+  //   sameSite: 'strict', // 防止CSRF攻击和用户追踪
+  //   domain: '.mylog.ink', // 二级域名共享
+  //   path: '/',
+  // })
+  // tokenCookie.value = token
   await nextTick()
   const path = await to()
   if (path) location.href = path
@@ -42,10 +43,10 @@ export const signout = async (to: string = '/') => {
  * 登录测试账号
  */
 export const loginTest = async () => {
-  const res = await $fetch<string>('/user/token', {
+  const res = await $fetch<string>('https://www.mylog.ink:20914/user/token', {
     method: 'POST',
     baseURL,
     body: { name: '测试账号', pswd: '12345qaZ' },
   })
-  loginByToken(res)
+  // loginByToken(res)
 }

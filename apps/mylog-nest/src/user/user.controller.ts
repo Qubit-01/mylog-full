@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Res } from '@nestjs/common';
 import { UserService } from './user.service';
 import { getUseridByPswd } from '@prisma/client/sql';
 import { PrismaClient } from '@prisma/client';
@@ -6,6 +6,7 @@ import { sign } from 'src/utils/jwt';
 import { Userid } from 'src/utils';
 import { type UserVO } from '@mylog-full/mix/types';
 import dayjs from 'dayjs';
+import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -17,21 +18,38 @@ export class UserController {
   /**
    * 获取token。用于登录，getUser不行，目前token只包含id信息
    * @param body unionidQq > name+pswd
-   * @returns 用户token
+   * @returns 用户token，错误返回undefined
    */
   @Post('token')
   async getToken(
     @Body() body: { unionidQq: string } | { name: string; pswd: string },
+    @Res({ passthrough: true }) res: Response,
   ) {
     console.log('🐔 token: ', body);
 
     let userid: number | undefined;
-    if ('unionidQq' in body) {
+    if ('unionidQq' in body)
       userid = await this.getUseridByUnionidQq(body.unionidQq);
-    } else if ('name' in body) {
+    else if ('name' in body)
       userid = await this.getUseridByPswd(body.name, body.pswd);
+
+    const token = userid ? sign(userid) : undefined;
+
+    if (token) {
+      res.cookie('token', token, {
+        maxAge: 60 * 60 * 24 * 60, // 秒
+        httpOnly: true,
+
+        // secure: true, // 仅https
+        // sameSite: 'strict', // 防止CSRF攻击和用户追踪
+        // domain: '.mylog.ink', // 二级域名共享
+        // path: '/',
+
+        // signed: true,
+      });
     }
-    return userid ? sign(userid) : undefined;
+
+    return token;
   }
 
   /**
@@ -49,13 +67,12 @@ export class UserController {
     console.log('🐔 get_user: ', userid, body);
 
     let user;
-    if ('id' in body) {
+    if ('id' in body)
       user = await this.prisma.user.findUnique({ where: { userid: body.id } });
-    } else if ('name' in body) {
+    else if ('name' in body)
       user = await this.prisma.user.findUnique({ where: { name: body.name } });
-    } else if (userid) {
+    else if (userid)
       user = await this.prisma.user.findUnique({ where: { userid } });
-    }
 
     if (!user) return;
 
