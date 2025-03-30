@@ -6,7 +6,7 @@ export default defineNuxtConfig({
       meta: [
         // http自动升级为https
         {
-          "http-equiv": 'Content-Security-Policy',
+          'http-equiv': 'Content-Security-Policy',
           content: 'upgrade-insecure-requests',
         },
       ],
@@ -14,11 +14,12 @@ export default defineNuxtConfig({
   },
   devServer: {
     host: '0.0.0.0',
-    port: 443,
-    https: {
-      key: './../../cert/mylog.ink.key',
-      cert: './../../cert/mylog.ink.crt',
-    },
+    port: 80,
+    // port: 443,
+    // https: {
+    // key: './../../cert/mylog.ink.key',
+    // cert: './../../cert/mylog.ink.crt',
+    // },
   },
   devtools: { enabled: true },
   css: ['~/assets/css/base.scss', 'element-plus/theme-chalk/dark/css-vars.css'],
