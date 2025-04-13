@@ -1,29 +1,28 @@
 /**
- * 通过token登录
- * 不管是什么登录方式，最终都会拿到token，然后调用这个方法
- * @param token 用户token
- * @param to 传入函数，跳转的位置
- *   - 不传，默认() => '/' 跳转主页
- *   - () => undefined 刷新当前页
- *   - () => string 传路径跳指定
+ * 通用登录方法
+ * @param data 登录数据
+ * @param to 跳转的位置
+ *   - undefined 不跳
+ *   - string 传路径跳指定，空串刷新当前页
+ * @returns 登录成功刷新页面
+ *   - 如果登录失败，返回undefined
  */
-export const loginByToken = async (
-  token: string,
-  to: () => string | void | Promise<string | void> = () => '/',
+export const signin = async (
+  data: { name: string; pswd: string } | { unionidQq: string },
+  to?: string,
 ) => {
   // 后端来设置cookie
-  // const tokenCookie = useCookie('token', {
-  //   maxAge: 60 * 60 * 24 * 60, // 秒
-  //   secure: true, // 仅https
-  //   sameSite: 'strict', // 防止CSRF攻击和用户追踪
-  //   domain: '.mylog.ink', // 二级域名共享
-  //   path: '/',
-  // })
-  // tokenCookie.value = token
+  const token = await $fetch<string>('/user/token', {
+    method: 'POST',
+    baseURL,
+    body: data,
+    credentials: 'include',
+  })
+  if (!token) return
+
   await nextTick()
-  const path = await to()
-  if (path) location.href = path
-  else location.reload()
+  if (to) location.href = to
+  return token
 }
 
 /**
@@ -43,10 +42,5 @@ export const signout = async (to: string = '/') => {
  * 登录测试账号
  */
 export const loginTest = async () => {
-  const res = await $fetch<string>('https://www.mylog.ink:20914/user/token', {
-    method: 'POST',
-    baseURL,
-    body: { name: '测试账号', pswd: '12345qaZ' },
-  })
-  // loginByToken(res)
+  signin({ name: '测试账号', pswd: '12345qaZ' }, '/')
 }

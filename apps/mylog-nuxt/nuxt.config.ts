@@ -17,8 +17,8 @@ export default defineNuxtConfig({
     port: 80,
     // port: 443,
     // https: {
-    // key: './../../cert/mylog.ink.key',
-    // cert: './../../cert/mylog.ink.crt',
+    //   key: './../../cert/mylog.ink.key',
+    //   cert: './../../cert/mylog.ink.crt',
     // },
   },
   devtools: { enabled: true },

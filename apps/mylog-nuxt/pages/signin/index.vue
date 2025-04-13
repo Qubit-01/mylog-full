@@ -4,13 +4,8 @@ import { appId, redirectURI } from '@mylog-full/mix/qq-connect'
 const loginData = reactive({ name: '', pswd: '' })
 
 const doLogin = async () => {
-  const token = await $fetch<string>('/user/token', {
-    method: 'POST',
-    baseURL,
-    body: loginData,
-  })
-  if (token) loginByToken(token)
-  else ElMessage.error('用户名或密码错误')
+  const token = await signin(loginData, '/')
+  if (!token) ElMessage.error('用户名或密码错误')
 }
 
 /** 跳转QQ登录 */

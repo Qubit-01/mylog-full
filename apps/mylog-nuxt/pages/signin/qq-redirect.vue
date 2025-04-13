@@ -14,13 +14,8 @@ onMounted(() => {
   window.callback = async (res: any) => {
     user.unionidQq = res.unionid
     // 先看数据库有没有这个openId
-    const token = await $fetch<string>('/user/token', {
-      method: 'POST',
-      baseURL,
-      body: { unionidQq: user.unionidQq },
-    })
-    if (token) loginByToken(token)
-    else state.value = 1 // 没找到用户，选择
+    const token = await signin({ unionidQq: user.unionidQq }, '/')
+    if (!token) state.value = 1 // 没找到用户，选择
   }
 
   if (QC.Login.check()) {
@@ -46,33 +41,25 @@ const qqImg = ref(false)
 
 // 1.绑定已有账号
 const bd = async () => {
-  // 先登录获取token，再token和openid一起绑定
-  const token = await $fetch<string>('/user/token', {
-    method: 'POST',
-    baseURL,
-    body: input,
-  })
-  if (token) {
-    loginByToken(token, async () => {
-      // 先绑定平台，再更新头像
-      await $fetch<string>('/user/set_userlogin', {
-        method: 'POST',
-        baseURL,
-        body: { unionidQq: user.unionidQq },
-      })
-      if (qqImg.value) {
-        await $fetch<string>('/user/set_user', {
-          method: 'POST',
-          baseURL,
-          body: { img: user.data.figureurl_qq },
-        })
-      }
-      return '/'
-    })
-  } else {
+  const token = await signin(input)
+  if (!token) {
     ElMessage.error('用户名或密码错误')
     return
   }
+  // 先绑定平台，再更新头像
+  await $fetch<string>('/user/set_userlogin', {
+    method: 'POST',
+    baseURL,
+    body: { unionidQq: user.unionidQq },
+  })
+  if (qqImg.value) {
+    await $fetch<string>('/user/set_user', {
+      method: 'POST',
+      baseURL,
+      body: { img: user.data.figureurl_qq },
+    })
+  }
+  location.href = '/'
 }
 </script>
 <template>

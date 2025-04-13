@@ -38,13 +38,11 @@ export class UserController {
     if (token) {
       res.cookie('token', token, {
         maxAge: 60 * 60 * 24 * 60, // 秒
-        httpOnly: true,
-
-        // secure: true, // 仅https
+        httpOnly: true, // 仅请求可访问，js不可访问
+        secure: process.env.NODE_ENV === 'production', // 仅 https 传输
         // sameSite: 'strict', // 防止CSRF攻击和用户追踪
-        // domain: '.mylog.ink', // 二级域名共享
+        domain: '.mylog.ink', // 二级域名共享
         // path: '/',
-
         // signed: true,
       });
     }

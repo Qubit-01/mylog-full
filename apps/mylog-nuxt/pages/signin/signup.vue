@@ -26,7 +26,7 @@ const doSignin = async () => {
     // ElMessage.error("两次密码不一致");
     return
   }
-  const userid = await signin(login)
+  const userid = await signin(login, '/')
   console.log(userid)
   if (userid === 0) {
     // ElMessage.error("用户名已存在");
