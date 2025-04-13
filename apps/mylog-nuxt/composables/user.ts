@@ -28,6 +28,7 @@ export const signin = async (
 /**
  * 退出登录方法：1.删token 2.退QC 3.跳转
  * @param to 跳转的页面，不传跳主页，传空串刷新当前页，传路径跳指定
+ * todo: 删除 httpOnly
  */
 export const signout = async (to: string = '/') => {
   const tokenCookie = useCookie('token', { domain: '.mylog.ink' })
