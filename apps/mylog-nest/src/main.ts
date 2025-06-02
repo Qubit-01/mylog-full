@@ -4,12 +4,17 @@ import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import * as fs from 'fs';
 
+const isDev = process.env.NODE_ENV !== 'production'
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    httpsOptions: {
+  const httpsOptions = isDev
+    ? undefined
+    : {
       key: fs.readFileSync('../../cert/mylog.ink.key'),
       cert: fs.readFileSync('../../cert/mylog.ink.crt'),
-    },
+    };
+  const app = await NestFactory.create(AppModule, {
+    httpsOptions,
     cors: {
       origin: [
         'https://mylog.ink',

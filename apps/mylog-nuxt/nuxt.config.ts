@@ -1,3 +1,5 @@
+export const isDev = process.env.NODE_ENV !== 'production'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
@@ -14,12 +16,15 @@ export default defineNuxtConfig({
   },
   devServer: {
     host: '0.0.0.0',
-    port: 80,
-    // port: 443,
-    // https: {
-    //   key: './../../cert/mylog.ink.key',
-    //   cert: './../../cert/mylog.ink.crt',
-    // },
+    ...(isDev
+      ? { port: 80 }
+      : {
+        port: 443,
+        https: {
+          key: './../../cert/mylog.ink.key',
+          cert: './../../cert/mylog.ink.crt',
+        },
+      })
   },
   devtools: { enabled: true },
   css: ['~/assets/css/base.scss', 'element-plus/theme-chalk/dark/css-vars.css'],

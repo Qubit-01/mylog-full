@@ -6,7 +6,6 @@ Mylog的monorepo项目，包含各端资源
 #### 软件架构
 软件架构说明
 
-
 #### ChangeLog
 ##### 2025.1.5 3.0.0 bate
 开始升级3.0版本。
@@ -24,23 +23,9 @@ Mylog的monorepo项目，包含各端资源
 - 后端摒弃掉Java，转为使用Nest框架开发，服务器只用安装node环境即可，使我可以更加专注开发功能。
 - 面向未来，为未来开发APP应用和桌面端应用做准备
 
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
 #### 参与贡献
 
 1.  Fork 本仓库
 2.  新建 Feat_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
-
-
-#### 特技
-
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
