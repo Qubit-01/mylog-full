@@ -15,10 +15,7 @@ export default defineNuxtConfig({
   devServer: {
     host: '0.0.0.0',
     // port: 443,
-    // https: {
-    //   key: './../../cert/mylog.ink.key',
-    //   cert: './../../cert/mylog.ink.crt',
-    // },
+    // https: true,
   },
   devtools: { enabled: true },
   css: ['~/assets/css/base.scss', 'element-plus/theme-chalk/dark/css-vars.css'],

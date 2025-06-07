@@ -1,4 +1,6 @@
-export { baseURL, BucketCDN } from '@mylog-full/mix/constant'
+export { BucketCDN } from '@mylog-full/mix/constant'
+
+export const baseURL = 'https://mylog.ink/api'
 
 export const replace = (to: string) => navigateTo(to, { replace: true })
 
