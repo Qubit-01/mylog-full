@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import LiquidGlass from '~/components/test/LiquidGlass.vue'
+definePageMeta({ layout: false })
 const { refresh } = useFetch<Log[]>('/test/hello-post', {
   method: 'POST',
   credentials: 'include',
@@ -39,6 +41,8 @@ const test = () => {
   <div class="test-page _m">
     <el-button @click="test">test</el-button>
   </div>
+
+  <LiquidGlass />
 </template>
 
 <style lang="scss" scoped>
