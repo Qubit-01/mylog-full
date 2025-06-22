@@ -9,12 +9,11 @@ const tab = ref('mylog')
 
 <template>
   <div class="mylog-page">
-    <el-radio-group v-model="tab">
-      <!-- size="large" -->
+    <!-- <el-radio-group v-model="tab">
       <el-radio-button label="时间线" value="mylog" />
       <el-radio-button label="待办" value="todo" />
       <el-radio-button label="日历" value="calendar" />
-    </el-radio-group>
+    </el-radio-group> -->
 
     <NuxtPage />
   </div>

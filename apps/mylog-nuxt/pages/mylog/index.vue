@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
 import LogLoading from '~/components/log/LogLoading.vue'
+import LogRelease from '~/components/logEdit/LogRelease.vue';
 const Mylog = useMylogStore()
 </script>
 
 <template>
   <div class="timeline">
-    <div>编辑模块</div>
+    <LogRelease />
     <div>筛选模块</div>
 
     <el-timeline

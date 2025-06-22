@@ -24,7 +24,7 @@ const expand = () => (isExpand.value = !isExpand.value)
 </script>
 
 <template>
-  <div class="log _m" :id="`log${log.id}`" v-dblclick="expand">
+  <div class="Log _m" :id="`log${log.id}`" v-dblclick="expand">
     <!-- {{ log }} -->
     <LogContent />
     <LogMedias />
@@ -45,7 +45,7 @@ const expand = () => (isExpand.value = !isExpand.value)
 </template>
 
 <style lang="scss" scoped>
-.log {
+.Log {
   border-radius: var(--border-radius);
   padding: var(--padding);
 
