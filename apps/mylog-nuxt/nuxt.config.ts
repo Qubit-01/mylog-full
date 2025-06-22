@@ -14,8 +14,12 @@ export default defineNuxtConfig({
   },
   devServer: {
     host: '0.0.0.0',
-    // port: 443,
+    port: 443,
     // https: true,
+    https: {
+      key: './../../cert/mylog.ink.key',
+      cert: './../../cert/mylog.ink.crt',
+    },
   },
   devtools: { enabled: true },
   css: ['~/assets/css/base.scss', 'element-plus/theme-chalk/dark/css-vars.css'],
@@ -31,4 +35,18 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {},
   },
+  nitro: {
+    devProxy: {
+      "/api": {
+        target: "http://localhost:20914", // 这里是接口地址
+        changeOrigin: true,
+        prependPath: true,
+      },
+    },
+    routeRules: {
+      '/api/**': {
+        proxy: 'http://localhost:20914/**'
+      }
+    }
+  }
 })

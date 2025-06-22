@@ -1,11 +1,17 @@
 // import type { LogFileItem } from "@/types"
 export const isDev = process.env.NODE_ENV !== 'production'
-const domain = isDev ? 'http://localhost' : 'https://mylog.ink'
-export const baseURL = domain + ':20914'
-export const Bucket = 'bit-1310383539' /* 存储桶 */
-export const Region = 'ap-chengdu' /* 所在地域 */
+/** 域名 */
+export const Domain = 'https://mylog.ink'
+/** 后端URL前缀 */
+export const baseURL = Domain + '/api'
+/* 存储桶 */
+export const Bucket = 'bit-1310383539'
+/* 所在地域 */
+export const Region = 'ap-chengdu'
+/* COS地址 */
 export const bucketURL = Bucket + '.cos.' + Region + '.myqcloud.com/'
-export const BucketCDN = 'https://cos.mylog.ink/' // CDN加速域名
+/** CDN加速域名 */
+export const BucketCDN = 'https://cos.mylog.ink/'
 
 // 这里files必须放在最后，遍历时兜底
 // export const logFileItem: LogFileItem[] = ['imgs', 'videos', 'audios', 'files']

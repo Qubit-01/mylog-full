@@ -38,7 +38,7 @@ export function verify(token: string): number | undefined {
     const tokenObj = JWT.verify(token, secretKey) as JwtPayload;
     return tokenObj.id;
   } catch (e) {
-    console.log('🐔 Token验证失败', token, e);
+    console.log('🐔 Token验证失败, token: ', token);
     return undefined;
   }
 }

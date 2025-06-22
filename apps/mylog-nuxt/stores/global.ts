@@ -36,7 +36,7 @@ export const useGlobalStore = defineStore('global', () => {
     credentials: 'include',
     baseURL,
     headers: {
-      cookie: `token=${useCookie('token').value}`,
+      Cookie: `token=${useCookie('token').value}`,
     },
   })
 

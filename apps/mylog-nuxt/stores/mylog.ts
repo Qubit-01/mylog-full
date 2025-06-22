@@ -9,7 +9,7 @@ export const useMylogStore = defineStore('mylog', () => {
     credentials: 'include',
     baseURL,
     headers: {
-      cookie: `token=${useCookie('token').value}`,
+      Cookie: `token=${useCookie('token').value}`,
     },
     body: params,
     onResponse({ response }) {

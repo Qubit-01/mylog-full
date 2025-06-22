@@ -1,22 +1,29 @@
 <script lang="ts" setup>
 import LiquidGlass from '~/components/test/LiquidGlass.vue'
 definePageMeta({ layout: false })
+
+
 const { refresh } = useFetch<Log[]>('/test/hello-post', {
   method: 'POST',
   credentials: 'include',
   baseURL,
   headers: {
-    cookie: `token=${useCookie('token').value}`,
+    Cookie: `token=${useCookie('token').value}`,
   },
   onResponse({ response }) {
     console.log('🐤 ', response._data)
   },
 })
 const test = () => {
+  // 测试能不能拿到 token
+  // console.log('token', useCookie('token').value)
+
+
+  // 测试访问后端接口
   // const cookie = useRequestHeaders(['cookie'])
   // console.log('🐔 useRequestHeaders', cookie)
   // console.log('🐔 useCookie(token)', useCookie('token').value)
-  refresh()
+  // refresh()
 }
 
 // test()
@@ -42,10 +49,9 @@ const test = () => {
     <el-button @click="test">test</el-button>
   </div>
 
-  <LiquidGlass />
+  <!-- <LiquidGlass /> -->
 </template>
 
 <style lang="scss" scoped>
-.test-page {
-}
+.test-page {}
 </style>
