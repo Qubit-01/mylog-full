@@ -3,6 +3,8 @@
 #### 介绍
 Mylog的monorepo项目，包含各端资源
 
+本站正式进入3.0，使用 Vue 3.5 + Nuxt + Vite + Element Plus + TypeScript + Pinia + SSR 等技术栈。
+
 #### 软件架构
 软件架构说明
 
@@ -22,10 +24,3 @@ Mylog的monorepo项目，包含各端资源
 - 设计更加合理，从页面架构到数据存储都做了大量考虑和优化
 - 后端摒弃掉Java，转为使用Nest框架开发，服务器只用安装node环境即可，使我可以更加专注开发功能。
 - 面向未来，为未来开发APP应用和桌面端应用做准备
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request

@@ -20,11 +20,11 @@
     </el-carousel>
     <div class="text">
       <div>
-        本站正式进入3.0，使用 Vue 3.5 + Nuxt + Vite + Element Plus + TypeScript
-        + Pinia + SSR 等技术栈。
-      </div>
-      <div>
-        多元记Mylog，旨在记录多元的生活，多元的知识，多元的感悟，多元的未来。
+        2021年只有两种人在写博客：一种是试图建立受众并从中获利的人，另一种是只想写出想法而没有任何目的的人。
+        这两种人的行为都非常好。选择做你喜欢的事，坚持下去，最终都可以对他人产生价值。——
+        <a href="https://bhupesh.me//what-i-have-learned-from-blogging-so-far-retrospect/" target="_blank">
+          《我从博客中学到的东西》
+        </a>
       </div>
       <div>
         朋友们帮我点个免费的Star吧，感谢：
@@ -34,9 +34,7 @@
       </div>
       <div>
         如果想快速体验本网站功能，可以点击
-        <el-button link type="primary" @click="loginTest">
-          登录测试账号
-        </el-button>
+        <a href="#" @click.prevent="loginTest">登录测试账号</a>
       </div>
     </div>
   </div>

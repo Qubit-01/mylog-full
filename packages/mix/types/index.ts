@@ -6,19 +6,27 @@ export type UserVO = {
   name: string
   img: string
   info: {
+    /** 性别 */
     sex?: '男' | '女' | undefined
-    birth?: string // 生日
-    text?: string // 个性签名
+    /** 生日 */
+    birth?: string
+    /** 个性签名 */
+    text?: string
 
-    stuId?: string // 学号
-    stuClass?: string // 班级
+    /** 学号 */
+    stuId?: string
+    /** 班级 */
+    stuClass?: string
   }
   setting: {
+    /** 页面设置 */
     page: {
-      // 页面设置
-      theme: string // 主题 light | dark
-      backgroundImage?: string // 选中的背景图片
-      diyBackgroundImage?: string // 自己添加的背景图片
+      /** 主题 light | dark */
+      theme: 'light' | 'dark'
+      /** 选中的背景图片 */
+      backgroundImage?: string
+      /** 自己添加的背景图片 */
+      diyBackgroundImage?: string
     }
     mylog: {
       /** 用户发布时待选tags */
@@ -39,34 +47,44 @@ export type UserVO = {
   createtime: number
 }
 
-/**
- * LogVO
- * 都是必选，没有就是空数组
- */
+/** LogVO：都是必选，没有就是空数组 */
 export type LogVO = {
+  /** LogId */
   id: number
-  /** log发送者的id */
+  /** 发布者的id */
   userid: number
-  type: 'public' | 'log' | 'tag' | 'todo'
-  sendtime: dayjs.Dayjs // 发送时间
-  logtime: dayjs.Dayjs // 记录时间
+  /** Log类型 */
+  type: 'public' | 'log' | 'tag'
+  /** 发布时间 */
+  sendtime: dayjs.Dayjs
+  /** 记录：时间 */
+  logtime: dayjs.Dayjs
+  /** 记录：内容 */
   content: string
+  /** 记录：标签 */
   tags: string[]
+  /** 记录：图片 */
   imgs: string[]
+  /** 记录：视频 */
   videos: string[]
+  /** 记录：音频 */
   audios: string[]
+  /** 记录：文件 */
   files: string[]
+  /** 记录：地点 */
   location: [[number, number], string] | []
+  /** 记录：人脉 */
   people: string[]
+  /** 记录：其他详细 */
   info: {
-    title?: string // log的标题
-    link?: string // 爬虫数据的原始链接
-    markdown?: boolean // 是否是MD类型
+    /** 记录：标题 */
+    title?: string // 
+    /** 记录： 爬虫数据的原始链接 */
+    link?: string
+    /** 记录： 是否是MD类型 */
+    markdown?: boolean
+    /** 记录： 爬虫数据的来源 */
     source?: string // 爬虫数据的来源
-    todo?: {
-      complete: boolean // 是否完成
-      level: number // 优先级
-    }
   }
 }
 
@@ -144,9 +162,7 @@ export type LogFileItem = 'imgs' | 'videos' | 'audios' | 'files'
 //   [K in LogFileItem]: LogFileTypes[K]
 // }
 
-/**
- * 编辑中的log类型，只能填入log属性
- */
+/** 编辑中的log类型，只能填入log属性 */
 export type LogEdit = Partial<LogVO>
 
 /**
