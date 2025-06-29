@@ -71,14 +71,12 @@ export type LogVO = {
   audios: string[]
   /** 记录：文件 */
   files: string[]
-  /** 记录：地点 */
-  location: [[number, number], string] | []
   /** 记录：人脉 */
   people: string[]
+  /** 记录：地点 */
+  location: [[number, number], string] | []
   /** 记录：其他详细 */
   info: {
-    /** 记录：标题 */
-    title?: string // 
     /** 记录： 爬虫数据的原始链接 */
     link?: string
     /** 记录： 是否是MD类型 */
@@ -142,54 +140,11 @@ export type LogItem =
   | 'location'
   | 'people'
 
-/**
- * log中代表文件的项，需要和COS交互的属性
- * 方便一些方法循环
- */
+/** log中代表文件的项，需要和COS交互的属性，方便一些方法循环 */
 export type LogFileItem = 'imgs' | 'videos' | 'audios' | 'files'
-
-// type LogFileTypes = {
-//   imgs: LogImgFile[]
-//   videos: KeyFile[]
-//   audios: KeyFile[]
-//   files: KeyFile[]
-// }
-
-/**
- * log上传前的文件类型要求（最后都是COS文件）
- */
-// export type LogFiles = {
-//   [K in LogFileItem]: LogFileTypes[K]
-// }
 
 /** 编辑中的log类型，只能填入log属性 */
 export type LogEdit = Partial<LogVO>
 
-/**
- * 编辑中的log类型，只能填入log属性
- */
+/** 编辑中的log类型，只能填入log属性 */
 // export type RelationEdit = Partial<Relation>
-
-/**
- * 普通文件，加入上传要用的key，
- * key为：文件名，上传时间-序号-文件名，
- * 避免上传到COS时，文件名重复覆盖
- */
-// export interface KeyFile extends UploadFile {
-//   key?: string
-// }
-
-/**
- * 图片文件：原图，压缩图，95压缩图
- */
-// export interface LogImgFile extends KeyFile {
-//   raw?: ExifUploadRawFile
-//   compressImg?: ExifImgFile // 压缩文件
-//   compressImg95?: ExifImgFile // 95压缩文件
-// }
-
-/**
- * 结合 El的UploadRawFile 和 ExifImgFile，
- * 就是有EXIF信息的El Raw文件
- */
-// export interface ExifUploadRawFile extends UploadRawFile, ExifImgFile {}
