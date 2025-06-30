@@ -7,7 +7,7 @@ import EditTime from './comp/EditTime.vue'
 import EditTags from './comp/EditTags.vue'
 import EditImgs from './comp/EditImgs.vue'
 
-const { logEdit, uploadInfo, releaseLog } = useLogRelease()
+const { logEdit, logFile, uploadInfo, releaseLog } = useLogRelease()
 
 const visible = reactive<{ [key in LogItem]: boolean }>({
   content: true, // 默认必须有输入框
@@ -108,7 +108,11 @@ const delItem = (item: LogItem) => {
 
     <EditTags v-if="visible.tags && logEdit.tags" v-model="logEdit.tags" />
 
-    <EditImgs v-if="visible.imgs && logEdit.imgs" v-model="logEdit.imgs" />
+    <EditImgs
+      v-if="visible.imgs && logEdit.imgs"
+      v-model="logEdit.imgs"
+      v-model:files="logFile.imgs"
+    />
   </div>
   {{ logEdit }}
 </template>

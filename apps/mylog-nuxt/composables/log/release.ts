@@ -10,7 +10,7 @@ export const useLogRelease = () => {
   })
 
   // 存入文件对象
-  const files = reactive<LogFiles>({
+  const logFile = reactive<LogFiles>({
     imgs: [],
     videos: [],
     audios: [],
@@ -26,6 +26,7 @@ export const useLogRelease = () => {
 
   return {
     logEdit,
+    logFile,
     uploadInfo,
     releaseLog,
   }
