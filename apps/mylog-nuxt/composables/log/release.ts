@@ -1,3 +1,4 @@
+import { AnyArray } from '@mylog-full/mix/constant'
 import type { LogEdit, LogFileItem } from '@mylog-full/mix/types'
 import dayjs from 'dayjs'
 
@@ -58,4 +59,23 @@ export interface LogImgFile extends KeyFile {
   raw?: ExifUploadRawFile
   compressImg?: ExifImgFile // 压缩文件
   compressImg95?: ExifImgFile // 95压缩文件
+}
+
+/** 用于遍历定义顺序，files最后遍历时兜底 */ 
+export const logFileItem: LogFileItem[] = ['imgs', 'videos', 'audios', 'files']
+
+/** 允许的文件类型 */
+export const fileType: { [K in LogFileItem]: string[] } = {
+  imgs: ['image/png', 'image/gif', 'image/jpeg', 'image/jpg'],
+  videos: ['video/mp4', 'video/quicktime'],
+  audios: ['audios/mp3'], // 这里随便写的
+  files: AnyArray, // 任何其他文件
+}
+
+/** 文件的大小限制，字节 */
+export const fileSize: { [K in LogFileItem]: number } = {
+  imgs: 10 * 1024 * 1024,
+  videos: 500 * 1024 * 1024,
+  audios: 100 * 1024 * 1024,
+  files: 2000 * 1024 * 1024,
 }

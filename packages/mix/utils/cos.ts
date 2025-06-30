@@ -9,13 +9,11 @@ const cos = new COS({
    * 异步获取临时密钥 getAuthorization 必选参数
    * 初始化时不会调用，只有调用 cos 方法（例如 cos.putObject）时才会进入
    */
-  getAuthorization: function (options, callback) {
-    console.log('🐔请求');
-    
+  getAuthorization(options, callback) {
     // 获取临时密钥接口 API
-    fetch(baseURL + '/cos/get_credential', { method: 'POST' }).then(
+    fetch(baseURL + '/cos/get_credential', { method: 'GET' }).then(
       (data: any) => {
-        console.log('🐔22', data)
+        console.log('LSQ> /cos/get_credential: ', data)
 
         if (!data) {
           console.error(
@@ -40,6 +38,7 @@ const cos = new COS({
 export default cos
 
 let index = 1 // 文件名的索引
+
 /**
  * 获取文件Key封装，要记得自己给index++，不然会一直是0
  * @param filename 文件名

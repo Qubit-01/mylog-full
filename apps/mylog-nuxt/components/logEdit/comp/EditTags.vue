@@ -72,7 +72,7 @@ const inputConfirm = () => {
       <ElInput
         v-if="inputVisible"
         ref="inputDom"
-        v-model="inputValue"
+        v-model.trim="inputValue"
         maxlength="20"
         :size="size === 'large' ? '' : 'small'"
         @keyup.enter="inputConfirm"
