@@ -22,7 +22,12 @@
 <script lang="ts" setup>
 import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
 import { type UploadFiles } from 'element-plus'
-import { fileType, logFileItem, type KeyFile, type LogImgFile } from '~/composables/log/release'
+import {
+  fileType,
+  logFileItem,
+  type KeyFile,
+  type LogImgFile,
+} from '~/composables/log/release'
 import { Plus } from '@element-plus/icons-vue'
 import { toFileUrl } from '@mylog-full/mix/cos'
 
@@ -117,51 +122,6 @@ const onChange = async (file: KeyFile, files: UploadFiles) => {
 // onUnmounted(() => {
 //   filesModel.value = []
 // })
-
-// 自动用Exif信息补全
-// const useExif = () => {
-//   let exif = null
-//   const flag = { logtime: false, location: false }
-//   for (const img of filesModel.value) {
-//     exif = img.raw!.exifdata
-//     if (!Object.keys(exif).length) continue
-
-//     if (!flag.logtime) {
-//       let dateTime =
-//         exif.DateTimeOriginal.value[0] || // 照片在被拍下来的日期/时间，通常和DateTime一样
-//         exif.DateTime.value[0] || // 图像最后一次被修改时的日期/时间 "YYYY:MM:DD HH:MM:SS"
-//         exif.DateTimeDigitized.value[0] // 照片被数字化时的日期/时间
-
-//       console.log(dateTime)
-//       if (dateTime) {
-//         // 'YYYY:MM:DD HH:MM:SS' 转为 'YYYY-MM-DD HH:mm:ss'
-//         dateTime = dateTime.replace(':', '-').replace(':', '-')
-//         setItem('logtime', dayjs(dateTime))
-//         flag.logtime = true
-//       }
-//     }
-
-//     if (!flag.location) {
-//       let [lng, lat] = [exif.GPSLongitude.value, exif.GPSLatitude.value]
-//       if (lng && lat) {
-//         const lnglat = getLnglatByExif(lng, lat)
-//         // 图片里面是GPS坐标，要转
-//         AMap.convertFrom(lnglat, 'gps', (status: string, result: any) => {
-//           // status：complete 查询成功，no_data 无结果，error 错误
-//           // 查询成功时，result.locations 即为转换后的高德坐标系
-//           if (status === 'complete' && result.info === 'ok') {
-//             setItem('location', [l2v(result.locations[0]), ''])
-//             flag.location = true
-//           }
-//         })
-//       }
-//     }
-
-//     if (flag.logtime && flag.location) return
-//   }
-
-//   if (!flag.logtime && !flag.location) ElMessage.error('没有提取到信息')
-// }
 </script>
 <!-- 
   第一行是图片，和上传组件
@@ -202,27 +162,13 @@ const onChange = async (file: KeyFile, files: UploadFiles) => {
         list-type="picture-card"
         multiple
         drag
-        :on-change="onChange"
+        :on-change
         :auto-upload="false"
       >
         <ElIcon><Plus /></ElIcon>
       </ElUpload>
     </div>
-    <!-- <div>
-      <ElButton
-        :disabled="filesModel.length === 0"
-        @click="useExif"
-        size="small"
-      >
-        提取时间位置
-      </ElButton>
-    </div> -->
-
-    <!--
-    <el-switch v-if="editNote.noteImgs" v-model="editNote.isRawImgs" size="small" inline-prompt active-text="原图"
-      inactive-text="高清" />
-    <span style="font-size: 12px;color:var(--mini-text-color)">图片小于{{ SIZE }}MB</span>
-  --></div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
