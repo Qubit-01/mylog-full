@@ -38,9 +38,13 @@ const filesModel = defineModel<LogImgFile[]>('files', { required: true })
 
 // 原有文件：编辑模块要传入一些图片进来
 const imgsOld = ref([...imgs.value])
-const { addFile, setItem } = defineProps<{
-  addFile: (item: LogFileItem, file: KeyFile) => void
+const { setItem } = defineProps<{
   setItem: <T extends LogItem>(item: T, data: LogEdit[T]) => void
+}>()
+
+const emits = defineEmits<{
+  /** 给其他文件列表添加文件，不是图片时用 */
+  (e: 'addFile', item: LogFileItem, file: KeyFile): void
 }>()
 
 // let index = 1 // 给图片计数，用于命名
@@ -60,18 +64,16 @@ const { addFile, setItem } = defineProps<{
 const onChange = async (file: KeyFile, files: UploadFiles) => {
   const raw = file.raw!
 
-  // Todo: 判断大小还没做
-
   // 文件名，现在是任何文件都接收，所以都要加key
   // file.key = getKey(file.name)
 
-  // files 项的indexOf永远返回0，它一定会是最后兜底的
+  // 文件按类型归档
   for (const type of logFileItem) {
     if (fileType[type].indexOf(raw.type) > -1) {
       // 如果匹配到了其他类型，弹出后加进对应的filesModel
       if (type !== 'imgs') {
         ElMessage('检测到非图片文件，已自动归类')
-        addFile(type, files.pop()!)
+        emits('addFile', type, files.pop()!)
       }
       break // 匹配到了就要退出
     }
