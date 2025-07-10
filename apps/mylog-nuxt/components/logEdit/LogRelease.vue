@@ -34,13 +34,11 @@ const delItem = (item: LogItem) => {
 
 // watchEffect(() => {
 //   console.log('LogRelease watch logEdit:', ControlIconsRef.value?.visible);
-
 // })
 
 // onMounted(() => {
 //   // 初始化时可以设置默认的编辑项
 //   ControlIconsRef.value?.visible;
-
 // })
 </script>
 <!-- 

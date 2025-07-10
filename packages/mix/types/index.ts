@@ -100,6 +100,8 @@ type LogVOEditWithFiles = {
 
 /** log中代表文件的项，需要和COS交互的属性，方便一些方法循环 */
 export type LogFileItem = keyof LogVOEditWithFiles
+/** 用于遍历定义顺序，files最后遍历时兜底 */
+export const logFileItem: LogFileItem[] = ['imgs', 'videos', 'audios', 'files'] as const
 
 /** 过滤器对象 */
 export type LogFilter = {

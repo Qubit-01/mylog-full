@@ -54,6 +54,7 @@ export const useLogRelease = () => {
 }
 
 /** 类型定义 *************************/
+/** 这里只定义文件有关的类型，看后面有没有单独提出去的必要 */
 
 /** log上传前的文件类型要求（最后都是COS文件） */
 export type LogFiles = {
@@ -67,24 +68,21 @@ type LogFileTypes = {
   files: KeyFile[]
 }
 
-/** 普通文件，加入上传要用的key，避免上传到COS时，文件名重复覆盖 */
+/** 带 key 的 UploadFile */
 export interface KeyFile extends UploadFile {
   /** 文件名：上传时间-序号-文件名， */
   key?: string
 }
 
-/** 结合 El的UploadRawFile 和 ExifImgFile，就是有EXIF信息的El Raw文件 */
-export interface ExifUploadRawFile extends UploadRawFile, ExifImgFile {}
+/** 结合 El的UploadRawFile 和 ExifImgFile，就是有EXIF信息的El Raw文件 */ // ExifImgFile
+export interface ExifUploadRawFile extends UploadRawFile {}
 
 /** 图片文件：原图，压缩图，95压缩图 */
 export interface LogImgFile extends KeyFile {
   raw?: ExifUploadRawFile
-  compressImg?: ExifImgFile // 压缩文件
-  compressImg95?: ExifImgFile // 95压缩文件
+  // compressImg?: ExifImgFile // 压缩文件
+  // compressImg95?: ExifImgFile // 95压缩文件
 }
-
-/** 用于遍历定义顺序，files最后遍历时兜底 */
-export const logFileItem: LogFileItem[] = ['imgs', 'videos', 'audios', 'files']
 
 /** 允许的文件类型 */
 export const fileType: { [K in LogFileItem]: string[] } = {

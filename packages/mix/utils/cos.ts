@@ -45,7 +45,7 @@ let index = 1 // 文件名的索引
  * @param index 文件索引
  * @returns 文件不重复的Key
  */
-export const getKey = (filename: string) =>
+export const getFileKey = (filename: string) =>
   `${dayjs().format('YYMMDD_HHmmss')}_${index++}-${filename}`
 
 /**

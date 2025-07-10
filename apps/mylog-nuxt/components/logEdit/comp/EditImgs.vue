@@ -2,10 +2,18 @@
   图片上传组件
   会向files.imgs里面注入COS.UploadFileItemParams[]值
 
+  1. 可以传入现有的图片列表 imgs
+  2. 会直接修改传入的 imgs
+
+  逻辑
+  - 挂载组件时，可能外部会传入现有的图片，此时 imgs = imgsOld = 现有的列表
+  - 上传图片时，
+    - 加 key
+    - 判断文件类型，归档
+
   添加图片的逻辑：如果添加的文件是不是图片文件
   1. 是定义了类型的文件，就放进相应files项中。
   2. 其他文件，放进files.files中
-
 
   图片压缩、上传，图片EXIF信息解析
   ElUpload组件文档：https://element-plus.org/zh-CN/component/upload.html#%E5%B1%9E%E6%80%A7
@@ -20,67 +28,61 @@
   * 其中每个文件都有exifdata和iptcdata
 -->
 <script lang="ts" setup>
-import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
-import { type UploadFiles } from 'element-plus'
+import { logFileItem, type LogFileItem } from '@mylog-full/mix/types'
 import {
   fileType,
-  logFileItem,
   type KeyFile,
   type LogImgFile,
 } from '~/composables/log/release'
 import { Plus } from '@element-plus/icons-vue'
-import { toFileUrl } from '@mylog-full/mix/cos'
+import { getFileKey } from '@mylog-full/mix/cos'
 
-// 文件名: 首次传入的数据会被imgsOld记录，然后立即被watch修改
+/** 外部文件名列表: 首次传入的数据会被imgsOld记录，然后立即被watch修改 */
 const imgs = defineModel<string[]>({ required: true })
-// 外部传入的files，要朝里面放入cos文件对象。
-const filesModel = defineModel<LogImgFile[]>('files', { required: true })
+/** 外部文件列表 */
+const files = defineModel<LogImgFile[]>('files', { required: true })
 
-// 原有文件：编辑模块要传入一些图片进来
+/** 原有文件拷贝：组件内要用于删除 */
 const imgsOld = ref([...imgs.value])
-const { setItem } = defineProps<{
-  setItem: <T extends LogItem>(item: T, data: LogEdit[T]) => void
-}>()
+// const { setItem } = defineProps<{
+//   setItem: <T extends LogItem>(item: T, data: LogEdit[T]) => void
+// }>()
 
 const emits = defineEmits<{
   /** 给其他文件列表添加文件，不是图片时用 */
   (e: 'addFile', item: LogFileItem, file: KeyFile): void
 }>()
 
-// let index = 1 // 给图片计数，用于命名
 // const count = ref(0) // 用于压缩时控制按钮
 // watchEffect(() => count ? props.setIsLoad(true) : props.setIsLoad(false)) // 要控制外层的加载状态
 
-// 更新imgs文件名列表
+// 更新imgs文件名列表：根据 imgsOld(删除时) 和 文件列表 变化
 // watch(
-//   [imgsOld, () => filesModel.value.length],
+//   [imgsOld, () => files.value.length],
 //   () => {
-//     imgs.value = [...imgsOld.value, ...filesModel.value.map((i) => i.key!)]
+//     imgs.value = [...imgsOld.value, ...files.value.map((i) => i.key!)]
 //   },
 //   { immediate: true },
 // )
 
-// :on-change 状态变化，添加文件、上传成功、失败
-const onChange = async (file: KeyFile, files: UploadFiles) => {
-  const raw = file.raw!
-
+/** 状态变化，添加文件、上传成功、失败时执行 */
+const onChange = async (file: KeyFile, files: KeyFile[]) => {
   // 文件名，现在是任何文件都接收，所以都要加key
-  // file.key = getKey(file.name)
-
-  // 文件按类型归档
-  // for (const type of logFileItem) {
-  //   if (fileType[type].indexOf(raw.type) > -1) {
-  //     // 如果匹配到了其他类型，弹出后加进对应的filesModel
-  //     if (type !== 'imgs') {
-  //       ElMessage('检测到非图片文件，已自动归类')
-  //       emits('addFile', type, files.pop()!)
-  //     }
-  //     break // 匹配到了就要退出
-  //   }
-  // }
+  file.key = getFileKey(file.name)
+  // 文件按类型归档，如果匹配到了其他类型，弹出后加进对应的files
+  for (const type of logFileItem) {
+    if (fileType[type].indexOf(file.raw!.type) > -1) {
+      if (type !== 'imgs') {
+        ElMessage('检测到非图片文件，已自动归类')
+        emits('addFile', type, files.pop()!)
+      }
+      break
+    }
+  }
 }
 
 // const delImgOld = (img: string) => {
+//   imgsOld.value
 //   imgsOld.value = imgsOld.value.filter((i) => i !== img)
 // }
 
@@ -111,9 +113,9 @@ const onChange = async (file: KeyFile, files: UploadFiles) => {
 
 // 现在处理图片统一到watch中，因为图片列表可能被其他组件修改
 // watch(
-//   () => filesModel.value.length,
+//   () => files.value.length,
 //   () => {
-//     filesModel.value.forEach((file: LogImgFile) => {
+//     files.value.forEach((file: LogImgFile) => {
 //       // 如果没被处理过，就处理图片
 //       if (!file.compressImg) handleImg(file)
 //     })
@@ -121,9 +123,9 @@ const onChange = async (file: KeyFile, files: UploadFiles) => {
 //   { immediate: true },
 // )
 
-// onUnmounted(() => {
-//   filesModel.value = []
-// })
+onUnmounted(() => {
+  files.value = []
+})
 </script>
 <!-- 
   第一行是图片，和上传组件
@@ -140,7 +142,7 @@ const onChange = async (file: KeyFile, files: UploadFiles) => {
      -->
     <div class="all-imgs">
       <!-- 模仿element upload组件的卡片 -->
-      <div class="viewer-imgs">
+      <!-- <div class="viewer-imgs">
         <ul class="el-upload-list el-upload-list--picture-card">
           <li
             v-for="img in imgsOld"
@@ -155,11 +157,11 @@ const onChange = async (file: KeyFile, files: UploadFiles) => {
             </span>
           </li>
         </ul>
-      </div>
+      </div> -->
 
       <!-- 真正上传的 -->
       <ElUpload
-        v-model:file-list="filesModel"
+        v-model:file-list="files"
         class="ElUpload"
         list-type="picture-card"
         multiple
