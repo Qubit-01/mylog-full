@@ -68,16 +68,16 @@ const onChange = async (file: KeyFile, files: UploadFiles) => {
   // file.key = getKey(file.name)
 
   // 文件按类型归档
-  for (const type of logFileItem) {
-    if (fileType[type].indexOf(raw.type) > -1) {
-      // 如果匹配到了其他类型，弹出后加进对应的filesModel
-      if (type !== 'imgs') {
-        ElMessage('检测到非图片文件，已自动归类')
-        emits('addFile', type, files.pop()!)
-      }
-      break // 匹配到了就要退出
-    }
-  }
+  // for (const type of logFileItem) {
+  //   if (fileType[type].indexOf(raw.type) > -1) {
+  //     // 如果匹配到了其他类型，弹出后加进对应的filesModel
+  //     if (type !== 'imgs') {
+  //       ElMessage('检测到非图片文件，已自动归类')
+  //       emits('addFile', type, files.pop()!)
+  //     }
+  //     break // 匹配到了就要退出
+  //   }
+  // }
 }
 
 // const delImgOld = (img: string) => {

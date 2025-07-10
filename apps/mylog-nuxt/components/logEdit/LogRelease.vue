@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { useLogRelease } from '~/composables/log/release'
+import { getInitValue, useLogRelease } from '~/composables/log/release'
 import ControlIcons from './comp/ControlIcons.vue'
 import type { LogItem } from '@mylog-full/mix/types'
-import dayjs from 'dayjs'
 import EditTime from './comp/EditTime.vue'
 import EditTags from './comp/EditTags.vue'
 import EditImgs from './comp/EditImgs.vue'
@@ -22,28 +21,8 @@ const visible = reactive<{ [key in LogItem]: boolean }>({
   info: false,
 })
 
-/** 添加编辑项，并设置默认值 */
-const addItem = (item: LogItem) => {
-  switch (item) {
-    case 'logtime':
-      logEdit[item] = dayjs()
-      break
-    case 'content':
-      logEdit[item] = ''
-      break
-    case 'tags':
-    case 'imgs':
-    case 'videos':
-    case 'audios':
-    case 'files':
-    case 'people':
-    case 'location':
-      logEdit[item] = []
-      break
-    case 'info':
-      logEdit[item] = {}
-      break
-  }
+const onAddIcon = (item: LogItem) => {
+  logEdit[item] = getInitValue(item)
   visible[item] = true
 }
 
@@ -92,7 +71,7 @@ const delItem = (item: LogItem) => {
       </ElRadioGroup>
       <ElButton size="small" type="primary" @click="releaseLog">发布</ElButton>
     </div>
-    <ControlIcons v-model="visible" @add="addItem" @del="delItem" />
+    <ControlIcons v-model="visible" @add="onAddIcon" @del="delItem" />
 
     <ElInput
       v-model="logEdit.content"

@@ -1,8 +1,28 @@
 import { AnyArray } from '@mylog-full/mix/constant'
-import type { LogEdit, LogFileItem } from '@mylog-full/mix/types'
+import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
 import dayjs from 'dayjs'
 
 import type { UploadFile, UploadRawFile } from 'element-plus'
+
+/** 获取 Log 项的默认值 */
+export const getInitValue = (item: LogItem): any => {
+  switch (item) {
+    case 'logtime':
+      return dayjs()
+    case 'content':
+      return ''
+    case 'tags':
+    case 'imgs':
+    case 'videos':
+    case 'audios':
+    case 'files':
+    case 'people':
+    case 'location':
+      return []
+    case 'info':
+      return {}
+  }
+}
 
 export const useLogRelease = () => {
   const logEdit = reactive<LogEdit>({
@@ -33,6 +53,8 @@ export const useLogRelease = () => {
   }
 }
 
+/** 类型定义 *************************/
+
 /** log上传前的文件类型要求（最后都是COS文件） */
 export type LogFiles = {
   [K in LogFileItem]: LogFileTypes[K]
@@ -61,7 +83,7 @@ export interface LogImgFile extends KeyFile {
   compressImg95?: ExifImgFile // 95压缩文件
 }
 
-/** 用于遍历定义顺序，files最后遍历时兜底 */ 
+/** 用于遍历定义顺序，files最后遍历时兜底 */
 export const logFileItem: LogFileItem[] = ['imgs', 'videos', 'audios', 'files']
 
 /** 允许的文件类型 */

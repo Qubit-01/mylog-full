@@ -48,7 +48,7 @@ export type UserVO = {
 }
 
 /** LogVO：都是必选，没有就是空数组 */
-export type LogVO = {
+export interface LogVO extends LogVOEdit {
   /** LogId */
   id: number
   /** 发布者的id */
@@ -57,20 +57,16 @@ export type LogVO = {
   type: 'public' | 'log' | 'tag'
   /** 发布时间 */
   sendtime: dayjs.Dayjs
+}
+
+/** 可以被编辑的 Log 项 */
+interface LogVOEdit extends LogVOEditWithFiles {
   /** 记录：时间 */
   logtime: dayjs.Dayjs
   /** 记录：内容 */
   content: string
   /** 记录：标签 */
   tags: string[]
-  /** 记录：图片 */
-  imgs: string[]
-  /** 记录：视频 */
-  videos: string[]
-  /** 记录：音频 */
-  audios: string[]
-  /** 记录：文件 */
-  files: string[]
   /** 记录：人脉 */
   people: string[]
   /** 记录：地点 */
@@ -86,23 +82,24 @@ export type LogVO = {
   }
 }
 
-//   /** 人脉的数据结构 */
-//   export interface Relation {
-//     id: string
-//     userid: string // 创建者
-//     username: string
-//     from: string // 前节点，这里用字符串转换判断是不是组节点
-//     name: string // 人的名字
-//     info: {
-//       // 一级放入系统要用的数据，键的名字由开发者设置，_other里面的由用户定义
-//       label?: string // 线条标签
-//       img?: string // 头像
-//       phone?: string // 手机号码
-//       _other: {
-//         [key in string]: any // 自定义项
-//       }
-//     }
-//   }
+
+/** 用户可以编辑的项的 key */
+export type LogItem = keyof LogVOEdit
+
+/** 需要文件的项 */
+type LogVOEditWithFiles = {
+  /** 记录：图片 */
+  imgs: string[]
+  /** 记录：视频 */
+  videos: string[]
+  /** 记录：音频 */
+  audios: string[]
+  /** 记录：文件 */
+  files: string[]
+}
+
+/** log中代表文件的项，需要和COS交互的属性，方便一些方法循环 */
+export type LogFileItem = keyof LogVOEditWithFiles
 
 /** 过滤器对象 */
 export type LogFilter = {
@@ -127,24 +124,5 @@ export type LogFilter = {
   exclude: string[] // 排除，填入id
 }
 
-/** 用户可以设置的项 */
-export type LogItem =
-  | 'content'
-  | 'info'
-  | 'logtime'
-  | 'tags'
-  | 'imgs'
-  | 'videos'
-  | 'audios'
-  | 'files'
-  | 'location'
-  | 'people'
-
-/** log中代表文件的项，需要和COS交互的属性，方便一些方法循环 */
-export type LogFileItem = 'imgs' | 'videos' | 'audios' | 'files'
-
 /** 编辑中的log类型，只能填入log属性 */
 export type LogEdit = Partial<LogVO>
-
-/** 编辑中的log类型，只能填入log属性 */
-// export type RelationEdit = Partial<Relation>
