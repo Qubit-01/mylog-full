@@ -77,10 +77,10 @@ export const vDblclick: Directive = (el: HTMLDivElement, { value }) => {
  * @returns
  * @deprecated
  */
-export function deepMerge(
+export const deepMerge = (
   target: { [attrName: string]: any },
   source: { [attrName: string]: any },
-) {
+) => {
   for (const key in source) {
     if (source[key] instanceof Object) {
       if (!target[key]) Object.assign(target, { [key]: {} })
@@ -100,7 +100,7 @@ export function deepMerge(
  * @returns 深拷贝后的对象
  * @deprecated
  */
-export function clone<T>(obj: T): T {
+export const clone = <T>(obj: T): T => {
   const newObj: any = Array.isArray(obj) ? [] : {}
 
   if (obj && typeof obj === 'object') {
@@ -127,7 +127,7 @@ export function clone<T>(obj: T): T {
 // }
 
 // 给一个元素id，滚动条跳转
-export function goAnchor(e: string) {
+export const goAnchor = (e: string) => {
   const el = document.querySelector('#' + e)
   if (el)
     el.scrollIntoView({
@@ -147,7 +147,7 @@ export function goAnchor(e: string) {
 // }
 
 // 将字符串传入剪贴板
-export function writeClipboard(str: string): Promise<void> {
+export const writeClipboard = (str: string): Promise<void> => {
   const clipboardObj = navigator.clipboard
   if (!clipboardObj) return Promise.reject('浏览器不支持 navigator.clipboard')
   return clipboardObj.writeText(str)
@@ -157,15 +157,11 @@ export function writeClipboard(str: string): Promise<void> {
  * Base64 编码
  * @param str
  */
-export function Encode64(str: string) {
-  // 编码
+export const Encode64 = (str: string) => {
   return btoa(
-    encodeURIComponent(str).replace(
-      /%([0-9A-F]{2})/g,
-      function toSolidBytes(match, p1) {
-        // @ts-ignore
-        return String.fromCharCode('0x' + p1)
-      },
+    encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (_, p1) =>
+      // @ts-ignore
+      String.fromCharCode('0x' + p1),
     ),
   )
 }
@@ -175,14 +171,11 @@ export function Encode64(str: string) {
  * @param str
  * @returns
  */
-export function Decode64(str: string) {
-  // 解码
+export const Decode64 = (str: string) => {
   return decodeURIComponent(
     atob(str)
       .split('')
-      .map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-      })
+      .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
       .join(''),
   )
 }

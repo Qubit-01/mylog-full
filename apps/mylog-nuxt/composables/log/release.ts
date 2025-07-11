@@ -1,7 +1,6 @@
 import { AnyArray } from '@mylog-full/mix/constant'
 import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
 import dayjs from 'dayjs'
-
 import type { UploadFile, UploadRawFile } from 'element-plus'
 
 /** 获取 Log 项的默认值 */
@@ -71,7 +70,7 @@ type LogFileTypes = {
 /** 带 key 的 UploadFile */
 export interface KeyFile extends UploadFile {
   /** 文件名：上传时间-序号-文件名， */
-  key?: string
+  key: string
 }
 
 /** 结合 El的UploadRawFile 和 ExifImgFile，就是有EXIF信息的El Raw文件 */ // ExifImgFile

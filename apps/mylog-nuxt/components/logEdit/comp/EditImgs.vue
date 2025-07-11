@@ -36,37 +36,50 @@ import {
 } from '~/composables/log/release'
 import { Plus } from '@element-plus/icons-vue'
 import { getFileKey } from '@mylog-full/mix/cos'
+import type { UploadFile, UploadFiles } from 'element-plus'
 
-/** 外部文件名列表: 首次传入的数据会被imgsOld记录，然后立即被watch修改 */
+/** 外部文件名列表: 等于 imgsOld + files.map(key) */
 const imgs = defineModel<string[]>({ required: true })
 /** 外部文件列表 */
 const files = defineModel<LogImgFile[]>('files', { required: true })
-
-/** 原有文件拷贝：组件内要用于删除 */
-const imgsOld = ref([...imgs.value])
 // const { setItem } = defineProps<{
 //   setItem: <T extends LogItem>(item: T, data: LogEdit[T]) => void
 // }>()
-
 const emits = defineEmits<{
   /** 给其他文件列表添加文件，不是图片时用 */
   (e: 'addFile', item: LogFileItem, file: KeyFile): void
 }>()
+/** 原有文件拷贝：组件内要用于删除 */
+const imgsOld = ref([...imgs.value, ...files.value.map((i) => i.key)])
+
+// 更新imgs文件名列表：根据 imgsOld(删除时) 和 文件列表 变化
+watch([imgsOld, files], ([imgsOld, files]) => {
+  imgs.value = [...imgsOld, ...files.map((i) => i.key)]
+})
+// 组件卸载时清空文件列表
+onUnmounted(() => {
+  files.value = []
+})
+
+// 压缩图片，图片列表可能被从外部修改
+watch(
+  files,
+  (files) => {
+    files.forEach((file: LogImgFile) => {
+      // 如果没被处理过，就处理图片
+      if (!file.compressImg) handleImg(file)
+    })
+  },
+  { immediate: true },
+)
 
 // const count = ref(0) // 用于压缩时控制按钮
 // watchEffect(() => count ? props.setIsLoad(true) : props.setIsLoad(false)) // 要控制外层的加载状态
 
-// 更新imgs文件名列表：根据 imgsOld(删除时) 和 文件列表 变化
-// watch(
-//   [imgsOld, () => files.value.length],
-//   () => {
-//     imgs.value = [...imgsOld.value, ...files.value.map((i) => i.key!)]
-//   },
-//   { immediate: true },
-// )
-
 /** 状态变化，添加文件、上传成功、失败时执行 */
-const onChange = async (file: KeyFile, files: KeyFile[]) => {
+const onChange = async (_file: UploadFile, _files: UploadFiles) => {
+  const file = _file as KeyFile
+  const files = _files as KeyFile[]
   // 文件名，现在是任何文件都接收，所以都要加key
   file.key = getFileKey(file.name)
   // 文件按类型归档，如果匹配到了其他类型，弹出后加进对应的files
@@ -87,45 +100,32 @@ const onChange = async (file: KeyFile, files: KeyFile[]) => {
 // }
 
 // 处理图片函数
-// const handleImg = async (file: LogImgFile) => {
-//   const raw = file.raw!
+const handleImg = async (file: LogImgFile) => {
+  const raw = file.raw!
 
-//   // 其他文件上传类型不会自动键url，图片要建
-//   if (!file.url) file.url = URL.createObjectURL(raw)
+  // 其他文件上传类型不会自动键url，图片要建
+  if (!file.url) file.url = URL.createObjectURL(raw)
 
-//   // exifdata 直接被写入了file.raw中
-//   await getExif(raw)
+  // exifdata 直接被写入了file.raw中
+  // await getExif(raw)
 
-//   // raw原始文件，compressImg压缩文件，compressImg95轻微压缩
-//   count.value++
-//   compressImg(raw).then((res: any) => {
-//     res.exifdata = raw.exifdata
-//     file.compressImg = res
-//     count.value--
-//   })
-//   count.value++
-//   compressImg(raw, 0.98).then((res: any) => {
-//     res.exifdata = raw.exifdata
-//     file.compressImg95 = res
-//     count.value--
-//   })
-// }
+  
 
-// 现在处理图片统一到watch中，因为图片列表可能被其他组件修改
-// watch(
-//   () => files.value.length,
-//   () => {
-//     files.value.forEach((file: LogImgFile) => {
-//       // 如果没被处理过，就处理图片
-//       if (!file.compressImg) handleImg(file)
-//     })
-//   },
-//   { immediate: true },
-// )
+  // // raw原始文件，compressImg压缩文件，compressImg95轻微压缩
+  // count.value++
+  // compressImg(raw).then((res: any) => {
+  //   res.exifdata = raw.exifdata
+  //   file.compressImg = res
+  //   count.value--
+  // })
+  // count.value++
+  // compressImg(raw, 0.98).then((res: any) => {
+  //   res.exifdata = raw.exifdata
+  //   file.compressImg95 = res
+  //   count.value--
+  // })
+}
 
-onUnmounted(() => {
-  files.value = []
-})
 </script>
 <!-- 
   第一行是图片，和上传组件
