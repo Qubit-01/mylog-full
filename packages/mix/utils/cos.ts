@@ -3,6 +3,7 @@ import { baseURL, Bucket, Region, BucketCDN } from './constant'
 import dayjs from 'dayjs'
 // import type { LogFiles } from '@/types'
 import { downloadFile } from '.'
+import { inject } from 'vue'
 
 const cos = new COS({
   /**
@@ -14,11 +15,8 @@ const cos = new COS({
     fetch(baseURL + '/cos/get_credential', { method: 'GET' }).then(
       (data: any) => {
         console.log('LSQ> /cos/get_credential: ', data)
-
         if (!data) {
-          console.error(
-            'credentials invalid:\n' + JSON.stringify(data, null, 2),
-          )
+          console.error('凭证无效:\n' + JSON.stringify(data, null, 2))
           return
         }
 
@@ -39,12 +37,7 @@ export default cos
 
 let index = 1 // 文件名的索引
 
-/**
- * 获取文件Key封装，要记得自己给index++，不然会一直是0
- * @param filename 文件名
- * @param index 文件索引
- * @returns 文件不重复的Key
- */
+/** 生成文件Key 通过原始文件名 */
 export const getFileKey = (filename: string) =>
   `${dayjs().format('YYMMDD_HHmmss')}_${index++}-${filename}`
 
@@ -119,16 +112,14 @@ export const cosPath = (userid: number) => `users/${userid}/mylog/`
 export const toFileUrl = <T extends string | string[]>(
   file: T,
   prefix: string = '',
-  userid: number,
+  userid?: number,
 ): T => {
-  if (Array.isArray(file)) {
-    return file.map((f) => toFileUrl(f, prefix, userid)) as T
-  } else {
-    // 处理单个字符串的逻辑
-    return file.indexOf('http') !== 0
-      ? (`${BucketCDN}${cosPath(userid)}${prefix}${file}` as T)
+  const userid_ = userid || inject('userid', 0)
+  return Array.isArray(file)
+    ? (file.map((f) => toFileUrl(f, prefix, userid_)) as T)
+    : file.indexOf('http') !== 0
+      ? (`${BucketCDN}${cosPath(userid_)}${prefix}${file}` as T)
       : (file.replace('http://', 'https://') as T)
-  }
 }
 
 // 获取文件列表

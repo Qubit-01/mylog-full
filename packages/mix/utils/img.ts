@@ -1,16 +1,13 @@
 import * as ExifReader from 'exifreader'
 
 /**
- * 压缩图片
- * raw 6651136 6.35MB
- * 95 1500686 1.43MB
- * 20 80343 78.45KB
+ * 压缩图片：效果 raw 6.4MB | 95 1.4MB | 20 78KB
  * @param file 压缩文件
  * @param rate 压缩率，默认0.2
  * @returns
  */
 export const compressImg = (file: File, rate = 0.2): Promise<File> => {
-  function dataURLtoFile(dataurl: string, fileName: string) {
+  const dataURLtoFile = (dataurl: string, fileName: string) => {
     let arr = dataurl.split(','),
       mime = arr[0].match(/:(.*?);/)![1],
       bstr = atob(arr[1]),
@@ -31,9 +28,7 @@ export const compressImg = (file: File, rate = 0.2): Promise<File> => {
     disposeFile = new File([file], file.name, { type: file.type })
   }
   const read = new FileReader()
-  // const fileSize = parseFloat(parseInt(disposeFile['size']) / 1048576).toFixed(
-  //   2
-  // )
+  // const fileSize = parseFloat(parseInt(disposeFile['size']) / 1048576).toFixed(2)
   // 小于1m不压缩
   // if (fileSize < 1) return file;
   read.readAsDataURL(disposeFile)

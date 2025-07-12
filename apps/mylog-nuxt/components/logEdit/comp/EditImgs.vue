@@ -35,8 +35,9 @@ import {
   type LogImgFile,
 } from '~/composables/log/release'
 import { Plus } from '@element-plus/icons-vue'
-import { getFileKey } from '@mylog-full/mix/cos'
+import { getFileKey, toFileUrl } from '@mylog-full/mix/cos'
 import type { UploadFile, UploadFiles } from 'element-plus'
+import { compressImg, getExif, type ExifImgFile } from '@mylog-full/mix/img'
 
 /** 外部文件名列表: 等于 imgsOld + files.map(key) */
 const imgs = defineModel<string[]>({ required: true })
@@ -73,8 +74,8 @@ watch(
   { immediate: true },
 )
 
-// const count = ref(0) // 用于压缩时控制按钮
-// watchEffect(() => count ? props.setIsLoad(true) : props.setIsLoad(false)) // 要控制外层的加载状态
+const compressing = ref(0) // 用于压缩时控制按钮
+// watchEffect(() => compressing ? props.setIsLoad(true) : props.setIsLoad(false)) // 要控制外层的加载状态
 
 /** 状态变化，添加文件、上传成功、失败时执行 */
 const onChange = async (_file: UploadFile, _files: UploadFiles) => {
@@ -94,38 +95,24 @@ const onChange = async (_file: UploadFile, _files: UploadFiles) => {
   }
 }
 
-// const delImgOld = (img: string) => {
-//   imgsOld.value
-//   imgsOld.value = imgsOld.value.filter((i) => i !== img)
-// }
-
-// 处理图片函数
-const handleImg = async (file: LogImgFile) => {
-  const raw = file.raw!
-
-  // 其他文件上传类型不会自动键url，图片要建
-  if (!file.url) file.url = URL.createObjectURL(raw)
-
-  // exifdata 直接被写入了file.raw中
-  // await getExif(raw)
-
-  
-
-  // // raw原始文件，compressImg压缩文件，compressImg95轻微压缩
-  // count.value++
-  // compressImg(raw).then((res: any) => {
-  //   res.exifdata = raw.exifdata
-  //   file.compressImg = res
-  //   count.value--
-  // })
-  // count.value++
-  // compressImg(raw, 0.98).then((res: any) => {
-  //   res.exifdata = raw.exifdata
-  //   file.compressImg95 = res
-  //   count.value--
-  // })
+const delImgOld = (img: string) => {
+  imgsOld.value = imgsOld.value.filter((i) => i !== img)
 }
 
+/** 处理图片函数 */
+const handleImg = async (file: LogImgFile) => {
+  // 其他文件上传类型不会自动键url，图片要建
+  // if (!file.url) file.url = URL.createObjectURL(raw)
+
+  await getExif(file.raw) // exifdata 直接被写入了file.raw中
+
+  // raw原始文件，compressImg压缩文件
+  compressing.value++
+  const compressFile = (await compressImg(file.raw)) as ExifImgFile
+  compressFile.exifdata = file.raw.exifdata
+  file.compressImg = compressFile
+  compressing.value--
+}
 </script>
 <!-- 
   第一行是图片，和上传组件
@@ -142,7 +129,7 @@ const handleImg = async (file: LogImgFile) => {
      -->
     <div class="all-imgs">
       <!-- 模仿element upload组件的卡片 -->
-      <!-- <div class="viewer-imgs">
+      <div class="viewer-imgs">
         <ul class="el-upload-list el-upload-list--picture-card">
           <li
             v-for="img in imgsOld"
@@ -157,7 +144,7 @@ const handleImg = async (file: LogImgFile) => {
             </span>
           </li>
         </ul>
-      </div> -->
+      </div>
 
       <!-- 真正上传的 -->
       <ElUpload

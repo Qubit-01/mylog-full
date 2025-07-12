@@ -1,14 +1,14 @@
-import COS from 'cos-js-sdk-v5'
-import request from '@/utils/request'
-import { Bucket, Region, BucketCDN } from '@/stores/constant'
-import useGlobalStore from '@/stores/global'
-import useUserStore from '@/stores/user'
-import dayjs from 'dayjs'
-import type { LogFiles } from '@/types'
-import { downloadFile } from '.'
+import COS from "cos-js-sdk-v5";
+import request from "@/utils/request";
+import { Bucket, Region, BucketCDN } from "@/stores/constant";
+import useGlobalStore from "@/stores/global";
+import useUserStore from "@/stores/user";
+import dayjs from "dayjs";
+import type { LogFiles } from "@/types";
+import { downloadFile } from ".";
 
-const Global = useGlobalStore()
-const User = useUserStore()
+const Global = useGlobalStore();
+const User = useUserStore();
 
 /**
  * 获取临时密钥接口 API
@@ -17,11 +17,11 @@ const User = useUserStore()
  */
 const getCredential = (data?: { token?: string }): Promise<any> => {
   return request({
-    url: 'cos/get_credential',
-    method: 'get',
+    url: "cos/get_credential",
+    method: "get",
     params: { token: Global.token, ...data },
-  })
-}
+  });
+};
 
 const cos = new COS({
   /**
@@ -31,10 +31,10 @@ const cos = new COS({
    * @param callback
    */
   getAuthorization: function (options, callback) {
-    getCredential().then(data => {
+    getCredential().then((data) => {
       if (!data) {
-        console.error('credentials invalid:\n' + JSON.stringify(data, null, 2))
-        return
+        console.error("credentials invalid:\n" + JSON.stringify(data, null, 2));
+        return;
       }
 
       callback({
@@ -44,29 +44,25 @@ const cos = new COS({
         // 建议返回服务器时间作为签名的开始时间，避免用户浏览器本地时间偏差过大导致签名错误
         StartTime: data.startTime, // 时间戳，单位秒，如：1580000000
         ExpiredTime: data.expiredTime, // 时间戳，单位秒，如：1580000000
-      })
-    })
+      });
+    });
   },
-})
+});
 
-export default cos
+export default cos;
 
-let index = 1 // 文件名的索引
-/**
- * 获取文件Key封装，要记得自己给index++，不然会一直是0
- * @param filename 文件名
- * @param index 文件索引
- * @returns 文件不重复的Key
- */
+let index = 1; // 文件名的索引
+
+/** 生成文件Key 通过原始文件名 */
 export const getKey = (filename: string) =>
-  `${dayjs().format('YYMMDD_HHmmss')}_${index++}-${filename}`
+  `${dayjs().format("YYMMDD_HHmmss")}_${index++}-${filename}`;
 
 /**
  * 从files对象中，取出cos文件对象
  * @param files 文件对象
  */
 export const getCosFiles = (files: LogFiles): COS.UploadFileItemParams[] => {
-  const cosFiles: COS.UploadFileItemParams[] = []
+  const cosFiles: COS.UploadFileItemParams[] = [];
 
   // 大压缩图、95压缩图、原图。大压缩图必发，95压缩图和原图选择性发送
   // 目前先实现发 大压缩图＋原图
@@ -77,14 +73,14 @@ export const getCosFiles = (files: LogFiles): COS.UploadFileItemParams[] => {
       Region,
       Key: `${cosPath()}imgs/${file.key}`,
       Body: file.raw!,
-    })
+    });
     cosFiles.push({
       // 大压缩图
       Bucket,
       Region,
       Key: `${cosPath()}compress-imgs/${file.key}`,
       Body: file.compressImg!,
-    })
+    });
   }
   for (const file of files.videos) {
     cosFiles.push({
@@ -92,7 +88,7 @@ export const getCosFiles = (files: LogFiles): COS.UploadFileItemParams[] => {
       Region,
       Key: `${cosPath()}videos/${file.key}`,
       Body: file.raw!,
-    })
+    });
   }
   for (const file of files.audios) {
     cosFiles.push({
@@ -100,7 +96,7 @@ export const getCosFiles = (files: LogFiles): COS.UploadFileItemParams[] => {
       Region,
       Key: `${cosPath()}audios/${file.key}`,
       Body: file.raw!,
-    })
+    });
   }
   for (const file of files.files) {
     cosFiles.push({
@@ -108,11 +104,11 @@ export const getCosFiles = (files: LogFiles): COS.UploadFileItemParams[] => {
       Region,
       Key: `${cosPath()}files/${file.key}`,
       Body: file.raw!,
-    })
+    });
   }
 
-  return cosFiles
-}
+  return cosFiles;
+};
 
 /**
  * 返回如 users/[userid]/mylog/
@@ -120,7 +116,7 @@ export const getCosFiles = (files: LogFiles): COS.UploadFileItemParams[] => {
  * @returns 返回链接字符串
  */
 export const cosPath = (userid: string | undefined = undefined) =>
-  `users/${userid || User.id}/mylog/`
+  `users/${userid || User.id}/mylog/`;
 
 /**
  * 处理文件地址
@@ -132,18 +128,18 @@ export const cosPath = (userid: string | undefined = undefined) =>
  */
 export const toFileUrl = <T extends string | string[]>(
   file: T,
-  prefix: string = '',
+  prefix: string = "",
   userid?: string
 ): T => {
   if (Array.isArray(file)) {
-    return file.map(f => toFileUrl(f, prefix, userid)) as T
+    return file.map((f) => toFileUrl(f, prefix, userid)) as T;
   } else {
     // 处理单个字符串的逻辑
-    return file.indexOf('http') !== 0
+    return file.indexOf("http") !== 0
       ? (`${BucketCDN}${cosPath(userid)}${prefix}${file}` as T)
-      : (file.replace('http://', 'https://') as T)
+      : (file.replace("http://", "https://") as T);
   }
-}
+};
 
 // 获取文件列表
 // cos.getBucket(
@@ -192,25 +188,25 @@ export const myUploadFiles = (
 ): Promise<COS.UploadFilesResult> => {
   return new Promise((resolve, reject) => {
     // 没有文件，直接返回成功
-    if (params.files.length === 0) return resolve({ files: [] })
+    if (params.files.length === 0) return resolve({ files: [] });
     cos.uploadFiles(
       {
         SliceSize: 1024 * 1024 * 5,
         onProgress: function (info) {
-          var percent = info.percent * 100
-          var speed = info.speed / 1024
-          console.log('进度：' + percent + '%; 速度：' + speed + 'KB/s')
+          var percent = info.percent * 100;
+          var speed = info.speed / 1024;
+          console.log("进度：" + percent + "%; 速度：" + speed + "KB/s");
         },
         ...params,
       },
       (err, data) => {
         // 所有上传完成后的回调
-        if (err) reject(err)
-        resolve(data)
+        if (err) reject(err);
+        resolve(data);
       }
-    )
-  })
-}
+    );
+  });
+};
 
 /**
  * 自己封装的文件删除方法
@@ -221,7 +217,7 @@ export const myDeleteFiles = (
 ): Promise<COS.DeleteMultipleObjectResult> => {
   return new Promise((resolve, reject) => {
     // 没有文件直接返回成功
-    if (Objects.length === 0) return resolve({ Deleted: [], Error: [] })
+    if (Objects.length === 0) return resolve({ Deleted: [], Error: [] });
     cos.deleteMultipleObject(
       {
         Bucket,
@@ -229,12 +225,12 @@ export const myDeleteFiles = (
         Objects,
       },
       (err, data) => {
-        if (err) reject(err)
-        resolve(data)
+        if (err) reject(err);
+        resolve(data);
       }
-    )
-  })
-}
+    );
+  });
+};
 
 /**
  * 获取文件下载链接，默认有效期60s
@@ -259,22 +255,22 @@ export const myGetObjectUrl = (
         Expires: 600, // 单位秒
       },
       (err, data) => {
-        if (err) return reject(err)
+        if (err) return reject(err);
         else {
           // 补充强制下载的参数
           let url =
             data.Url +
-            (data.Url.indexOf('?') > -1 ? '&' : '?') +
-            'response-content-disposition=attachment'
+            (data.Url.indexOf("?") > -1 ? "&" : "?") +
+            "response-content-disposition=attachment";
           // 可拼接 filename 来实现下载时重命名myname就是文件名
           const filename = Key.substring(
-            Key.indexOf('-', Key.lastIndexOf('/')) + 1
-          )
+            Key.indexOf("-", Key.lastIndexOf("/")) + 1
+          );
           // downloadUrl += `;filename=${filename}` // url会进行中文转码，不适用
-          if (download) downloadFile(url, filename)
-          resolve(url)
+          if (download) downloadFile(url, filename);
+          resolve(url);
         }
       }
-    )
-  })
-}
+    );
+  });
+};

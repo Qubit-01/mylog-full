@@ -1,5 +1,6 @@
 import { AnyArray } from '@mylog-full/mix/constant'
 import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
+import type { ExifImgFile } from '@mylog-full/mix/img'
 import dayjs from 'dayjs'
 import type { UploadFile, UploadRawFile } from 'element-plus'
 
@@ -73,14 +74,14 @@ export interface KeyFile extends UploadFile {
   key: string
 }
 
-/** 结合 El的UploadRawFile 和 ExifImgFile，就是有EXIF信息的El Raw文件 */ // ExifImgFile
-export interface ExifUploadRawFile extends UploadRawFile {}
+/** 结合 El的UploadRawFile 和 ExifImgFile，就是有EXIF信息的El Raw文件 */
+export interface ExifUploadRawFile extends UploadRawFile, ExifImgFile {}
 
-/** 图片文件：原图，压缩图，95压缩图 */
+/** 图片文件：原图，压缩图 */
 export interface LogImgFile extends KeyFile {
-  raw?: ExifUploadRawFile
-  // compressImg?: ExifImgFile // 压缩文件
-  // compressImg95?: ExifImgFile // 95压缩文件
+  raw: ExifUploadRawFile
+  /** 0.2 压缩文件，其实可以直接是File类型，但还是exif数据搞进去吧 */
+  compressImg: ExifImgFile
 }
 
 /** 允许的文件类型 */
