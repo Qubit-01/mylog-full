@@ -28,13 +28,18 @@
   * 其中每个文件都有exifdata和iptcdata
 -->
 <script lang="ts" setup>
-import { logFileItem, type LogEdit, type LogFileItem, type LogItem } from '@mylog-full/mix/types'
+import {
+  logFileItem,
+  type LogEdit,
+  type LogFileItem,
+  type LogItem,
+} from '@mylog-full/mix/types'
 import {
   fileType,
   type KeyFile,
   type LogImgFile,
 } from '~/composables/log/release'
-import { Plus, Delete } from '@element-plus/icons-vue'
+import { Delete, Plus } from '@element-plus/icons-vue'
 import { getFileKey, toFileUrl } from '@mylog-full/mix/cos'
 import type { UploadFile, UploadFiles } from 'element-plus'
 import { compressImg, getExif, type ExifImgFile } from '@mylog-full/mix/img'
@@ -44,10 +49,9 @@ import dayjs from 'dayjs'
 const imgs = defineModel<string[]>({ required: true })
 /** 外部文件列表 */
 const files = defineModel<LogImgFile[]>('files', { required: true })
-// const { setItem } = defineProps<{
-//   setItem: <T extends LogItem>(item: T, data: LogEdit[T]) => void
-// }>()
 const emits = defineEmits<{
+  /** 设置编辑项数据，主要是用于 exif信息自动填充 todo */
+  <T extends LogItem>(e: 'setItem', item: T, data: LogEdit[T]): void
   /** 给其他文件列表添加文件，不是图片时用 */
   (e: 'addFile', item: LogFileItem, file: KeyFile): void
   /** 设置编辑项数据，用于EXIF补全 */
@@ -65,6 +69,11 @@ onUnmounted(() => {
   files.value = []
 })
 
+/** 删除已有图片 */
+const delImgOld = (img: string) => {
+  imgsOld.value = imgsOld.value.filter((i) => i !== img)
+}
+
 // 压缩图片，图片列表可能被从外部修改
 watch(
   files,
@@ -80,7 +89,23 @@ watch(
 const compressing = ref(0) // 用于压缩时控制按钮
 // watchEffect(() => compressing ? props.setIsLoad(true) : props.setIsLoad(false)) // 要控制外层的加载状态
 
-/** 状态变化，添加文件、上传成功、失败时执行 */
+/** 处理图片函数 */
+const handleImg = async (file: LogImgFile) => {
+  // 其他文件上传类型不会自动键url，图片要建
+  // if (!file.url) file.url = URL.createObjectURL(raw)
+  await getExif(file.raw) // exifdata 直接被写入了file.raw中
+  compressing.value++
+  file.compressImg = (await compressImg(file.raw)) as ExifImgFile // 压缩
+  file.compressImg.exifdata = file.raw.exifdata // exif 也写入压缩文件
+  compressing.value--
+}
+
+/**
+ * 文件上传第一步：
+ *   1. 先给文件加上key
+ *   2. 什么类型都可能，所有先路由文件
+ * onChange: 状态变化，添加文件、上传成功、失败时执行
+ */
 const onChange = async (_file: UploadFile, _files: UploadFiles) => {
   const file = _file as KeyFile
   const files = _files as KeyFile[]
@@ -96,25 +121,6 @@ const onChange = async (_file: UploadFile, _files: UploadFiles) => {
       break
     }
   }
-}
-
-const delImgOld = (img: string) => {
-  imgsOld.value = imgsOld.value.filter((i) => i !== img)
-}
-
-/** 处理图片函数 */
-const handleImg = async (file: LogImgFile) => {
-  // 其他文件上传类型不会自动键url，图片要建
-  // if (!file.url) file.url = URL.createObjectURL(raw)
-
-  await getExif(file.raw) // exifdata 直接被写入了file.raw中
-
-  // raw原始文件，compressImg压缩文件
-  compressing.value++
-  const compressFile = (await compressImg(file.raw)) as ExifImgFile
-  compressFile.exifdata = file.raw.exifdata
-  file.compressImg = compressFile
-  compressing.value--
 }
 
 // 自动用Exif信息补全
@@ -162,9 +168,7 @@ const useExif = () => {
   if (!flag.logtime && !flag.location) ElMessage.error('没有提取到信息')
 }
 </script>
-<!-- 
-  第一行是图片，和上传组件
--->
+
 <template>
   <div class="EditImgs">
     <!-- 
@@ -176,7 +180,7 @@ const useExif = () => {
       :on-remove="handleRemove"
      -->
     <div class="all-imgs">
-      <!-- 模仿element upload组件的卡片 -->
+      <!-- 已有的图片列表，模仿element upload组件的卡片 -->
       <div class="viewer-imgs">
         <ul class="el-upload-list el-upload-list--picture-card">
           <li
@@ -194,7 +198,7 @@ const useExif = () => {
         </ul>
       </div>
 
-      <!-- 真正上传的 -->
+      <!-- 新加的图片和上传组件 -->
       <ElUpload
         v-model:file-list="files"
         class="ElUpload"
@@ -208,6 +212,7 @@ const useExif = () => {
       </ElUpload>
     </div>
 
+    <!-- 按钮组 -->
     <div class="btns">
       <ElButton :disabled="files.length === 0" @click="useExif" size="small">
         提取时间位置

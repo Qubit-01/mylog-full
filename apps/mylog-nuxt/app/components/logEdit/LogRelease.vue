@@ -91,7 +91,8 @@ const delItem = (item: LogItem) => {
       v-model:files="logFile.imgs"
     />
   </div>
-  {{ logEdit }}
+  <p>{{ logEdit }}</p>
+  <p>{{ logFile }}</p>
 </template>
 
 <style lang="scss" scoped>
