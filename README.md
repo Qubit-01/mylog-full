@@ -3,7 +3,12 @@
 #### 介绍
 Mylog的monorepo项目，包含各端资源
 
-本站正式进入3.0，使用 Vue 3.5 + Nuxt + Vite + Element Plus + TypeScript + Pinia + SSR 等技术栈。
+本站正式进入 3.0 版本
+
+- 与时俱进，几乎所有都采用的业内最新最成熟技术栈  
+使用 Vue 3.5 + Nuxt 4 + Vite + Element Plus + Pinia 等
+- SSR、TS 支持  
+SSR 使页面访问速度更快，TS 使代码逻辑更严密
 
 #### 软件架构
 软件架构说明
