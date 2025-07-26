@@ -22,7 +22,10 @@
       <div>
         2021年只有两种人在写博客：一种是试图建立受众并从中获利的人，另一种是只想写出想法而没有任何目的的人。
         这两种人的行为都非常好。选择做你喜欢的事，坚持下去，最终都可以对他人产生价值。——
-        <a href="https://bhupesh.me//what-i-have-learned-from-blogging-so-far-retrospect/" target="_blank">
+        <a
+          href="https://bhupesh.me//what-i-have-learned-from-blogging-so-far-retrospect/"
+          target="_blank"
+        >
           《我从博客中学到的东西》
         </a>
       </div>
@@ -31,9 +34,7 @@
         <a href="https://gitee.com/bit-01/mylog-full" target="_black">
           gitee.com/bit-01/mylog-full
         </a>
-      </div>
-      <div>
-        如果想快速体验本网站功能，可以点击
+        ，如果想快速体验本网站功能，可以点击
         <a href="#" @click.prevent="loginTest">登录测试账号</a>
       </div>
     </div>

@@ -28,16 +28,17 @@
   * 其中每个文件都有exifdata和iptcdata
 -->
 <script lang="ts" setup>
-import { logFileItem, type LogFileItem } from '@mylog-full/mix/types'
+import { logFileItem, type LogEdit, type LogFileItem, type LogItem } from '@mylog-full/mix/types'
 import {
   fileType,
   type KeyFile,
   type LogImgFile,
 } from '~/composables/log/release'
-import { Plus } from '@element-plus/icons-vue'
+import { Plus, Delete } from '@element-plus/icons-vue'
 import { getFileKey, toFileUrl } from '@mylog-full/mix/cos'
 import type { UploadFile, UploadFiles } from 'element-plus'
 import { compressImg, getExif, type ExifImgFile } from '@mylog-full/mix/img'
+import dayjs from 'dayjs'
 
 /** 外部文件名列表: 等于 imgsOld + files.map(key) */
 const imgs = defineModel<string[]>({ required: true })
@@ -49,6 +50,8 @@ const files = defineModel<LogImgFile[]>('files', { required: true })
 const emits = defineEmits<{
   /** 给其他文件列表添加文件，不是图片时用 */
   (e: 'addFile', item: LogFileItem, file: KeyFile): void
+  /** 设置编辑项数据，用于EXIF补全 */
+  <T extends LogItem>(e: 'setItem', item: T, data: LogEdit[T]): void
 }>()
 /** 原有文件拷贝：组件内要用于删除 */
 const imgsOld = ref([...imgs.value, ...files.value.map((i) => i.key)])
@@ -113,6 +116,51 @@ const handleImg = async (file: LogImgFile) => {
   file.compressImg = compressFile
   compressing.value--
 }
+
+// 自动用Exif信息补全
+const useExif = () => {
+  let exif = null
+  const flag = { logtime: false, location: false }
+  for (const img of files.value) {
+    exif = img.raw!.exifdata
+    if (!Object.keys(exif).length) continue
+
+    if (!flag.logtime) {
+      let dateTime =
+        exif.DateTimeOriginal.value[0] || // 照片在被拍下来的日期/时间，通常和DateTime一样
+        exif.DateTime.value[0] || // 图像最后一次被修改时的日期/时间 "YYYY:MM:DD HH:MM:SS"
+        exif.DateTimeDigitized.value[0] // 照片被数字化时的日期/时间
+
+      console.log(dateTime)
+      if (dateTime) {
+        // 'YYYY:MM:DD HH:MM:SS' 转为 'YYYY-MM-DD HH:mm:ss'
+        dateTime = dateTime.replace(':', '-').replace(':', '-')
+        emits('setItem', 'logtime', dayjs(dateTime))
+        flag.logtime = true
+      }
+    }
+
+    // if (!flag.location) {
+    //   let [lng, lat] = [exif.GPSLongitude.value, exif.GPSLatitude.value]
+    //   if (lng && lat) {
+    //     const lnglat = getLnglatByExif(lng, lat)
+    //     // 图片里面是GPS坐标，要转
+    //     AMap.convertFrom(lnglat, 'gps', (status: string, result: any) => {
+    //       // status：complete 查询成功，no_data 无结果，error 错误
+    //       // 查询成功时，result.locations 即为转换后的高德坐标系
+    //       if (status === 'complete' && result.info === 'ok') {
+    //         emits('setItem', 'location', [l2v(result.locations[0]), ''])
+    //         flag.location = true
+    //       }
+    //     })
+    //   }
+    // }
+
+    if (flag.logtime && flag.location) return
+  }
+
+  if (!flag.logtime && !flag.location) ElMessage.error('没有提取到信息')
+}
 </script>
 <!-- 
   第一行是图片，和上传组件
@@ -158,6 +206,12 @@ const handleImg = async (file: LogImgFile) => {
       >
         <ElIcon><Plus /></ElIcon>
       </ElUpload>
+    </div>
+
+    <div class="btns">
+      <ElButton :disabled="files.length === 0" @click="useExif" size="small">
+        提取时间位置
+      </ElButton>
     </div>
   </div>
 </template>
