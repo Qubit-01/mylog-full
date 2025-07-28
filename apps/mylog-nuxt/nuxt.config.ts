@@ -35,18 +35,18 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {},
   },
-  nitro: {
-    devProxy: {
-      "/api": {
-        target: "http://localhost:20914", // 这里是接口地址
-        changeOrigin: true,
-        prependPath: true,
-      },
-    },
-    routeRules: {
-      '/api/**': {
-        proxy: 'http://localhost:20914/**'
-      }
-    }
-  }
+  // nitro: {
+  //   devProxy: {
+  //     "/api": {
+  //       target: "http://localhost:20914", // 这里是接口地址
+  //       changeOrigin: true,
+  //       prependPath: true,
+  //     },
+  //   },
+  //   routeRules: {
+  //     '/api/**': {
+  //       proxy: 'http://localhost:20914/**'
+  //     }
+  //   }
+  // }
 })

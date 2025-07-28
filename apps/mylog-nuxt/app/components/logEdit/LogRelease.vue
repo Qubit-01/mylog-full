@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { getInitValue, useLogRelease } from '~/composables/log/release'
 import ControlIcons from './comp/ControlIcons.vue'
-import type { LogItem } from '@mylog-full/mix/types'
+import type { LogEdit, LogItem } from '@mylog-full/mix/types'
 import EditTime from './comp/EditTime.vue'
 import EditTags from './comp/EditTags.vue'
 import EditImgs from './comp/EditImgs.vue'
 
 const { logEdit, logFile, uploadInfo, releaseLog } = useLogRelease()
 
+/** 编辑模块的可见性 */
 const visible = reactive<{ [key in LogItem]: boolean }>({
   content: true, // 默认必须有输入框
   logtime: false,
@@ -21,8 +22,9 @@ const visible = reactive<{ [key in LogItem]: boolean }>({
   info: false,
 })
 
-const onAddIcon = (item: LogItem) => {
-  logEdit[item] = getInitValue(item)
+/** 设置编辑项数据 */
+const setItem = <T extends LogItem>(item: T, data?: LogEdit[T]) => {
+  logEdit[item] = data ?? getInitValue(item)
   visible[item] = true
 }
 
@@ -31,15 +33,6 @@ const delItem = (item: LogItem) => {
   visible[item] = false
   delete logEdit[item]
 }
-
-// watchEffect(() => {
-//   console.log('LogRelease watch logEdit:', ControlIconsRef.value?.visible);
-// })
-
-// onMounted(() => {
-//   // 初始化时可以设置默认的编辑项
-//   ControlIconsRef.value?.visible;
-// })
 </script>
 <!-- 
   发布Log模块
@@ -69,7 +62,7 @@ const delItem = (item: LogItem) => {
       </ElRadioGroup>
       <ElButton size="small" type="primary" @click="releaseLog">发布</ElButton>
     </div>
-    <ControlIcons v-model="visible" @add="onAddIcon" @del="delItem" />
+    <ControlIcons v-model="visible" @add="setItem" @del="delItem" />
 
     <ElInput
       v-model="logEdit.content"
@@ -89,6 +82,7 @@ const delItem = (item: LogItem) => {
       v-if="visible.imgs && logEdit.imgs"
       v-model="logEdit.imgs"
       v-model:files="logFile.imgs"
+      @setItem="setItem"
     />
   </div>
   <p>{{ logEdit }}</p>
