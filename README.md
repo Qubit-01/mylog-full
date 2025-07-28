@@ -1,14 +1,22 @@
 # mylog-full
 
 #### 介绍
-Mylog的monorepo项目，包含各端资源
 
-本站正式进入 3.0 版本
+项目采用 Monorepo 结构，包含各种代码。
 
-- 与时俱进，几乎所有都采用的业内最新最成熟技术栈  
-使用 Vue 3.5 + Nuxt 4 + Vite + Element Plus + Pinia 等
-- SSR、TS 支持  
-SSR 使页面访问速度更快，TS 使代码逻辑更严密
+- apps
+    - h5 
+        mylog2运行最久最稳定的一个h5项目
+    - nest 
+        新后端服务，之前是用 java spring boot 开发的，感觉技术栈太多了，太麻烦了，每次新设备都要重新配一堆开发环境，直接 all in js
+    - nuxt
+        新前项目，采用SSR 
+    - trpc-prisma
+        
+    - uni
+    - vite-ssr
+
+本站正式进入3.0，使用 Vue 3.5 + Nuxt + Vite + Element Plus + TypeScript + Pinia + SSR 等技术栈。
 
 #### 软件架构
 软件架构说明
