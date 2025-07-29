@@ -10,19 +10,22 @@ import {
   More,
   Microphone,
 } from '@element-plus/icons-vue'
-import type { LogItem } from '@mylog-full/mix/types'
+import type { LogEdit, LogItem } from '@mylog-full/mix/types'
+import { getInitValue } from '~/composables/log/release'
 
+/** 模块可见性 */
 const visible = defineModel<{ [key in LogItem]?: boolean }>({ required: true })
-
-const emits = defineEmits<{
-  /** 点击不高亮的图标时，添加元素 */
-  (e: 'add', item: LogItem): void
-  /** 点击高亮的图标时，删除元素 */
-  (e: 'del', item: LogItem): void
-}>()
+/** logEdit */
+const logEdit = defineModel<LogEdit>('logEdit', { required: true })
 
 const onClick = (item: LogItem) => {
-  visible.value[item] ? emits('del', item) : emits('add', item)
+  if (visible.value[item]) {
+    visible.value[item] = false
+    delete logEdit.value[item]
+  } else {
+    logEdit.value[item] = getInitValue(item)
+    visible.value[item] = true
+  }
 }
 </script>
 <!-- 

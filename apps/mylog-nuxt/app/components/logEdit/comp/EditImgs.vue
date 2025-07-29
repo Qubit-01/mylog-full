@@ -57,7 +57,7 @@ const namesOld = ref([...names.value, ...files.value.map((i) => i.key)])
 
 // 更新imgs文件名列表：根据 namesOld(删除时) 和 文件列表 变化
 watch([namesOld, files], ([namesOld, files]) => {
-  names.value = [...namesOld, ...files.map((i) => i.key)]
+    names.value = [...namesOld, ...files.map((i) => i.key)]
 })
 // 组件卸载时清空文件列表
 onUnmounted(() => {
@@ -90,24 +90,19 @@ const onChange = async (_file: UploadFile, _files: UploadFiles) => {
   }
 }
 
-// 压缩图片，图片列表可能被从外部修改
-watch(
-  files,
-  (files) => {
-    files.forEach(async (file) => {
-      // 如果没被处理过，就处理图片
-      if (!file.compressImg) {
-        // if (!file.url) file.url = URL.createObjectURL(raw) // 其他文件上传类型不会自动键url，图片要建
-        await getExif(file.raw) // 1. exifdata 直接被写入了file.raw中
-        compressing.value++
-        file.compressImg = (await compressImg(file.raw)) as ExifImgFile // 2. 压缩
-        file.compressImg.exifdata = file.raw.exifdata // exif 也写入压缩文件
-        compressing.value--
-      }
-    })
-  },
-  { immediate: true },
-)
+/** 处理图片: 1. 获取EXIF信息 2. 压缩图片 */
+const handleImg = async (file: LogImgFile) => {
+  if (!file.compressImg) {
+    if (!file.url) file.url = URL.createObjectURL(file.raw) // 其他文件上传类型不会自动键url，图片要建
+    await getExif(file.raw) // 1. exifdata 直接被写入了file.raw中
+    compressing.value++
+    file.compressImg = (await compressImg(file.raw)) as ExifImgFile // 2. 压缩
+    file.compressImg.exifdata = file.raw.exifdata // exif 也写入压缩文件
+    compressing.value--
+  }
+}
+// 处理图片，图片列表可能被从外部修改
+watch(files, (files) => files.forEach(handleImg), { immediate: true })
 
 const compressing = ref(0) // 用于压缩时控制按钮
 // watchEffect(() => compressing ? props.setIsLoad(true) : props.setIsLoad(false)) // todo 要控制外层的加载状态

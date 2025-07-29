@@ -2,6 +2,7 @@
 import { getFileKey } from '@mylog-full/mix/cos'
 import { logFileItem, type LogFileItem } from '@mylog-full/mix/types'
 import type { UploadFile, UploadFiles } from 'element-plus'
+import { VideoCamera, Close } from '@element-plus/icons-vue'
 import { fileType, type KeyFile } from '~/composables/log/release'
 
 /** 外部文件名列表: 等于 namesOld + files.map(key) */
@@ -84,7 +85,6 @@ const onChange = async (_file: UploadFile, _files: UploadFiles) => {
         :auto-upload="false"
       >
         点击或者拖拽到这里上传视频
-        <!-- <ElButton type="primary">上传视频</ElButton> -->
         <!-- <template #file="{ file }">
           {{ file.url }}
         </template> -->

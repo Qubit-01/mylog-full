@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import { getInitValue, useLogRelease, type KeyFile } from '~/composables/log/release'
+import {
+  getInitValue,
+  useLogRelease,
+  type KeyFile,
+} from '~/composables/log/release'
 import ControlIcons from './comp/ControlIcons.vue'
 import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
 import EditTime from './comp/EditTime.vue'
@@ -23,21 +27,17 @@ const visible = reactive<{ [key in LogItem]: boolean }>({
   info: false,
 })
 
-/** 设置编辑项数据 */
+/** 设置编辑项数据，不传 data 用默认值 */
 const setItem = <T extends LogItem>(item: T, data?: LogEdit[T]) => {
+  console.log('LSQ> ', item, data)
   logEdit[item] = data ?? getInitValue(item)
   visible[item] = true
 }
 
-/** 删除编辑项 */
-const delItem = (item: LogItem) => {
-  visible[item] = false
-  delete logEdit[item]
-}
-
 /** 添加文件，这里只用传入 keyFile，文件的处理在自己的组件里做 */
 const addFile = (item: LogFileItem, file: KeyFile) => {
-  logFile[item].push(file)
+  setItem(item)
+  // logFile[item].push(file as any)
 }
 </script>
 <!-- 
@@ -68,7 +68,7 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
       </ElRadioGroup>
       <ElButton size="small" type="primary" @click="releaseLog">发布</ElButton>
     </div>
-    <ControlIcons v-model="visible" @add="setItem" @del="delItem" />
+    <ControlIcons v-model="visible" v-model:log-edit="logEdit" />
 
     <ElInput
       v-model="logEdit.content"
