@@ -1,31 +1,28 @@
 <!-- 
-  图片上传组件
-  会向files.imgs里面注入COS.UploadFileItemParams[]值
+  图片上传组件：图片上传、压缩、图片EXIF信息解析
+  ElUpload组件文档：https://element-plus.org/zh-CN/component/upload.html#%E5%B1%9E%E6%80%A7
 
-  1. 可以传入现有的图片列表 imgs
-  2. 会直接修改传入的 imgs
-
-  逻辑
-  - 挂载组件时，可能外部会传入现有的图片，此时 imgs = imgsOld = 现有的列表
-  - 上传图片时，
+  逻辑整理
+  - 挂载组件时
+    - 外部传入现有的图片，此时 namesOld = 现有的列表
+    - 外部传入文件列表，一般最初是空列表
+  - 上传图片时
     - 加 key
     - 判断文件类型，归档
+    - 加入files
+  - 点击按钮 Exif 补全
+      
+  外置逻辑
+  - names = namesOld + files.map(key)
+  - 图片文件列表变化时
+    - 解析 EXIF 信息，写入 raw 和 compressImg 中
+    - 压缩图片
+  - 组件卸载时清空 files
 
-  添加图片的逻辑：如果添加的文件是不是图片文件
-  1. 是定义了类型的文件，就放进相应files项中。
-  2. 其他文件，放进files.files中
-
-  图片压缩、上传，图片EXIF信息解析
-  ElUpload组件文档：https://element-plus.org/zh-CN/component/upload.html#%E5%B1%9E%E6%80%A7
-  原图、压缩图、95压缩图（几乎无损压缩，但是可以大量节省空间）
-
-  * 文件结构是
-  * LogImgFile
-  *   - key 文件名，上传时间-序号-文件名
-  *   - raw 原始文件
-  *   - compressImg 压缩文件
-  *   - compressImg95 95压缩文件
-  * 其中每个文件都有exifdata和iptcdata
+  LogImgFile 文件结构，其中每个文件都有 exifdata 和 iptcdata
+  - key 文件名，上传时间-序号-文件名
+  - raw 原始文件
+  - compressImg 压缩文件
 -->
 <script lang="ts" setup>
 import {
@@ -45,8 +42,8 @@ import type { UploadFile, UploadFiles } from 'element-plus'
 import { compressImg, getExif, type ExifImgFile } from '@mylog-full/mix/img'
 import dayjs from 'dayjs'
 
-/** 外部文件名列表: 等于 imgsOld + files.map(key) */
-const imgs = defineModel<string[]>({ required: true })
+/** 外部文件名列表: 等于 namesOld + files.map(key) */
+const names = defineModel<string[]>({ required: true })
 /** 外部文件列表 */
 const files = defineModel<LogImgFile[]>('files', { required: true })
 const emits = defineEmits<{
@@ -58,11 +55,11 @@ const emits = defineEmits<{
   <T extends LogItem>(e: 'setItem', item: T, data: LogEdit[T]): void
 }>()
 /** 原有文件拷贝：组件内要用于删除 */
-const imgsOld = ref([...imgs.value, ...files.value.map((i) => i.key)])
+const namesOld = ref([...names.value, ...files.value.map((i) => i.key)])
 
-// 更新imgs文件名列表：根据 imgsOld(删除时) 和 文件列表 变化
-watch([imgsOld, files], ([imgsOld, files]) => {
-  imgs.value = [...imgsOld, ...files.map((i) => i.key)]
+// 更新imgs文件名列表：根据 namesOld(删除时) 和 文件列表 变化
+watch([namesOld, files], ([namesOld, files]) => {
+  names.value = [...namesOld, ...files.map((i) => i.key)]
 })
 // 组件卸载时清空文件列表
 onUnmounted(() => {
@@ -71,33 +68,7 @@ onUnmounted(() => {
 
 /** 删除已有图片 */
 const delImgOld = (img: string) => {
-  imgsOld.value = imgsOld.value.filter((i) => i !== img)
-}
-
-// 压缩图片，图片列表可能被从外部修改
-watch(
-  files,
-  (files) => {
-    files.forEach((file: LogImgFile) => {
-      // 如果没被处理过，就处理图片
-      if (!file.compressImg) handleImg(file)
-    })
-  },
-  { immediate: true },
-)
-
-const compressing = ref(0) // 用于压缩时控制按钮
-// watchEffect(() => compressing ? props.setIsLoad(true) : props.setIsLoad(false)) // 要控制外层的加载状态
-
-/** 处理图片函数 */
-const handleImg = async (file: LogImgFile) => {
-  // 其他文件上传类型不会自动键url，图片要建
-  // if (!file.url) file.url = URL.createObjectURL(raw)
-  await getExif(file.raw) // exifdata 直接被写入了file.raw中
-  compressing.value++
-  file.compressImg = (await compressImg(file.raw)) as ExifImgFile // 压缩
-  file.compressImg.exifdata = file.raw.exifdata // exif 也写入压缩文件
-  compressing.value--
+  namesOld.value = namesOld.value.filter((i) => i !== img)
 }
 
 /**
@@ -122,6 +93,28 @@ const onChange = async (_file: UploadFile, _files: UploadFiles) => {
     }
   }
 }
+
+// 压缩图片，图片列表可能被从外部修改
+watch(
+  files,
+  (files) => {
+    files.forEach(async (file) => {
+      // 如果没被处理过，就处理图片
+      if (!file.compressImg) {
+        // if (!file.url) file.url = URL.createObjectURL(raw) // 其他文件上传类型不会自动键url，图片要建
+        await getExif(file.raw) // 1. exifdata 直接被写入了file.raw中
+        compressing.value++
+        file.compressImg = (await compressImg(file.raw)) as ExifImgFile // 2. 压缩
+        file.compressImg.exifdata = file.raw.exifdata // exif 也写入压缩文件
+        compressing.value--
+      }
+    })
+  },
+  { immediate: true },
+)
+
+const compressing = ref(0) // 用于压缩时控制按钮
+// watchEffect(() => compressing ? props.setIsLoad(true) : props.setIsLoad(false)) // todo 要控制外层的加载状态
 
 // 自动用Exif信息补全
 const useExif = () => {
@@ -184,7 +177,7 @@ const useExif = () => {
       <div class="viewer-imgs">
         <ul class="el-upload-list el-upload-list--picture-card">
           <li
-            v-for="img in imgsOld"
+            v-for="img in namesOld"
             :key="img"
             class="el-upload-list__item is-ready"
           >

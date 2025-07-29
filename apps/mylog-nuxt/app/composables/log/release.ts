@@ -24,6 +24,7 @@ export const getInitValue = (item: LogItem): any => {
   }
 }
 
+/** LogRelease Hook */
 export const useLogRelease = () => {
   const logEdit = reactive<LogEdit>({
     type: 'log',
