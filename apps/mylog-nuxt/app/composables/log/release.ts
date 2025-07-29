@@ -32,7 +32,7 @@ export const useLogRelease = () => {
   })
 
   // 存入文件对象
-  const logFile = reactive<LogFiles>({
+  const logFile = reactive<LogFileTypes>({
     imgs: [],
     videos: [],
     audios: [],
@@ -57,11 +57,6 @@ export const useLogRelease = () => {
 /** 类型定义 *************************/
 /** 这里只定义文件有关的类型，看后面有没有单独提出去的必要 */
 
-/** log上传前的文件类型要求（最后都是COS文件） */
-export type LogFiles = {
-  [K in LogFileItem]: LogFileTypes[K]
-}
-
 type LogFileTypes = {
   imgs: LogImgFile[]
   videos: KeyFile[]
@@ -71,7 +66,7 @@ type LogFileTypes = {
 
 /** 带 key 的 UploadFile */
 export interface KeyFile extends UploadFile {
-  /** 文件名：上传时间-序号-文件名， */
+  /** 文件名：上传时间-序号-文件名 */
   key: string
 }
 

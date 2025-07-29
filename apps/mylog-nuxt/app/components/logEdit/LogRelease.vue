@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { getInitValue, useLogRelease } from '~/composables/log/release'
+import { getInitValue, useLogRelease, type KeyFile } from '~/composables/log/release'
 import ControlIcons from './comp/ControlIcons.vue'
-import type { LogEdit, LogItem } from '@mylog-full/mix/types'
+import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
 import EditTime from './comp/EditTime.vue'
 import EditTags from './comp/EditTags.vue'
 import EditImgs from './comp/EditImgs.vue'
+import EditVideos from './comp/EditVideos.vue'
 
 const { logEdit, logFile, uploadInfo, releaseLog } = useLogRelease()
 
@@ -32,6 +33,11 @@ const setItem = <T extends LogItem>(item: T, data?: LogEdit[T]) => {
 const delItem = (item: LogItem) => {
   visible[item] = false
   delete logEdit[item]
+}
+
+/** 添加文件，这里只用传入 keyFile，文件的处理在自己的组件里做 */
+const addFile = (item: LogFileItem, file: KeyFile) => {
+  logFile[item].push(file)
 }
 </script>
 <!-- 
@@ -83,6 +89,14 @@ const delItem = (item: LogItem) => {
       v-model="logEdit.imgs"
       v-model:files="logFile.imgs"
       @setItem="setItem"
+      @addFile="addFile"
+    />
+
+    <EditVideos
+      v-if="visible.videos && logEdit.videos"
+      v-model="logEdit.videos"
+      v-model:files="logFile.videos"
+      @addFile="addFile"
     />
   </div>
   <p>{{ logEdit }}</p>

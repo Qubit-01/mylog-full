@@ -47,12 +47,10 @@ const names = defineModel<string[]>({ required: true })
 /** 外部文件列表 */
 const files = defineModel<LogImgFile[]>('files', { required: true })
 const emits = defineEmits<{
-  /** 设置编辑项数据，主要是用于 exif信息自动填充 todo */
+  /** 设置编辑项数据，用于 EXIF 补全 */
   <T extends LogItem>(e: 'setItem', item: T, data: LogEdit[T]): void
-  /** 给其他文件列表添加文件，不是图片时用 */
+  /** 给其他文件列表添加文件，归档时用 */
   (e: 'addFile', item: LogFileItem, file: KeyFile): void
-  /** 设置编辑项数据，用于EXIF补全 */
-  <T extends LogItem>(e: 'setItem', item: T, data: LogEdit[T]): void
 }>()
 /** 原有文件拷贝：组件内要用于删除 */
 const namesOld = ref([...names.value, ...files.value.map((i) => i.key)])
@@ -66,15 +64,13 @@ onUnmounted(() => {
   files.value = []
 })
 
-/** 删除已有图片 */
-const delImgOld = (img: string) => {
-  namesOld.value = namesOld.value.filter((i) => i !== img)
+/** 删除已有 */
+const delOld = (name: string) => {
+  namesOld.value = namesOld.value.filter((i) => i !== name)
 }
 
 /**
- * 文件上传第一步：
- *   1. 先给文件加上key
- *   2. 什么类型都可能，所有先路由文件
+ * 文件上传第一步：1. 加 key  2. 归档
  * onChange: 状态变化，添加文件、上传成功、失败时执行
  */
 const onChange = async (_file: UploadFile, _files: UploadFiles) => {
@@ -173,17 +169,17 @@ const useExif = () => {
       :on-remove="handleRemove"
      -->
     <div class="all-imgs">
-      <!-- 已有的图片列表，模仿element upload组件的卡片 -->
+      <!-- 已有的列表，模仿element upload组件的卡片 -->
       <div class="viewer-imgs">
         <ul class="el-upload-list el-upload-list--picture-card">
           <li
-            v-for="img in namesOld"
-            :key="img"
+            v-for="name in namesOld"
+            :key="name"
             class="el-upload-list__item is-ready"
           >
-            <img :src="toFileUrl(img, 'compress-imgs/')" />
+            <img :src="toFileUrl(name, 'compress-imgs/')" />
             <span class="el-upload-list__item-actions">
-              <ElIcon size="20" color="#fff" @click="delImgOld(img)">
+              <ElIcon size="20" color="#fff" @click="delOld(name)">
                 <Delete />
               </ElIcon>
             </span>
