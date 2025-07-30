@@ -53,11 +53,11 @@ const emits = defineEmits<{
   (e: 'addFile', item: LogFileItem, file: KeyFile): void
 }>()
 /** 原有文件拷贝：组件内要用于删除 */
-const namesOld = ref([...names.value, ...files.value.map((i) => i.key)])
+const namesOld = ref(names.value)
 
 // 更新imgs文件名列表：根据 namesOld(删除时) 和 文件列表 变化
-watch([namesOld, files], ([namesOld, files]) => {
-    names.value = [...namesOld, ...files.map((i) => i.key)]
+watchEffect(() => {
+  names.value = [...namesOld.value, ...files.value.map((i) => i.key)]
 })
 // 组件卸载时清空文件列表
 onUnmounted(() => {

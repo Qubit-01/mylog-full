@@ -37,7 +37,7 @@ const setItem = <T extends LogItem>(item: T, data?: LogEdit[T]) => {
 /** 添加文件，这里只用传入 keyFile，文件的处理在自己的组件里做 */
 const addFile = (item: LogFileItem, file: KeyFile) => {
   setItem(item)
-  // logFile[item].push(file as any)
+  logFile[item].push(file as any)
 }
 </script>
 <!-- 
