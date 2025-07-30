@@ -10,6 +10,7 @@ import EditTime from './comp/EditTime.vue'
 import EditTags from './comp/EditTags.vue'
 import EditImgs from './comp/EditImgs.vue'
 import EditVideos from './comp/EditVideos.vue'
+import EditFiles from './comp/EditFiles.vue'
 
 const { logEdit, logFile, uploadInfo, releaseLog } = useLogRelease()
 
@@ -97,6 +98,12 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
       v-model="logEdit.videos"
       v-model:files="logFile.videos"
       @addFile="addFile"
+    />
+
+    <EditFiles
+      v-if="visible.files && logEdit.files"
+      v-model="logEdit.files"
+      v-model:files="logFile.files"
     />
   </div>
   <p>{{ logEdit }}</p>

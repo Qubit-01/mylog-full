@@ -93,7 +93,7 @@ const onChange = async (_file: UploadFile, _files: UploadFiles) => {
 /** 处理图片: 1. 获取EXIF信息 2. 压缩图片 */
 const handleImg = async (file: LogImgFile) => {
   if (!file.compressImg) {
-    if (!file.url) file.url = URL.createObjectURL(file.raw) // 其他文件上传类型不会自动键url，图片要建
+    if (!file.url) file.url = URL.createObjectURL(file.raw) // 图片要建url用于组件显示
     await getExif(file.raw) // 1. exifdata 直接被写入了file.raw中
     compressing.value++
     file.compressImg = (await compressImg(file.raw)) as ExifImgFile // 2. 压缩
@@ -182,7 +182,7 @@ const useExif = () => {
         </ul>
       </div>
 
-      <!-- 新加的图片和上传组件 -->
+      <!-- 新加的和上传组件 -->
       <ElUpload
         v-model:file-list="files"
         class="ElUpload"

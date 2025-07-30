@@ -1,18 +1,13 @@
 <script lang="ts" setup>
 import { getFileKey } from '@mylog-full/mix/cos'
-import { logFileItem, type LogFileItem } from '@mylog-full/mix/types'
 import type { UploadFile, UploadFiles } from 'element-plus'
 import { VideoCamera, Close } from '@element-plus/icons-vue'
-import { fileType, type KeyFile } from '~/composables/log/release'
+import type { KeyFile } from '~/composables/log/release'
 
 /** 外部文件名列表: 等于 namesOld + files.map(key) */
 const names = defineModel<string[]>({ required: true })
 /** 外部文件列表 */
 const files = defineModel<KeyFile[]>('files', { required: true })
-const emits = defineEmits<{
-  /** 给其他文件列表添加文件，归档时用 */
-  (e: 'addFile', item: LogFileItem, file: KeyFile): void
-}>()
 /** 原有文件拷贝：组件内要用于删除 */
 const namesOld = ref(names.value)
 
@@ -33,28 +28,19 @@ const delOld = (name: string) => {
 // :on-change 状态变化，添加文件、上传成功、失败
 const onChange = async (_file: UploadFile, _files: UploadFiles) => {
   const file = _file as KeyFile
-  const files = _files as KeyFile[]
   // todo: 判断大小还没做
+
   // 文件名，现在是任何文件都接收，所以都要加key
   file.key = getFileKey(file.name)
-  // 文件按类型归档，如果匹配到了其他类型，弹出后加进对应的files
-  for (const type of logFileItem) {
-    if (fileType[type].indexOf(file.raw!.type) > -1) {
-      if (type !== 'videos') {
-        ElMessage('检测到非视频文件，已自动归类')
-        emits('addFile', type, files.pop()!)
-      }
-      break
-    }
-  }
+  // 因为这是files兜底，所以默认用户就是想把文件放进去files
 }
 </script>
 
 <template>
-  <div class="EditVideos">
-    <div class="all-videos">
-      <!-- 已有的列表，模仿element upload组件的卡片 -->
-      <div class="viewer-videos">
+  <div class="EditFiles">
+    <div class="all-files">
+        <!-- 已有的列表，模仿element upload组件的卡片 -->
+      <div class="viewer-files">
         <ul class="el-upload-list el-upload-list--text">
           <li
             v-for="name in namesOld"
@@ -77,13 +63,13 @@ const onChange = async (_file: UploadFile, _files: UploadFiles) => {
       <!-- 新加的和上传组件 -->
       <ElUpload
         v-model:file-list="files"
-        class="upload-videos"
+        class="upload-files"
         multiple
         drag
         :on-change="onChange"
         :auto-upload="false"
       >
-        点击或者拖拽到这里上传视频
+        点击或者拖拽到这里上传文件
         <!-- <template #file="{ file }">
           {{ file.url }}
         </template> -->
@@ -93,16 +79,16 @@ const onChange = async (_file: UploadFile, _files: UploadFiles) => {
 </template>
 
 <style lang="scss" scoped>
-.EditVideos {
+.EditFiles {
   --block-gap: 2px;
 
-  .all-videos {
+  .all-files {
     display: flex;
     flex-direction: column;
     gap: var(--block-gap);
 
-    .viewer-videos,
-    .upload-videos {
+    .viewer-files,
+    .upload-files {
       display: flex;
       flex-direction: column;
       gap: var(--block-gap);
@@ -123,7 +109,7 @@ const onChange = async (_file: UploadFile, _files: UploadFiles) => {
       }
     }
 
-    .upload-videos {
+    .upload-files {
       // 列表
       // :deep(ul.el-upload-list) {
       // }
