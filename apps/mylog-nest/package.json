@@ -19,7 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prisma:studio": "prisma studio",
-    "prisma:pull": "prisma db pull && prisma generate && prisma generate --sql"
+    "prisma:pull": "prisma db pull && prisma generate && prisma generate --sql",
+    "start:pm2": "pnpm run build && pm2 start ./ecosystem.config.js"
   },
   "dependencies": {
     "@mylog-full/mix": "workspace:^",

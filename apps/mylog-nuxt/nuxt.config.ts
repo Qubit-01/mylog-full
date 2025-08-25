@@ -4,6 +4,21 @@ export default defineNuxtConfig({
   app: {
     head: {
       meta: [
+        { charset: 'utf-8' },
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, user-scalable=no',
+        },
+        // 网站自定义信息
+        { name: 'author', content: 'Qubit' },
+        {
+          name: 'keywords',
+          content: '多元记,MyLog,mylog,廖世强,bit,2928318801,四川农业大学',
+        },
+        {
+          name: 'description',
+          content: '宇宙很大，生活更大',
+        },
         // http自动升级为https
         {
           'http-equiv': 'Content-Security-Policy',
