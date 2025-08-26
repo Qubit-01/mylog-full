@@ -15,16 +15,16 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
-    "@element-plus/icons-vue": "^2.3.1",
+    "@element-plus/icons-vue": "^2.3.2",
     "@element-plus/nuxt": "1.1.1",
     "@mylog-full/mix": "workspace:^",
     "@pinia/nuxt": "0.9.0",
     "@vueuse/nuxt": "12.4.0",
     "dayjs": "^1.11.13",
     "dplayer": "^1.27.1",
-    "element-plus": "^2.10.4",
+    "element-plus": "^2.11.1",
     "lodash-unified": "^1.0.3",
-    "nuxt": "^4.0.1",
+    "nuxt": "^4.0.3",
     "pinia": "^2.3.1",
     "viewerjs": "^1.11.7",
     "vue": "latest",
@@ -33,6 +33,6 @@
   "devDependencies": {
     "@amap/amap-jsapi-types": "^0.0.15",
     "@types/dplayer": "^1.25.5",
-    "sass-embedded": "^1.89.2"
+    "sass-embedded": "^1.91.0"
   }
 }

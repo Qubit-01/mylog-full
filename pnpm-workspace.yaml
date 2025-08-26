@@ -1,6 +1,14 @@
 packages:
   - apps/*
   - packages/*
+
 onlyBuiltDependencies:
+  - '@nestjs/core'
+  - '@parcel/watcher'
   - '@prisma/client'
+  - '@prisma/engines'
   - cos-js-sdk-v5
+  - esbuild
+  - exifreader
+  - prisma
+  - vue-demi
