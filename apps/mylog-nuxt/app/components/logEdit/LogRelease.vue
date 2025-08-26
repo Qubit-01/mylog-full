@@ -30,14 +30,13 @@ const visible = reactive<{ [key in LogItem]: boolean }>({
 
 /** 设置编辑项数据，不传 data 用默认值 */
 const setItem = <T extends LogItem>(item: T, data?: LogEdit[T]) => {
-  console.log('LSQ> ', item, data)
   logEdit[item] = data ?? getInitValue(item)
   visible[item] = true
 }
 
 /** 添加文件，这里只用传入 keyFile，文件的处理在自己的组件里做 */
 const addFile = (item: LogFileItem, file: KeyFile) => {
-  setItem(item)
+  setItem(item) // 设置空值，然后组件内会去设置
   logFile[item].push(file as any)
 }
 </script>

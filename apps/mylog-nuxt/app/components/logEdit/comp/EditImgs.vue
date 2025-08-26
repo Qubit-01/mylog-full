@@ -41,6 +41,7 @@ import { getFileKey, toFileUrl } from '@mylog-full/mix/cos'
 import type { UploadFile, UploadFiles } from 'element-plus'
 import { compressImg, getExif, type ExifImgFile } from '@mylog-full/mix/img'
 import dayjs from 'dayjs'
+// import '~/composables/map'
 
 /** 外部文件名列表: 等于 namesOld + files.map(key) */
 const names = defineModel<string[]>({ required: true })
@@ -100,6 +101,7 @@ const handleImg = async (file: LogImgFile) => {
     file.compressImg.exifdata = file.raw.exifdata // exif 也写入压缩文件
     compressing.value--
   }
+  console.log('handleImg> file', file)
 }
 // 处理图片，图片列表可能被从外部修改
 watch(files, (files) => files.forEach(handleImg), { immediate: true })

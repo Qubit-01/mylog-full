@@ -14,6 +14,7 @@
     "start:pm2": "pnpm run build && pm2 start ./ecosystem.config.cjs"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@element-plus/icons-vue": "^2.3.1",
     "@element-plus/nuxt": "1.1.1",
     "@mylog-full/mix": "workspace:^",
@@ -30,6 +31,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@amap/amap-jsapi-types": "^0.0.15",
     "@types/dplayer": "^1.25.5",
     "sass-embedded": "^1.89.2"
   }
