@@ -25,6 +25,16 @@
   - compressImg 压缩文件
 -->
 <script lang="ts" setup>
+import dayjs from 'dayjs'
+import type { UploadFile, UploadFiles } from 'element-plus'
+import { Delete, Plus } from '@element-plus/icons-vue'
+import { getFileKey, toFileUrl } from '@mylog-full/mix/cos'
+import {
+  compressImg,
+  getExif,
+  getLnglatByExif,
+  type ExifImgFile,
+} from '@mylog-full/mix/img'
 import {
   logFileItem,
   type LogEdit,
@@ -36,12 +46,7 @@ import {
   type KeyFile,
   type LogImgFile,
 } from '~/composables/log/release'
-import { Delete, Plus } from '@element-plus/icons-vue'
-import { getFileKey, toFileUrl } from '@mylog-full/mix/cos'
-import type { UploadFile, UploadFiles } from 'element-plus'
-import { compressImg, getExif, type ExifImgFile } from '@mylog-full/mix/img'
-import dayjs from 'dayjs'
-// import '~/composables/map'
+import { l2v } from '~/composables/map'
 
 /** 外部文件名列表: 等于 namesOld + files.map(key) */
 const names = defineModel<string[]>({ required: true })
@@ -132,21 +137,21 @@ const useExif = () => {
       }
     }
 
-    // if (!flag.location) {
-    //   let [lng, lat] = [exif.GPSLongitude.value, exif.GPSLatitude.value]
-    //   if (lng && lat) {
-    //     const lnglat = getLnglatByExif(lng, lat)
-    //     // 图片里面是GPS坐标，要转
-    //     AMap.convertFrom(lnglat, 'gps', (status: string, result: any) => {
-    //       // status：complete 查询成功，no_data 无结果，error 错误
-    //       // 查询成功时，result.locations 即为转换后的高德坐标系
-    //       if (status === 'complete' && result.info === 'ok') {
-    //         emits('setItem', 'location', [l2v(result.locations[0]), ''])
-    //         flag.location = true
-    //       }
-    //     })
-    //   }
-    // }
+    if (!flag.location) {
+      let [lng, lat] = [exif.GPSLongitude.value, exif.GPSLatitude.value]
+      if (lng && lat) {
+        const lnglat = getLnglatByExif(lng, lat)
+        // 图片里面是GPS坐标，要转
+        AMap?.convertFrom(lnglat, 'gps', (status: string, result: any) => {
+          // status：complete 查询成功，no_data 无结果，error 错误
+          // 查询成功时，result.locations 即为转换后的高德坐标系
+          if (status === 'complete' && result.info === 'ok') {
+            emits('setItem', 'location', [l2v(result.locations[0]), ''])
+            flag.location = true
+          }
+        })
+      }
+    }
 
     if (flag.logtime && flag.location) return
   }

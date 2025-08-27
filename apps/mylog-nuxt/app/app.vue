@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import '~/composables/map' // 高德地图
+
 useGlobalStore()
 </script>
 
