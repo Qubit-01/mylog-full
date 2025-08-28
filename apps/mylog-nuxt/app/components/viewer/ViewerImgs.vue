@@ -9,7 +9,6 @@
 import Viewer from 'viewerjs'
 import 'viewerjs/dist/viewer.css'
 import { vImgSrc, vErrorRetry } from '@mylog-full/mix/utils'
-import { toFileUrl } from '@mylog-full/mix/cos'
 
 const props = defineProps<{
   /** 图片列表 */
@@ -37,7 +36,7 @@ onMounted(() => {
   rawBtn.classList.add('viewer-raw')
   rawBtn.addEventListener('click', () => {
     const i = (viewer as any).index
-    const newImg = toFileUrl(imgs.value[i], 'imgs/', log.userid)
+    const newImg = toFileUrl(imgs.value[i]!, 'imgs/', log.userid)
     if (urls.value[i] !== newImg) {
       urls.value[i] = newImg
       nextTick(() => viewer!.update()) // .view(i)

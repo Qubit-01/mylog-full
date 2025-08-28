@@ -25,27 +25,33 @@ export const getInitValue = (item: LogItem): any => {
   }
 }
 
-/** 从files对象中，取出cos文件对象 */
-export const getCosFiles = (files: LogFileTypes): COS.UploadFileItemParams[] => {
-  const cosFiles: COS.UploadFileItemParams[] = [];
+/**
+ * 返回如 users/[userid]/mylog/
+ * @param userid 要插入其中的用户id，如果不传用当前用户id
+ * @returns 返回链接字符串
+ */
+export const cosPath = (userid: number) => `users/${userid}/mylog/`
 
-  // 大压缩图、95压缩图、原图。大压缩图必发，95压缩图和原图选择性发送
-  // 目前先实现发 大压缩图＋原图
+/** 从files对象中，取出cos文件对象 */
+export const getCosFiles = (files: LogFileTypes) => {
+  const cosFiles: COS.UploadFileItemParams[] = []
+
+  // const { user } = refsGlobalStore()
+
+  // 压缩图、原图
   for (const file of files.imgs) {
     cosFiles.push({
-      // 原图
       Bucket,
       Region,
       Key: `${cosPath()}imgs/${file.key}`,
       Body: file.raw!,
-    });
+    })
     cosFiles.push({
-      // 大压缩图
       Bucket,
       Region,
       Key: `${cosPath()}compress-imgs/${file.key}`,
       Body: file.compressImg!,
-    });
+    })
   }
   for (const file of files.videos) {
     cosFiles.push({
@@ -53,7 +59,7 @@ export const getCosFiles = (files: LogFileTypes): COS.UploadFileItemParams[] => 
       Region,
       Key: `${cosPath()}videos/${file.key}`,
       Body: file.raw!,
-    });
+    })
   }
   for (const file of files.audios) {
     cosFiles.push({
@@ -61,7 +67,7 @@ export const getCosFiles = (files: LogFileTypes): COS.UploadFileItemParams[] => 
       Region,
       Key: `${cosPath()}audios/${file.key}`,
       Body: file.raw!,
-    });
+    })
   }
   for (const file of files.files) {
     cosFiles.push({
@@ -69,11 +75,11 @@ export const getCosFiles = (files: LogFileTypes): COS.UploadFileItemParams[] => 
       Region,
       Key: `${cosPath()}files/${file.key}`,
       Body: file.raw!,
-    });
+    })
   }
 
-  return cosFiles;
-};
+  return cosFiles
+}
 
 /** LogRelease Hook */
 export const useLogRelease = () => {

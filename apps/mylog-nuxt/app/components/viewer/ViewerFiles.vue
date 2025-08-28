@@ -2,8 +2,6 @@
   文件预览组件
  -->
 <script lang="ts" setup>
-// myGetObjectUrl
-import { cosPath, toFileUrl } from '@mylog-full/mix/cos'
 import { Document, Download } from '@element-plus/icons-vue'
 
 const props = defineProps<{
@@ -34,7 +32,7 @@ const download = (file: string) => {
       v-for="(url, index) in urls"
       :key="url"
       class="file"
-      @click="download(files[index])"
+      @click="download(files[index]!)"
     >
       <Document class="icon" />
       <div class="name">

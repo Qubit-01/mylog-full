@@ -28,7 +28,6 @@
 import dayjs from 'dayjs'
 import type { UploadFile, UploadFiles } from 'element-plus'
 import { Delete, Plus } from '@element-plus/icons-vue'
-import { getFileKey, toFileUrl } from '@mylog-full/mix/cos'
 import {
   compressImg,
   getExif,
@@ -41,11 +40,6 @@ import {
   type LogFileItem,
   type LogItem,
 } from '@mylog-full/mix/types'
-import {
-  fileType,
-  type KeyFile,
-  type LogImgFile,
-} from '~/composables/log/release'
 import { l2v } from '~/composables/map'
 
 /** 外部文件名列表: 等于 namesOld + files.map(key) */

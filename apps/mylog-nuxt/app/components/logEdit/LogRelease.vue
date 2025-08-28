@@ -1,9 +1,4 @@
 <script lang="ts" setup>
-import {
-  getInitValue,
-  useLogRelease,
-  type KeyFile,
-} from '~/composables/log/release'
 import ControlIcons from './comp/ControlIcons.vue'
 import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
 import EditTime from './comp/EditTime.vue'

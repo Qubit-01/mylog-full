@@ -11,7 +11,6 @@
   
  -->
 <script lang="ts" setup>
-import COS, { toFileUrl } from '@mylog-full/mix/cos'
 import { VideoPlay } from '@element-plus/icons-vue'
 import Popup from '~/components/utils/Popup.vue';
 import VideoDplayer from '~/components/viewer/VideoDplayer.vue'

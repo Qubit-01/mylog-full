@@ -15,7 +15,6 @@
     "./utils": "./utils/index.ts",
     "./constant": "./utils/constant.ts",
     "./qq-connect": "./utils/qq-connect.ts",
-    "./cos": "./utils/cos.ts",
     "./img": "./utils/img.ts"
   },
   "devDependencies": {

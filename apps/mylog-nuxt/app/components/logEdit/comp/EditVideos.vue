@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import { getFileKey } from '@mylog-full/mix/cos'
 import { logFileItem, type LogFileItem } from '@mylog-full/mix/types'
 import type { UploadFile, UploadFiles } from 'element-plus'
 import { VideoCamera, Close } from '@element-plus/icons-vue'
-import { fileType, type KeyFile } from '~/composables/log/release'
 
 /** 外部文件名列表: 等于 namesOld + files.map(key) */
 const names = defineModel<string[]>({ required: true })

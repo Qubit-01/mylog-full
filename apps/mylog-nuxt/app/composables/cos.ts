@@ -41,13 +41,6 @@ export const getFileKey = (filename: string) =>
   `${dayjs().format('YYMMDD_HHmmss')}_${index++}-${filename}`
 
 /**
- * 返回如 users/[userid]/mylog/
- * @param userid 要插入其中的用户id，如果不传用当前用户id
- * @returns 返回链接字符串
- */
-export const cosPath = (userid: number) => `users/${userid}/mylog/`
-
-/**
  * 处理文件地址 \
  * 若是http开头，就转https然后直接用 \
  * 否则加上OOS地址 `${BucketCDN}${cosPath(userid)}${prefix}${file}`
