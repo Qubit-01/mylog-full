@@ -49,7 +49,7 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
   - 编辑数据组件
 -->
 <template>
-  <div class="LogRelease _m">
+  <div class="LogRelease _m" :class="{ disable: uploadInfo.percent > -1 }">
     <!-- 第一行 -->
     <ElProgress
       v-if="uploadInfo.percent > -1"
@@ -129,6 +129,13 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
   .control {
     display: flex;
     justify-content: space-between;
+  }
+
+  &.disable {
+    pointer-events: none;
+    > *:not(.el-progress) {
+      opacity: 0.5;
+    }
   }
 }
 </style>

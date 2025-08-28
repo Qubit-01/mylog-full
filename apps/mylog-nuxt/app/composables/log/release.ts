@@ -1,8 +1,9 @@
-import { AnyArray } from '@mylog-full/mix/constant'
+import { AnyArray, Bucket, Region } from '@mylog-full/mix/constant'
 import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
 import type { ExifImgFile } from '@mylog-full/mix/img'
 import dayjs from 'dayjs'
 import type { UploadFile, UploadRawFile } from 'element-plus'
+import type COS from 'cos-js-sdk-v5'
 
 /** 获取 Log 项的默认值 */
 export const getInitValue = (item: LogItem): any => {
@@ -24,6 +25,56 @@ export const getInitValue = (item: LogItem): any => {
   }
 }
 
+/** 从files对象中，取出cos文件对象 */
+export const getCosFiles = (files: LogFileTypes): COS.UploadFileItemParams[] => {
+  const cosFiles: COS.UploadFileItemParams[] = [];
+
+  // 大压缩图、95压缩图、原图。大压缩图必发，95压缩图和原图选择性发送
+  // 目前先实现发 大压缩图＋原图
+  for (const file of files.imgs) {
+    cosFiles.push({
+      // 原图
+      Bucket,
+      Region,
+      Key: `${cosPath()}imgs/${file.key}`,
+      Body: file.raw!,
+    });
+    cosFiles.push({
+      // 大压缩图
+      Bucket,
+      Region,
+      Key: `${cosPath()}compress-imgs/${file.key}`,
+      Body: file.compressImg!,
+    });
+  }
+  for (const file of files.videos) {
+    cosFiles.push({
+      Bucket,
+      Region,
+      Key: `${cosPath()}videos/${file.key}`,
+      Body: file.raw!,
+    });
+  }
+  for (const file of files.audios) {
+    cosFiles.push({
+      Bucket,
+      Region,
+      Key: `${cosPath()}audios/${file.key}`,
+      Body: file.raw!,
+    });
+  }
+  for (const file of files.files) {
+    cosFiles.push({
+      Bucket,
+      Region,
+      Key: `${cosPath()}files/${file.key}`,
+      Body: file.raw!,
+    });
+  }
+
+  return cosFiles;
+};
+
 /** LogRelease Hook */
 export const useLogRelease = () => {
   const logEdit = reactive<LogEdit>({
@@ -31,7 +82,6 @@ export const useLogRelease = () => {
     content: '',
   })
 
-  // 存入文件对象
   const logFile = reactive<LogFileTypes>({
     imgs: [],
     videos: [],
@@ -44,10 +94,14 @@ export const useLogRelease = () => {
     speed: 0, // 上传速度 MB/s
   })
 
-  const releaseLog = () => {}
+  const releaseLog = () => {
+    uploadInfo.percent = 0
+  }
 
   return {
+    /** 编辑的Log本体 */
     logEdit,
+    /** 附带的文件列表 */
     logFile,
     uploadInfo,
     releaseLog,

@@ -4,7 +4,7 @@ const { user, isLogined } = refsGlobalStore()
 </script>
 
 <template>
-  <div class="user-aside _m">
+  <div class="UserAside _m">
     <div class="img">
       <img
         v-img-src="
@@ -30,7 +30,7 @@ const { user, isLogined } = refsGlobalStore()
 </template>
 
 <style lang="scss" scoped>
-.user-aside {
+.UserAside {
   display: flex;
   flex-direction: column;
   align-items: center;

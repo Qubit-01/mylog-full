@@ -1,8 +1,7 @@
 import COS from 'cos-js-sdk-v5'
-import { baseURL, Bucket, Region, BucketCDN } from './constant'
+import { baseURL, Bucket, Region, BucketCDN } from '@mylog-full/mix/constant'
 import dayjs from 'dayjs'
-// import type { LogFiles } from '@/types'
-import { downloadFile } from '.'
+import { downloadFile } from '@mylog-full/mix/utils'
 import { inject } from 'vue'
 
 const cos = new COS({
@@ -40,59 +39,6 @@ let index = 1 // 文件名的索引
 /** 生成文件Key 通过原始文件名 */
 export const getFileKey = (filename: string) =>
   `${dayjs().format('YYMMDD_HHmmss')}_${index++}-${filename}`
-
-/**
- * 从files对象中，取出cos文件对象
- * @param files 文件对象
- */
-// export const getCosFiles = (files: LogFiles): COS.UploadFileItemParams[] => {
-//   const cosFiles: COS.UploadFileItemParams[] = []
-
-//   // 大压缩图、95压缩图、原图。大压缩图必发，95压缩图和原图选择性发送
-//   // 目前先实现发 大压缩图＋原图
-//   for (const file of files.imgs) {
-//     cosFiles.push({
-//       // 原图
-//       Bucket,
-//       Region,
-//       Key: `${cosPath()}imgs/${file.key}`,
-//       Body: file.raw!,
-//     })
-//     cosFiles.push({
-//       // 大压缩图
-//       Bucket,
-//       Region,
-//       Key: `${cosPath()}compress-imgs/${file.key}`,
-//       Body: file.compressImg!,
-//     })
-//   }
-//   for (const file of files.videos) {
-//     cosFiles.push({
-//       Bucket,
-//       Region,
-//       Key: `${cosPath()}videos/${file.key}`,
-//       Body: file.raw!,
-//     })
-//   }
-//   for (const file of files.audios) {
-//     cosFiles.push({
-//       Bucket,
-//       Region,
-//       Key: `${cosPath()}audios/${file.key}`,
-//       Body: file.raw!,
-//     })
-//   }
-//   for (const file of files.files) {
-//     cosFiles.push({
-//       Bucket,
-//       Region,
-//       Key: `${cosPath()}files/${file.key}`,
-//       Body: file.raw!,
-//     })
-//   }
-
-//   return cosFiles
-// }
 
 /**
  * 返回如 users/[userid]/mylog/
