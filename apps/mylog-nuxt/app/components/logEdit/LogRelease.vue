@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import ControlIcons from './comp/ControlIcons.vue'
 import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
+import ControlIcons from './comp/ControlIcons.vue'
 import EditTime from './comp/EditTime.vue'
 import EditTags from './comp/EditTags.vue'
 import EditImgs from './comp/EditImgs.vue'

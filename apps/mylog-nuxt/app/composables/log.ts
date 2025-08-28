@@ -27,56 +27,35 @@ export const getInitValue = (item: LogItem): any => {
 
 /**
  * 返回如 users/[userid]/mylog/
- * @param userid 要插入其中的用户id，如果不传用当前用户id
- * @returns 返回链接字符串
  */
 export const cosPath = (userid: number) => `users/${userid}/mylog/`
 
 /** 从files对象中，取出cos文件对象 */
-export const getCosFiles = (files: LogFileTypes) => {
+export const getCosFiles = (logFile: LogFileTypes) => {
   const cosFiles: COS.UploadFileItemParams[] = []
 
-  // const { user } = refsGlobalStore()
+  const { user } = refsGlobalStore()
+
+  const getFile = (file: KeyFile, type: string) => ({
+    Bucket,
+    Region,
+    Key: `${cosPath(user.value.id)}${type}/${file.key}`,
+  })
 
   // 压缩图、原图
-  for (const file of files.imgs) {
+  for (const file of logFile.imgs) {
+    cosFiles.push({ ...getFile(file, 'imgs'), Body: file.raw! })
     cosFiles.push({
-      Bucket,
-      Region,
-      Key: `${cosPath()}imgs/${file.key}`,
-      Body: file.raw!,
-    })
-    cosFiles.push({
-      Bucket,
-      Region,
-      Key: `${cosPath()}compress-imgs/${file.key}`,
+      ...getFile(file, 'compress-imgs'),
       Body: file.compressImg!,
     })
   }
-  for (const file of files.videos) {
-    cosFiles.push({
-      Bucket,
-      Region,
-      Key: `${cosPath()}videos/${file.key}`,
-      Body: file.raw!,
-    })
-  }
-  for (const file of files.audios) {
-    cosFiles.push({
-      Bucket,
-      Region,
-      Key: `${cosPath()}audios/${file.key}`,
-      Body: file.raw!,
-    })
-  }
-  for (const file of files.files) {
-    cosFiles.push({
-      Bucket,
-      Region,
-      Key: `${cosPath()}files/${file.key}`,
-      Body: file.raw!,
-    })
-  }
+  for (const file of logFile.videos)
+    cosFiles.push({ ...getFile(file, 'videos'), Body: file.raw! })
+  for (const file of logFile.audios)
+    cosFiles.push({ ...getFile(file, 'audios'), Body: file.raw! })
+  for (const file of logFile.files)
+    cosFiles.push({ ...getFile(file, 'files'), Body: file.raw! })
 
   return cosFiles
 }
@@ -102,6 +81,9 @@ export const useLogRelease = () => {
 
   const releaseLog = () => {
     uploadInfo.percent = 0
+    const cosFiles = getCosFiles(logFile)
+
+    console.log('LSQ> ', cosFiles)
   }
 
   return {
