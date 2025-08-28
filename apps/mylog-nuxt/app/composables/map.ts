@@ -1,4 +1,5 @@
 import '@amap/amap-jsapi-types'
+import type { UserVO } from '@mylog-full/mix/types'
 // import AMapLoader from '@amap/amap-jsapi-loader'
 
 declare global {
@@ -18,6 +19,10 @@ declare global {
     /** 浏览器定位 */
     class Geolocation {
       constructor(options?: any)
+      /** 配置项 */
+      public _config: any
+      /** 当前坐标的 Marker */
+      public _marker: Marker
       getCurrentPosition(callback: (status: string, result: any) => void): void
       getCityInfo(callback: (status: string, result: any) => void): void
     }
@@ -40,6 +45,7 @@ declare global {
 }
 
 export type AMapType = typeof globalThis.AMap
+export type LngLatVO = [AMap.Vector2, string]
 
 // @ts-ignore
 globalThis._AMapSecurityConfig = {
@@ -137,20 +143,19 @@ export const getGeolocation = async () => {
 }
 
 /**
- * 获取当前位置，浏览器定位，要权限。getCurrentPosition方法返回的数据也就position有用
+ * 获取精确位置，有失败几率，浏览器定位，要权限。有几率失败，可能是因为没给权限
  * @param 可以自己传入，没有权限时，不会有坐标
+ * @return Promise<{position坐标对象, ...}>
  * error =>
  *     message: "Get ipLocation failed.Geolocation permission denied."
  *     originMessage: "User denied Geolocation"
- * @return Promise<{position坐标对象, ...}>
  */
-export const getPositionByGeo = async (gl?: AMap.Geolocation): Promise<any> => {
+export const getPositionByGeo = async (gl?: AMap.Geolocation) => {
   const geolocation = gl || (await getGeolocation())
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     geolocation.getCurrentPosition((status: string, result: any) => {
       console.info('getPositionByGeo', status, result)
-      if (status == 'complete') resolve(result)
-      else reject({ status, result })
+      status == 'complete' ? resolve(result) : reject({ status, result })
     })
   })
 }
@@ -159,13 +164,12 @@ export const getPositionByGeo = async (gl?: AMap.Geolocation): Promise<any> => {
  * 获取当前城市信息，浏览器定位，不要权限。而且在使用代理时，也会通过ip返回结果，有几率失败
  * @returns Promise<{position坐标数组, ...}>
  */
-// export const getCityInfoByGeo = async (gl?: any): Promise<any> => {
+// export const getCityInfoByGeo = async (gl?: AMap.Geolocation) => {
 //   const geolocation = gl || (await getGeolocation())
-//   return new Promise((resolve, reject) => {
-//     geolocation.getCityInfo((status: string, result: any) => {
+//   return new Promise<any>((resolve, reject) => {
+//     geolocation.getCityInfo((status, result) => {
 //       console.info('getCityInfoByGeo', status, result)
-//       if (status === 'complete') resolve(result)
-//       else reject({ status, result })
+//       status === 'complete' ? resolve(result) : reject({ status, result })
 //     })
 //   })
 // }
@@ -182,17 +186,18 @@ export const getPositionByGeo = async (gl?: AMap.Geolocation): Promise<any> => {
 // }
 
 /** 坐标转描述 */
-export const getAddress = async (p: AMap.Vector2): Promise<any> => {
+export const getAddress = async (p: AMap.Vector2) => {
   const geocoder = new AMap.Geocoder({
     // city: '',
     // radius: 1000,
     // batch: false,
     // extensions: 'all',
   })
-  return new Promise((resolve, reject) => {
-    geocoder.getAddress(p, (status: string, res: any) => {
-      if (status === 'complete' && res.info === 'OK') resolve(res.regeocode)
-      else reject([status, res])
+  return new Promise<any>((resolve, reject) => {
+    geocoder.getAddress(p, (status, result) => {
+      status === 'complete' && result.info === 'OK'
+        ? resolve(result.regeocode)
+        : reject([status, result])
     })
   })
 }
@@ -203,44 +208,49 @@ export const getAddress = async (p: AMap.Vector2): Promise<any> => {
 export const useAMap = (
   $map: Ref<HTMLDivElement | null>,
   opts?: Partial<AMap.MapOptions>,
-  params?: any,
+  params?: {
+    theme?: Ref<UserVO['setting']['page']['theme']>
+  },
 ) => {
   let map: AMap.Map | null = null
   const state = reactive({ loading: true, message: '正在加载地图...' })
   const { promise: init, resolve } = Promise.withResolvers<AMap.Map>()
 
   /** 定位按钮控件，没有Marker，纯定位，会移动 */
-  const locationController = new AMap.Geolocation({
+  const geolocation = new AMap.Geolocation({
     enableHighAccuracy: true, //是否使用高精度定位，默认:true
     timeout: 10000, //超过10秒后停止定位，默认：无穷大
-    // showMarker: false,
-    // showCircle: false,
   })
 
-  const firstPosition = getGeolocation().then((l) => getPositionByGeo(l))
+  console.log('LSQ> geo', geolocation)
 
   onMounted(async () => {
-    const curLocation = await getGeolocation()
     map = new AMap.Map($map.value!, {
       zoom: 17, // 地图级别
-      // center: [104.065751, 30.657457],
-      mapStyle: 'amap://styles/normal', // 设置地图的显示样式
+      center: [104.065739, 30.657452], // 天府广场
+      mapStyle: `amap://styles/${params?.theme?.value === 'dark' ? 'dark' : 'normal'}`,
       ...opts,
     })
-    map.addControl(curLocation as any) // 添加当前 Marker
-    map.addControl(locationController as any) // 添加定位按钮
 
     state.message = '正在定位当前...'
-    // try {
-    //   // 触发当前Marker定位，不会移动地图，但是如果没传入center，就会跳转到
-    //   if (!opts?.center) map.panTo((await firstPosition).position, 0)
-    // } catch (e) {
-    //   console.log('🐤定位出错，应该是没给权限', e)
-    // }
-    state.loading = false
+    map.addControl(geolocation as any) // 添加定位按钮
 
+    // 没传入center，就用当前定位
+    geolocation._config.panToLocation = false
+    const p = await getPositionByGeo(geolocation)
+    geolocation._config.panToLocation = true // 以后点按钮还是会移动地图
+    !opts?.center && map?.panTo(p.position, 0) // 首次定位要手动控制
+
+    state.message = ''
+    state.loading = false
     resolve(map)
   })
+
+  // 自动切换地图样式
+  params?.theme &&
+    watch(params.theme, (theme) => {
+      map?.setMapStyle(`amap://styles/${theme === 'dark' ? 'dark' : 'normal'}`)
+    })
 
   onUnmounted(() => {
     map?.destroy()
@@ -252,5 +262,7 @@ export const useAMap = (
     init,
     /** 地图状态 */
     state,
+    /** 定位控件 */
+    geolocation,
   }
 }

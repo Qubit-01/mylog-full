@@ -1,27 +1,57 @@
 <script lang="ts" setup>
-// 坐标
-const location = defineModel<[[number, number], string] | []>({
-  required: true,
-})
-location.value = [[116.274236, 39.942423], '']
-watchEffect(() => {
-  console.log('LSQ> location', location.value)
-})
+import { vEllipsis } from '@mylog-full/mix/utils'
 
+/** 坐标 */
+const location = defineModel<LngLatVO | []>({ required: true })
+
+const { user } = refsGlobalStore()
 const $map = useTemplateRef('$map')
-useAMap($map, {
-  center: location.value[0],
-  mapStyle: true ? 'amap://styles/dark' : 'amap://styles/normal', // 设置地图的显示样式
+
+/** 主方法 */
+const { state, init, geolocation } = useAMap(
+  $map,
+  { ...(location.value[0] ? { center: location.value[0] } : {}) },
+  { theme: computed(() => user.value.setting.page.theme) },
+)
+
+// 主要location标记
+const marker = new AMap.Marker({ title: '记录位置' })
+
+init.then(async (map) => {
+  // 如果没有坐标，就使用定位
+  if (!location.value[0]) location.value = [l2v(map.getCenter()), '']
+  marker.setPosition(location.value[0]!)
+  map.add(marker)
+
+  // 当坐标变化时，保持同步
+  watch(
+    () => location.value[0],
+    (v) => {
+      map.panTo(v!, 500)
+      marker.setPosition(v!)
+      // 解析坐标
+      getAddress(v!).then((regeocode) => {
+        location.value[1] = regeocode.formattedAddress
+      })
+    },
+  )
+
+  // 点击地图时，设置坐标
+  map.on('click', (ev) => (location.value = [l2v(ev.lnglat), '']))
+  // 点击当前定位时，设置坐标
+  geolocation._marker.on('click', (ev) => {
+    location.value = [l2v(ev.target.getPosition()), '']
+  })
 })
 </script>
 
 <template>
-  <div class="EditLocation">
+  <div
+    class="EditLocation"
+    v-loading="state.loading && { text: state.message }"
+  >
     <div class="map" ref="$map" />
-    <!-- <div class="search-input">
-      <ElInput v-model="search" placeholder="搜索地址" clearable />
-    </div>
-    <div class="formatted-address" v-overflow-ellipsis>{{ location[1] }}</div> -->
+    <div class="formatted-address" v-ellipsis>{{ location[1] }}</div>
   </div>
 </template>
 
@@ -30,24 +60,18 @@ useAMap($map, {
   position: relative;
   border-radius: 8px;
   overflow: hidden;
-  height: 200px;
 
   .map {
-    height: 100%;
-    // width: 100%;
-  }
-
-  .search-input {
-    position: absolute;
-    top: 0;
-    margin: 4px;
+    height: 200px;
   }
 
   .formatted-address {
     position: absolute;
     bottom: 0;
     margin: 4px;
-    max-width: 100%;
+    // 减去定位按钮的宽度
+    max-width: calc(100% - 32px - 15px);
+    pointer-events: none;
   }
 }
 </style>
