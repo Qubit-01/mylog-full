@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { logFileItem, type LogFileItem } from '@mylog-full/mix/types'
 import type { UploadFile, UploadFiles } from 'element-plus'
 import { VideoCamera, Close } from '@element-plus/icons-vue'
 

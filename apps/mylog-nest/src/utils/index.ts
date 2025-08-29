@@ -13,7 +13,7 @@ import { verify } from './jwt';
  * @param log PO数据库对象 trpc直接返回的对象类型
  * @returns
  */
-export function toLogVO4PO(log: LogPO): LogVO {
+export const toLogVO4PO = (log: LogPO) => {
   const logVO: LogVO = {
     ...log,
     userid: log.userid,
@@ -30,10 +30,10 @@ export function toLogVO4PO(log: LogPO): LogVO {
     info: log.info as LogVO['info'],
   };
   return logVO;
-}
+};
 
 /**
- * 获取请求的cookie的装饰器
+ * 注解: 获取请求的cookie的装饰器
  * @see https://docs.nestjs.com/techniques/cookies#creating-a-custom-decorator-cross-platform
  */
 export const Cookies = createParamDecorator(
@@ -43,9 +43,7 @@ export const Cookies = createParamDecorator(
   },
 );
 
-/**
- * 从请求的 Cookie.token 中获取 Userid
- */
+/** 注解:从请求的 Cookie.token 中获取 Userid */
 export const Userid = createParamDecorator(
   (key: string, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();

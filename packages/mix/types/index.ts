@@ -82,7 +82,6 @@ interface LogVOEdit extends LogVOEditWithFiles {
   }
 }
 
-
 /** 用户可以编辑的项的 key */
 export type LogItem = keyof LogVOEdit
 
@@ -101,7 +100,12 @@ type LogVOEditWithFiles = {
 /** log中代表文件的项，需要和COS交互的属性，方便一些方法循环 */
 export type LogFileItem = keyof LogVOEditWithFiles
 /** 用于遍历定义顺序，files最后遍历时兜底 */
-export const logFileItem: LogFileItem[] = ['imgs', 'videos', 'audios', 'files'] as const
+export const logFileItem: LogFileItem[] = [
+  'imgs',
+  'videos',
+  'audios',
+  'files',
+] as const
 
 /** 过滤器对象 */
 export type LogFilter = {
@@ -128,3 +132,9 @@ export type LogFilter = {
 
 /** 编辑中的log类型，只能填入log属性 */
 export type LogEdit = Partial<LogVO>
+
+/** LogDTO 前后端都要用, 主要是 dayjs 转 string */
+export type LogDTO = Omit<LogEdit, 'sendtime' | 'logtime'> & {
+  sendtime?: string
+  logtime?: string
+}

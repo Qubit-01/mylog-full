@@ -1,5 +1,4 @@
 import '@amap/amap-jsapi-types'
-import type { UserVO } from '@mylog-full/mix/types'
 // import AMapLoader from '@amap/amap-jsapi-loader'
 
 declare global {

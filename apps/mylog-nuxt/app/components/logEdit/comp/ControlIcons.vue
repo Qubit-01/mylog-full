@@ -10,7 +10,6 @@ import {
   More,
   Microphone,
 } from '@element-plus/icons-vue'
-import type { LogEdit, LogItem } from '@mylog-full/mix/types'
 
 /** 模块可见性 */
 const visible = defineModel<{ [key in LogItem]?: boolean }>({ required: true })

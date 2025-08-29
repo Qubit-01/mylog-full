@@ -34,12 +34,6 @@ import {
   getLnglatByExif,
   type ExifImgFile,
 } from '@mylog-full/mix/img'
-import {
-  logFileItem,
-  type LogEdit,
-  type LogFileItem,
-  type LogItem,
-} from '@mylog-full/mix/types'
 import { l2v } from '~/composables/map'
 
 /** 外部文件名列表: 等于 namesOld + files.map(key) */

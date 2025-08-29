@@ -103,54 +103,37 @@ export const toFileUrl = <T extends string | string[]>(
  * @param params 文件上传参数，{files[]文件对象列表，SliceSize? 触发分块的大小，onProgress? 进度条方法}
  * @returns Promise 所有文件上传完成调用then
  */
-export const myUploadFiles = (
-  params: COS.UploadFilesParams,
-): Promise<COS.UploadFilesResult> => {
-  return new Promise((resolve, reject) => {
+export const myUploadFiles = (params: COS.UploadFilesParams) =>
+  new Promise<COS.UploadFilesResult>((resolve, reject) => {
     // 没有文件，直接返回成功
     if (params.files.length === 0) return resolve({ files: [] })
     cos.uploadFiles(
       {
         SliceSize: 1024 * 1024 * 5,
-        onProgress: function (info) {
-          var percent = info.percent * 100
-          var speed = info.speed / 1024
-          console.log('进度：' + percent + '%; 速度：' + speed + 'KB/s')
+        onProgress(i) {
+          console.log(`进度: ${i.percent * 100}%; 速度: ${i.speed / 1024}KB/s`)
         },
         ...params,
       },
+      // 所有上传完成后的回调
       (err, data) => {
-        // 所有上传完成后的回调
-        if (err) reject(err)
-        resolve(data)
+        err ? reject(err) : resolve(data)
       },
     )
   })
-}
 
 /**
  * 自己封装的文件删除方法
  * @param objects 传入形如 { Key: '1.jpg' } 的数组
  */
-export const myDeleteFiles = (
-  Objects: { Key: string }[],
-): Promise<COS.DeleteMultipleObjectResult> => {
-  return new Promise((resolve, reject) => {
+export const myDeleteFiles = (Objects: { Key: string }[]) =>
+  new Promise<COS.DeleteMultipleObjectResult>((resolve, reject) => {
     // 没有文件直接返回成功
     if (Objects.length === 0) return resolve({ Deleted: [], Error: [] })
-    cos.deleteMultipleObject(
-      {
-        Bucket,
-        Region,
-        Objects,
-      },
-      (err, data) => {
-        if (err) reject(err)
-        resolve(data)
-      },
-    )
+    cos.deleteMultipleObject({ Bucket, Region, Objects }, (err, data) => {
+      err ? reject(err) : resolve(data)
+    })
   })
-}
 
 /**
  * 获取文件下载链接，默认有效期60s
@@ -161,11 +144,8 @@ export const myDeleteFiles = (
  * @param download 是否触发下载
  * @returns
  */
-export const myGetObjectUrl = (
-  Key: string,
-  download: boolean = true,
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
+export const myGetObjectUrl = (Key: string, download: boolean = true) =>
+  new Promise<string>((resolve, reject) => {
     cos.getObjectUrl(
       {
         Bucket,
@@ -193,4 +173,3 @@ export const myGetObjectUrl = (
       },
     )
   })
-}

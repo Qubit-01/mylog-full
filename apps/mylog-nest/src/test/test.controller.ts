@@ -19,7 +19,7 @@ export class TestController {
    * 测试后端服务是否正常
    * @returns "Hello World!"
    */
-  @Post('hello-post')
+  @Post('hello_post')
   helloPost(@Cookies() cookies: string, @Body() body: any) {
     console.log('🐤 Hello World! post');
     console.log('🐤 Cookies', cookies);

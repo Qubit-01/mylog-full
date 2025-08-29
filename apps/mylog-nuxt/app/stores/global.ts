@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
-import { type UserVO as User } from '@mylog-full/mix/types'
 
-const userInit: User = {
+const userInit: UserVO = {
   id: 0,
   name: '',
   img: '',
@@ -31,7 +30,7 @@ const userInit: User = {
  * 2. 必须等服务器获取到用户数据
  */
 export const useGlobalStore = defineStore('global', () => {
-  const { data } = useFetch<User>('/user/get_user', {
+  const { data } = useFetch<UserVO>('/user/get_user', {
     method: 'POST',
     credentials: 'include',
     baseURL,
@@ -40,7 +39,7 @@ export const useGlobalStore = defineStore('global', () => {
     },
   })
 
-  const user = computed<User>(() => ({ ...userInit, ...data.value }))
+  const user = computed<UserVO>(() => ({ ...userInit, ...data.value }))
   const isLogined = computed(() => user.value.id !== 0)
 
   // 主题切换

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
 import ControlIcons from './comp/ControlIcons.vue'
 import EditTime from './comp/EditTime.vue'
 import EditTags from './comp/EditTags.vue'
@@ -8,7 +7,7 @@ import EditVideos from './comp/EditVideos.vue'
 import EditFiles from './comp/EditFiles.vue'
 import EditLocation from './comp/EditLocation.vue'
 
-const { logEdit, logFile, uploadInfo, releaseLog } = useLogRelease()
+const { logEdit, logFile, uploadInfo, release } = useLogRelease()
 
 /** 编辑模块的可见性 */
 const visible = reactive<{ [key in LogItem]: boolean }>({
@@ -62,7 +61,7 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
         <ElRadioButton label="记录" value="log" />
         <ElRadioButton label="公开" value="public" />
       </ElRadioGroup>
-      <ElButton size="small" type="primary" @click="releaseLog">发布</ElButton>
+      <ElButton size="small" type="primary" @click="release">发布</ElButton>
     </div>
     <ControlIcons v-model="visible" v-model:log-edit="logEdit" />
 
