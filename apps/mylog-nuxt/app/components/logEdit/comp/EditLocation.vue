@@ -39,7 +39,7 @@ init.then(async (map) => {
   // 点击地图时，设置坐标
   map.on('click', (ev) => (location.value = [l2v(ev.lnglat), '']))
   // 点击当前定位时，设置坐标
-  geolocation._marker.on('click', (ev) => {
+  geolocation._marker?.on('click', (ev) => {
     location.value = [l2v(ev.target.getPosition()), '']
   })
 })

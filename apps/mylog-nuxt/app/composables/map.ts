@@ -163,26 +163,23 @@ export const getPositionByGeo = async (gl?: AMap.Geolocation) => {
  * 获取当前城市信息，浏览器定位，不要权限。而且在使用代理时，也会通过ip返回结果，有几率失败
  * @returns Promise<{position坐标数组, ...}>
  */
-// export const getCityInfoByGeo = async (gl?: AMap.Geolocation) => {
-//   const geolocation = gl || (await getGeolocation())
-//   return new Promise<any>((resolve, reject) => {
-//     geolocation.getCityInfo((status, result) => {
-//       console.info('getCityInfoByGeo', status, result)
-//       status === 'complete' ? resolve(result) : reject({ status, result })
-//     })
-//   })
-// }
+export const getCityInfoByGeo = async (gl?: AMap.Geolocation) => {
+  const geolocation = gl || (await getGeolocation())
+  return new Promise<any>((resolve, reject) => {
+    geolocation.getCityInfo((status, result) => {
+      console.info('getCityInfoByGeo', status, result)
+      status === 'complete' ? resolve(result) : reject({ status, result })
+    })
+  })
+}
 
-/** 不管有没有权限都要给出一个坐标 */
-// export const getPosition = async (gl?: any): Promise<AMap.Vector2> => {
-//   const res = await Promise.allSettled([
-//     getPositionByGeo(gl),
-//     getCityInfoByGeo(gl),
-//   ])
-//   if (res[0].status === 'fulfilled') return l2v(res[0].value.position)
-//   if (res[1].status === 'fulfilled') return res[1].value.position
-//   else return Promise.reject(res)
-// }
+/** 不管有没有权限都要给出一个坐标，天府广场兜底 */
+export const getPosition = async (gl?: AMap.Geolocation) =>
+  getPositionByGeo(gl)
+    .then((res) => l2v(res.position))
+    .catch(() => getCityInfoByGeo(gl))
+    .then((res) => res.position as AMap.Vector2)
+    .catch(() => [104.065739, 30.657452] as AMap.Vector2)
 
 /** 坐标转描述 */
 export const getAddress = async (p: AMap.Vector2) => {
@@ -221,13 +218,13 @@ export const useAMap = (
     timeout: 10000, //超过10秒后停止定位，默认：无穷大
   })
 
-  console.log('LSQ> geo', geolocation)
-
   onMounted(async () => {
     map = new AMap.Map($map.value!, {
       zoom: 17, // 地图级别
       center: [104.065739, 30.657452], // 天府广场
-      mapStyle: `amap://styles/${params?.theme?.value === 'dark' ? 'dark' : 'normal'}`,
+      mapStyle: `amap://styles/${
+        params?.theme?.value === 'dark' ? 'dark' : 'normal'
+      }`,
       ...opts,
     })
 
@@ -236,9 +233,9 @@ export const useAMap = (
 
     // 没传入center，就用当前定位
     geolocation._config.panToLocation = false
-    const p = await getPositionByGeo(geolocation)
+    const p = await getPosition(geolocation)
     geolocation._config.panToLocation = true // 以后点按钮还是会移动地图
-    !opts?.center && map?.panTo(p.position, 0) // 首次定位要手动控制
+    !opts?.center && map?.panTo(p, 0) // 首次定位要手动控制
 
     state.message = ''
     state.loading = false
