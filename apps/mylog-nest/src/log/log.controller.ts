@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { LogService } from './log.service';
 import { PrismaClient } from '@prisma/client';
 import { Userid } from 'src/utils';
+import { LogDTO } from '@mylog-full/mix/types';
 
 @Controller('log')
 export class LogController {
@@ -61,12 +62,37 @@ export class LogController {
     console.log('🐔 get_mylogs: ', userid, body);
     if (!userid) return;
 
-    const logs = await this.prisma.log.findMany({
+    return await this.prisma.log.findMany({
       where: { userid },
       skip: body.skip,
       take: body.limit ?? 10,
       orderBy: { logtime: 'desc' },
     });
-    return logs;
+  }
+
+  /** 发布log，用token的userid */
+  @Post('release_log')
+  async releaseLog(@Userid() userid: number, @Body() body: { log: LogDTO }) {
+    console.log('🐔 release_log: ', userid, body);
+    if (!userid) return;
+
+    const { log } = body;
+    return await this.prisma.log.create({
+      data: {
+        userid: log.userid ?? userid,
+        type: log.type ?? 'log',
+        content: log.content ?? '',
+        tags: log.tags ?? [],
+        imgs: log.imgs ?? [],
+        videos: log.videos ?? [],
+        audios: log.audios ?? [],
+        files: log.files ?? [],
+        location: log.location ?? [],
+        people: log.people ?? [],
+        info: log.info ?? {},
+        sendtime: log.sendtime ?? new Date(),
+        logtime: log.logtime ?? new Date(),
+      },
+    });
   }
 }

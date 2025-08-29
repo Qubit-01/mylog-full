@@ -1,9 +1,8 @@
-import { AnyArray, Bucket, Region } from '@mylog-full/mix/constant'
-import type { LogEdit, LogFileItem, LogItem } from '@mylog-full/mix/types'
-import type { ExifImgFile } from '@mylog-full/mix/img'
 import dayjs from 'dayjs'
 import type { UploadFile, UploadRawFile } from 'element-plus'
 import type COS from 'cos-js-sdk-v5'
+import { AnyArray, Bucket, Region } from '@mylog-full/mix/constant'
+import type { ExifImgFile } from '@mylog-full/mix/img'
 
 /** 获取 Log 项的默认值 */
 export const getInitValue = (item: LogItem): any => {
@@ -60,30 +59,73 @@ export const getCosFiles = (logFile: LogFileTypes) => {
   return cosFiles
 }
 
+/**
+ * 发布log，并上传文件，返回有正确id的log
+ * @param log log对象，部分
+ * @param file 要上传的文件
+ */
+export const releaseLog = async (
+  logEdit: LogEdit,
+  uploadFilesParams: COS.UploadFilesParams,
+) => {
+  if (!logEdit.content) {
+    ElMessage.error('必须填入内容哦')
+    throw new Error('必须填入内容哦')
+  }
+
+  const { sendtime, logtime, ...rest } = logEdit
+
+  // 填入必要数据：userid, username, sendtime
+  const log: LogDTO = {
+    ...rest,
+    ...(sendtime ? { sendTime: sendtime.toISOString() } : {}),
+    ...(logtime ? { logTime: logtime.toISOString() } : {}),
+  }
+
+  const data = await myUploadFiles(uploadFilesParams)
+  // const id = await releaseLog({ logJson: JSON.stringify(log) })
+  const newLog = await $fetch('', {
+    method: 'POST',
+    baseURL,
+    body: { log },
+  })
+  // if (newlog.id !== '0') {
+  //   logStore.addLog(log)
+  //   ElMessage({ message: '发布成功：' + log.id, type: 'success' })
+  //   return log
+  // }
+}
+
 /** LogRelease Hook */
 export const useLogRelease = () => {
   const logEdit = reactive<LogEdit>({
     type: 'log',
     content: '',
   })
-
   const logFile = reactive<LogFileTypes>({
     imgs: [],
     videos: [],
     audios: [],
     files: [],
   })
-
   const uploadInfo = reactive({
     percent: -1, // 上传进度
     speed: 0, // 上传速度 MB/s
   })
 
-  const releaseLog = () => {
+  const release = () => {
     uploadInfo.percent = 0
-    const cosFiles = getCosFiles(logFile)
+    const files = getCosFiles(logFile)
 
-    console.log('LSQ> ', cosFiles)
+    releaseLog(logEdit, {
+      files,
+      onProgress(i) {
+        uploadInfo.percent = Math.floor(i.percent * 100)
+        uploadInfo.speed = +(i.speed / 1024 / 1024).toFixed(2)
+      },
+    })
+
+    console.log('LSQ> ', files)
   }
 
   return {
@@ -92,7 +134,7 @@ export const useLogRelease = () => {
     /** 附带的文件列表 */
     logFile,
     uploadInfo,
-    releaseLog,
+    release,
   }
 }
 
