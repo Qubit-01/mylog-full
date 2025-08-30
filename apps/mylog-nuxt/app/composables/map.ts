@@ -1,56 +1,31 @@
 import '@amap/amap-jsapi-types'
 // import AMapLoader from '@amap/amap-jsapi-loader'
 
-declare global {
-  /** plugins */
-  namespace AMap {
-    /** IP定位 */
-    class CitySearch {
-      constructor()
-      /** 获取城市，不要权限，可能为空 */
-      getCityByIp(
-        ip: string,
-        callback: (status: string, result: any) => void,
-      ): void
-      getLocalCity(callback: (status: string, result: any) => void): void
-    }
-
-    /** 浏览器定位 */
-    class Geolocation {
-      constructor(options?: any)
-      /** 配置项 */
-      public _config: any
-      /** 当前坐标的 Marker */
-      public _marker: Marker
-      getCurrentPosition(callback: (status: string, result: any) => void): void
-      getCityInfo(callback: (status: string, result: any) => void): void
-    }
-
-    /** 地址解析 */
-    class Geocoder {
-      constructor(options?: any)
-      getAddress(
-        lnglat: any,
-        callback: (status: string, result: any) => void,
-      ): void
-    }
-
-    /** 点聚合 */
-    class MarkerCluster {
-      constructor(map: any, markers: any[], options?: any)
-      // 可根据需要补充方法
-    }
-  }
-}
-
-export type AMapType = typeof globalThis.AMap
-export type LngLatVO = [AMap.Vector2, string]
+const 天府广场 = [104.065739, 30.657452] as AMap.Vector2
 
 // @ts-ignore
 globalThis._AMapSecurityConfig = {
   serviceHost: 'https://mylog.ink/_AMapService', // 访问密钥的接口
   // securityJsCode: "85b229327c63ab4ff844930144442d80", // 安全JS代码，明文传输才用
 }
+
+/** 获取高德地图实例(loader内部是单例的) loader不能运行在服务端会报错 */
+export const getAMap = async (): Promise<AMap> =>
+  (await import('@amap/amap-jsapi-loader')).load({
+    key: '3e157c0915ab643cb42b74eb4c943cf5',
+    version: '2.0',
+    plugins: [
+      'AMap.CitySearch',
+      'AMap.Geolocation',
+      'AMap.Geocoder',
+      'AMap.MarkerCluster',
+      // 'AMap.Scale',
+    ],
+  })
+if (!import.meta.env.SSR) getAMap() // 会在 window 上挂 AMap
+
+/** LngLat类型坐标转换为Vector2类型坐标 */
+export const l2v = (p: AMap.LngLat): AMap.Vector2 => [p.lng, p.lat]
 
 /****************
  * 定位
@@ -61,53 +36,8 @@ globalThis._AMapSecurityConfig = {
  * - getCityInfoByGeo 获取城市信息，不要权限，不会为空
  ****************/
 
-/** 获取高德地图实例(loader内部是单例的) loader不能运行在服务端会报错 */
-export const getAMap = async () => {
-  const AMapLoader = await import('@amap/amap-jsapi-loader')
-  return (await AMapLoader.load({
-    key: '3e157c0915ab643cb42b74eb4c943cf5',
-    version: '2.0',
-    plugins: [
-      'AMap.CitySearch',
-      'AMap.Geolocation',
-      'AMap.Geocoder',
-      'AMap.MarkerCluster',
-      // 'AMap.Scale',
-    ],
-  })) as AMapType
-}
-if (!import.meta.env.SSR) getAMap() // 会在 window 上挂 AMap
-
-/**
- * LngLat类型坐标转换为Vector2类型坐标，如果传入不是LngLat，就原样输出
- * @param p LngLat类型坐标
- * @returns Vector2类型坐标，就是 [number, number]
- */
-export const l2v = (p: AMap.LngLat): AMap.Vector2 => [p.lng, p.lat]
-
-/**
- * IP定位: 根据IP返回对应城市信息。不要权限，但有代理时不会返回结果
- * @param ip 指定ip查询，可以不传，就自动获取ip
- * status:
- *   complete => result为CitySearchResult
- *   error => result为错误信息info
- *   no_data => 代表检索返回0结果，result空对象
- * @returns Promise<{bounds.getCenter()才是中心点, ...}>
- */
-// export const getCityByIp = async (ip?: string): Promise<any> => {
-//   const citySearch = new AMap.CitySearch()
-//   return new Promise((resolve, reject) => {
-//     const cb = (status: string, result: any) => {
-//       console.info('getCityByIp', status, result)
-//       if (status === 'complete' && result.info === 'OK') resolve(result)
-//       else reject({ status, result })
-//     }
-//     if (ip) citySearch.getCityByIp(ip, cb)
-//     else citySearch.getLocalCity(cb)
-//   })
-// }
-
 let Geolocation: AMap.Geolocation | null = null
+
 /**
  * 公共的定位对象(全局唯一)，即是公共定位工具，也是地图当前坐标Marker
  * 浏览器定位对象，用的比较多，这里直接抽出来，构造时浏览器不会发起询问，调用方法时会
@@ -142,6 +72,26 @@ export const getGeolocation = async () => {
 }
 
 /**
+ * IP定位: 根据IP返回对应城市信息。不要权限，但有代理时不会返回结果
+ * @param ip 指定ip查询，可以不传，就自动获取ip
+ * status:
+ *   complete => result为CitySearchResult
+ *   error => result为错误信息info
+ *   no_data => 代表检索返回0结果，result空对象
+ * @returns Promise<{bounds.getCenter()才是中心点, ...}>
+ */
+export const getCityByIp = async (ip?: string) =>
+  new Promise<AMap.CitySearchResult>((resolve, reject) => {
+    const citySearch = new AMap.CitySearch()
+    const cb = (status: string, result: AMap.CitySearchResult) => {
+      console.info('getCityByIp', status, result)
+      if (status === 'complete' && result.info === 'OK') resolve(result)
+      else reject({ status, result })
+    }
+    ip ? citySearch.getCityByIp(ip, cb) : citySearch.getLocalCity(cb)
+  })
+
+/**
  * 获取精确位置，有失败几率，浏览器定位，要权限。有几率失败，可能是因为没给权限
  * @param 可以自己传入，没有权限时，不会有坐标
  * @return Promise<{position坐标对象, ...}>
@@ -149,37 +99,37 @@ export const getGeolocation = async () => {
  *     message: "Get ipLocation failed.Geolocation permission denied."
  *     originMessage: "User denied Geolocation"
  */
-export const getPositionByGeo = async (gl?: AMap.Geolocation) => {
-  const geolocation = gl || (await getGeolocation())
-  return new Promise<any>((resolve, reject) => {
+export const getPositionByGeo = (gl?: AMap.Geolocation) =>
+  new Promise<{ position: AMap.LngLat }>(async (resolve, reject) => {
+    const geolocation = gl ?? (await getGeolocation())
     geolocation.getCurrentPosition((status: string, result: any) => {
       console.info('getPositionByGeo', status, result)
-      status == 'complete' ? resolve(result) : reject({ status, result })
+      status === 'complete' ? resolve(result) : reject({ status, result })
     })
   })
-}
 
 /**
  * 获取当前城市信息，浏览器定位，不要权限。而且在使用代理时，也会通过ip返回结果，有几率失败
  * @returns Promise<{position坐标数组, ...}>
  */
-export const getCityInfoByGeo = async (gl?: AMap.Geolocation) => {
-  const geolocation = gl || (await getGeolocation())
-  return new Promise<any>((resolve, reject) => {
+export const getCityInfoByGeo = (gl?: AMap.Geolocation) =>
+  new Promise<{ position: AMap.Vector2 }>(async (resolve, reject) => {
+    const geolocation = gl ?? (await getGeolocation())
     geolocation.getCityInfo((status, result) => {
       console.info('getCityInfoByGeo', status, result)
       status === 'complete' ? resolve(result) : reject({ status, result })
     })
   })
-}
 
 /** 不管有没有权限都要给出一个坐标，天府广场兜底 */
 export const getPosition = async (gl?: AMap.Geolocation) =>
   getPositionByGeo(gl)
     .then((res) => l2v(res.position))
-    .catch(() => getCityInfoByGeo(gl))
-    .then((res) => res.position as AMap.Vector2)
-    .catch(() => [104.065739, 30.657452] as AMap.Vector2)
+    .catch(() =>
+      getCityInfoByGeo(gl).then((res) => res.position as AMap.Vector2),
+    )
+    .catch(() => getCityByIp().then((res) => l2v(res.bounds.getCenter())))
+    .catch(() => 天府广场)
 
 /** 坐标转描述 */
 export const getAddress = async (p: AMap.Vector2) => {
@@ -215,13 +165,13 @@ export const useAMap = (
   /** 定位按钮控件，没有Marker，纯定位，会移动 */
   const geolocation = new AMap.Geolocation({
     enableHighAccuracy: true, //是否使用高精度定位，默认:true
-    timeout: 10000, //超过10秒后停止定位，默认：无穷大
+    timeout: 1000, //超过10秒后停止定位，默认：无穷大
   })
 
   onMounted(async () => {
     map = new AMap.Map($map.value!, {
       zoom: 17, // 地图级别
-      center: [104.065739, 30.657452], // 天府广场
+      center: 天府广场,
       mapStyle: `amap://styles/${
         params?.theme?.value === 'dark' ? 'dark' : 'normal'
       }`,
@@ -262,3 +212,59 @@ export const useAMap = (
     geolocation,
   }
 }
+
+/** 类型定义 **********************************/
+
+declare global {
+  /** plugins */
+  namespace AMap {
+    interface CitySearchResult {
+      bounds: AMap.Bounds
+      city: string
+      province: string
+      info: string
+    }
+
+    /** IP定位 */
+    class CitySearch {
+      constructor()
+      /** 获取城市，不要权限，可能为空 */
+      getCityByIp(
+        ip: string,
+        callback: (status: string, result: CitySearchResult) => void,
+      ): void
+      getLocalCity(
+        callback: (status: string, result: CitySearchResult) => void,
+      ): void
+    }
+
+    /** 浏览器定位 */
+    class Geolocation {
+      constructor(options?: any)
+      /** 配置项 */
+      public _config: any
+      /** 当前坐标的 Marker */
+      public _marker: Marker
+      getCurrentPosition(callback: (status: string, result: any) => void): void
+      getCityInfo(callback: (status: string, result: any) => void): void
+    }
+
+    /** 地址解析 */
+    class Geocoder {
+      constructor(options?: any)
+      getAddress(
+        lnglat: any,
+        callback: (status: string, result: any) => void,
+      ): void
+    }
+
+    /** 点聚合 */
+    class MarkerCluster {
+      constructor(map: any, markers: any[], options?: any)
+      // 可根据需要补充方法
+    }
+  }
+}
+
+export type AMap = typeof globalThis.AMap
+export type LngLatVO = [AMap.Vector2, string]
