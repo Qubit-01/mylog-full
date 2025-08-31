@@ -1,6 +1,8 @@
 import '@amap/amap-jsapi-types'
 // import AMapLoader from '@amap/amap-jsapi-loader'
 
+const isSSR = import.meta.env.SSR
+
 const 天府广场 = [104.065739, 30.657452] as AMap.Vector2
 
 // @ts-ignore
@@ -9,20 +11,25 @@ globalThis._AMapSecurityConfig = {
   // securityJsCode: "85b229327c63ab4ff844930144442d80", // 安全JS代码，明文传输才用
 }
 
+/** 获取AMap单例，⚠️只能在客户端调用 */
+const getAMap = (): Promise<AMap> =>
+  import('@amap/amap-jsapi-loader').then((loader) =>
+    loader.load({
+      key: '3e157c0915ab643cb42b74eb4c943cf5',
+      version: '2.0',
+      plugins: [
+        'AMap.CitySearch',
+        'AMap.Geolocation',
+        'AMap.Geocoder',
+        'AMap.MarkerCluster',
+        // 'AMap.Scale',
+      ],
+    }),
+  )
+
 /** 获取高德地图实例(loader内部是单例的) loader不能运行在服务端会报错 */
-export const getAMap = async (): Promise<AMap> =>
-  (await import('@amap/amap-jsapi-loader')).load({
-    key: '3e157c0915ab643cb42b74eb4c943cf5',
-    version: '2.0',
-    plugins: [
-      'AMap.CitySearch',
-      'AMap.Geolocation',
-      'AMap.Geocoder',
-      'AMap.MarkerCluster',
-      // 'AMap.Scale',
-    ],
-  })
-if (!import.meta.env.SSR) getAMap() // 会在 window 上挂 AMap
+// @ts-ignore
+export const AMap: AMap = !isSSR ? await getAMap() : null
 
 /** LngLat类型坐标转换为Vector2类型坐标 */
 export const l2v = (p: AMap.LngLat): AMap.Vector2 => [p.lng, p.lat]
@@ -36,8 +43,6 @@ export const l2v = (p: AMap.LngLat): AMap.Vector2 => [p.lng, p.lat]
  * - getCityInfoByGeo 获取城市信息，不要权限，不会为空
  ****************/
 
-let Geolocation: AMap.Geolocation | null = null
-
 /**
  * 公共的定位对象(全局唯一)，即是公共定位工具，也是地图当前坐标Marker
  * 浏览器定位对象，用的比较多，这里直接抽出来，构造时浏览器不会发起询问，调用方法时会
@@ -50,26 +55,24 @@ let Geolocation: AMap.Geolocation | null = null
  * @see https://lbs.amap.com/api/javascript-api-v2/documentation#geolocation 2.0版本
  * https://lbs.amap.com/api/javascript-api/reference/location#m_AMap.CitySearch 1.4
  */
-export const getGeolocation = async () => {
-  if (Geolocation) return Geolocation
-  await getAMap()
-  Geolocation = new AMap.Geolocation({
-    enableHighAccuracy: true, // 是否使用高精度定位，默认：true
-    timeout: 10000, // 设置定位超时时间，默认：无穷大
-    // convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
-    // getCityWhenFail: true, // 定位失败之后是否返回基本城市定位信息
-    needAddress: true, // 是否需要将定位结果进行逆地理编码操作
-    // extensions: 'all', // 是否需要详细的逆地理编码信息,是否需要周边POI、道路交叉口等信息，默认为'base'只返回基本信息，可选'all',将返回周边POI、道路交叉口等信息
-    showButton: false, // 是否显示定位按钮，true
-    // buttonPosition: 'LB', // 定位按钮可停靠的位置 LT左上角 LB左下角 RT右上角 RB右下角 默认LB
-    // buttonOffset: Pixel(10,20) // 按钮距离停靠位置的偏移量 默认Pixel(10,20)
-    // showMarker: false, // 定位成功时是否在定位位置显示一个Marker true
-    // showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
-    panToLocation: false, // 定位成功后，是否把定位得到的坐标设置为地图中心点坐标 true
-    // zoomToAccuracy: false,  // 定位成功且显示精度范围时，是否把地图视野调整到正好显示精度范围 false
-  })
-  return Geolocation
-}
+// @ts-ignore
+const Geolocation: AMap.Geolocation = !isSSR
+  ? new (await getAMap()).Geolocation({
+      enableHighAccuracy: true, // 是否使用高精度定位，默认：true
+      timeout: 10000, // 设置定位超时时间，默认：无穷大
+      // convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+      // getCityWhenFail: true, // 定位失败之后是否返回基本城市定位信息
+      needAddress: true, // 是否需要将定位结果进行逆地理编码操作
+      // extensions: 'all', // 是否需要详细的逆地理编码信息,是否需要周边POI、道路交叉口等信息，默认为'base'只返回基本信息，可选'all',将返回周边POI、道路交叉口等信息
+      showButton: false, // 是否显示定位按钮，true
+      // buttonPosition: 'LB', // 定位按钮可停靠的位置 LT左上角 LB左下角 RT右上角 RB右下角 默认LB
+      // buttonOffset: Pixel(10,20) // 按钮距离停靠位置的偏移量 默认Pixel(10,20)
+      // showMarker: false, // 定位成功时是否在定位位置显示一个Marker true
+      // showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
+      panToLocation: false, // 定位成功后，是否把定位得到的坐标设置为地图中心点坐标 true
+      // zoomToAccuracy: false,  // 定位成功且显示精度范围时，是否把地图视野调整到正好显示精度范围 false
+    })
+  : null
 
 /**
  * IP定位: 根据IP返回对应城市信息。不要权限，但有代理时不会返回结果
@@ -93,16 +96,16 @@ export const getCityByIp = async (ip?: string) =>
 
 /**
  * 获取精确位置，有失败几率，浏览器定位，要权限。有几率失败，可能是因为没给权限
+ * 并且 getCurrentPosition 方法会触发地图展示当前坐标
  * @param 可以自己传入，没有权限时，不会有坐标
  * @return Promise<{position坐标对象, ...}>
  * error =>
  *     message: "Get ipLocation failed.Geolocation permission denied."
  *     originMessage: "User denied Geolocation"
  */
-export const getPositionByGeo = (gl?: AMap.Geolocation) =>
+export const getPositionByGeo = (gl: AMap.Geolocation = Geolocation) =>
   new Promise<{ position: AMap.LngLat }>(async (resolve, reject) => {
-    const geolocation = gl ?? (await getGeolocation())
-    geolocation.getCurrentPosition((status: string, result: any) => {
+    gl.getCurrentPosition((status: string, result: any) => {
       console.info('getPositionByGeo', status, result)
       status === 'complete' ? resolve(result) : reject({ status, result })
     })
@@ -112,10 +115,9 @@ export const getPositionByGeo = (gl?: AMap.Geolocation) =>
  * 获取当前城市信息，浏览器定位，不要权限。而且在使用代理时，也会通过ip返回结果，有几率失败
  * @returns Promise<{position坐标数组, ...}>
  */
-export const getCityInfoByGeo = (gl?: AMap.Geolocation) =>
+export const getCityInfoByGeo = (gl: AMap.Geolocation = Geolocation) =>
   new Promise<{ position: AMap.Vector2 }>(async (resolve, reject) => {
-    const geolocation = gl ?? (await getGeolocation())
-    geolocation.getCityInfo((status, result) => {
+    gl.getCityInfo((status, result) => {
       console.info('getCityInfoByGeo', status, result)
       status === 'complete' ? resolve(result) : reject({ status, result })
     })
@@ -165,28 +167,28 @@ export const useAMap = (
   /** 定位按钮控件，没有Marker，纯定位，会移动 */
   const geolocation = new AMap.Geolocation({
     enableHighAccuracy: true, //是否使用高精度定位，默认:true
-    timeout: 1000, //超过10秒后停止定位，默认：无穷大
+    timeout: 10000, //超过10秒后停止定位，默认：无穷大
   })
 
   onMounted(async () => {
     map = new AMap.Map($map.value!, {
       zoom: 17, // 地图级别
-      center: 天府广场,
+      // center: 天府广场,
       mapStyle: `amap://styles/${
         params?.theme?.value === 'dark' ? 'dark' : 'normal'
       }`,
       ...opts,
     })
 
-    state.message = '正在定位当前...'
     map.addControl(geolocation as any) // 添加定位按钮
+    state.message = '正在定位当前...'
 
-    // 没传入center，就用当前定位
-    geolocation._config.panToLocation = false
-    const p = await getPosition(geolocation)
-    geolocation._config.panToLocation = true // 以后点按钮还是会移动地图
-    !opts?.center && map?.panTo(p, 0) // 首次定位要手动控制
-
+    try {
+      const p = await getPositionByGeo(geolocation)
+      !opts?.center && map?.panTo(p.position, 0) // 首次定位要手动控制
+    } catch (error) {
+      console.error('LSQ> ', error)
+    }
     state.message = ''
     state.loading = false
     resolve(map)
@@ -216,7 +218,7 @@ export const useAMap = (
 /** 类型定义 **********************************/
 
 declare global {
-  /** plugins */
+  // @ts-ignore
   namespace AMap {
     interface CitySearchResult {
       bounds: AMap.Bounds
@@ -267,4 +269,5 @@ declare global {
 }
 
 export type AMap = typeof globalThis.AMap
+/** 我自己定义的坐标类型 */
 export type LngLatVO = [AMap.Vector2, string]
