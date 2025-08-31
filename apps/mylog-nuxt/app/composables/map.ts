@@ -180,7 +180,8 @@ export const useAMap = (
       ...opts,
     })
 
-    map.addControl(geolocation as any) // 添加定位按钮
+    geolocation.addTo(map)
+    geolocation.hide()
     state.message = '正在定位当前...'
 
     try {
@@ -227,6 +228,13 @@ declare global {
       info: string
     }
 
+    interface Control {
+      addTo(map: AMap.Map): void
+      remove(): void
+      show(): void
+      hide(): void
+    }
+
     /** IP定位 */
     class CitySearch {
       constructor()
@@ -241,7 +249,7 @@ declare global {
     }
 
     /** 浏览器定位 */
-    class Geolocation {
+    class Geolocation extends Control {
       constructor(options?: any)
       /** 配置项 */
       public _config: any

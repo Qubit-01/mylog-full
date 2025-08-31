@@ -82,18 +82,19 @@ export const releaseLog = async (
     ...(logtime ? { logTime: logtime.toISOString() } : {}),
   }
 
-  const data = await myUploadFiles(uploadFilesParams)
-  // const id = await releaseLog({ logJson: JSON.stringify(log) })
-  const newLog = await $fetch('', {
-    method: 'POST',
-    baseURL,
-    body: { log },
-  })
-  // if (newlog.id !== '0') {
-  //   logStore.addLog(log)
-  //   ElMessage({ message: '发布成功：' + log.id, type: 'success' })
-  //   return log
-  // }
+  // TODO: toLogDTO toLogVO 写这个
+
+  try {
+    // const data = await myUploadFiles(uploadFilesParams)
+    return await $fetch<LogDTO>('/log/release_log', {
+      method: 'POST',
+      baseURL,
+      body: { log },
+    })
+  } catch (error) {
+    console.error('Error releasing log:', error)
+    return undefined
+  }
 }
 
 /** LogRelease Hook */
@@ -113,17 +114,27 @@ export const useLogRelease = () => {
     speed: 0, // 上传速度 MB/s
   })
 
-  const release = () => {
+  const release = async () => {
     uploadInfo.percent = 0
     const files = getCosFiles(logFile)
 
-    releaseLog(logEdit, {
+    const log = await releaseLog(logEdit, {
       files,
       onProgress(i) {
         uploadInfo.percent = Math.floor(i.percent * 100)
         uploadInfo.speed = +(i.speed / 1024 / 1024).toFixed(2)
       },
     })
+
+    console.log('LSQ> log', log)
+
+    uploadInfo.percent = -1
+    ElMessage({ message: '发布成功：' + log?.id, type: 'success' })
+
+    // if (newlog.id !== '0') {
+    //   logStore.addLog(log)
+    //   return log
+    // }
 
     console.log('LSQ> ', files)
   }
