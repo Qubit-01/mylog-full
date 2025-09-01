@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { LogService } from './log.service';
 import { PrismaClient } from '@prisma/client';
 import { Userid } from 'src/utils';
-import { LogDTO } from '@mylog-full/mix/types';
+import { LogDTO } from '@mylog-full/mix/src';
 
 @Controller('log')
 export class LogController {

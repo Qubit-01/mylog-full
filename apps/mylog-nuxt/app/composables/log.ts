@@ -73,24 +73,14 @@ export const releaseLog = async (
     throw new Error('必须填入内容哦')
   }
 
-  const { sendtime, logtime, ...rest } = logEdit
-
-  // 填入必要数据：userid, username, sendtime
-  const log: LogDTO = {
-    ...rest,
-    ...(sendtime ? { sendTime: sendtime.toISOString() } : {}),
-    ...(logtime ? { logTime: logtime.toISOString() } : {}),
-  }
-
-  // TODO: toLogDTO toLogVO 写这个
-
   try {
-    // const data = await myUploadFiles(uploadFilesParams)
-    return await $fetch<LogDTO>('/log/release_log', {
+    await myUploadFiles(uploadFilesParams)
+    const newLog = await $fetch<LogDTO>('/log/release_log', {
       method: 'POST',
       baseURL,
-      body: { log },
+      body: { log: toLogDTO(logEdit) },
     })
+    return newLog && toLogVO(newLog)
   } catch (error) {
     console.error('Error releasing log:', error)
     return undefined

@@ -1,5 +1,37 @@
 import dayjs from 'dayjs'
 
+/** 转为可以通过网络发送的 LogDTO */
+export const toLogDTO = (logEdit: LogEdit): LogDTO => {
+  const { sendtime, logtime, ...rest } = logEdit
+  return {
+    ...rest,
+    // 1. 转换时间
+    ...(sendtime ? { sendtime: sendtime.toISOString() } : {}),
+    ...(logtime ? { logtime: logtime.toISOString() } : {}),
+  }
+}
+
+/** 转为完整的 LogVO */
+export const toLogVO = (logDTO: LogDTO): LogVO => ({
+  id: 0,
+  userid: 0,
+  type: 'log',
+  content: '',
+  tags: [],
+  imgs: [],
+  videos: [],
+  audios: [],
+  files: [],
+  location: [],
+  people: [],
+  info: {},
+  ...logDTO,
+  sendtime: dayjs(logDTO.sendtime),
+  logtime: dayjs(logDTO.logtime),
+})
+
+/** 类型定义：前后端共用的 ******************/
+
 /** UserOV 用户数据结构 */
 export type UserVO = {
   id: number

@@ -4,7 +4,7 @@ import { getUseridByPswd } from '@prisma/client/sql';
 import { PrismaClient } from '@prisma/client';
 import { sign } from 'src/utils/jwt';
 import { Userid } from 'src/utils';
-import { type UserVO } from '@mylog-full/mix/types';
+import { type UserVO } from '@mylog-full/mix/src';
 import dayjs from 'dayjs';
 import { Response } from 'express';
 
@@ -78,7 +78,7 @@ export class UserController {
 
     // 覆盖算法
     return {
-      id: user.id ?? 0,
+      id: user.userid ?? 0, // ⚠️这里要用userid，不能用id
       name: user.name ?? '',
       img: user.img ?? '',
       info: user.info ?? {},

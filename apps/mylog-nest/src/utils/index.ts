@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import dayjs from 'dayjs';
 import type { log as LogPO } from '@prisma/client';
-import { LogVO } from '@mylog-full/mix/types';
+import { LogVO } from '@mylog-full/mix/src';
 import { verify } from './jwt';
 
 /**

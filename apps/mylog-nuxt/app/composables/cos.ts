@@ -12,13 +12,13 @@ const cos = new COS({
   getAuthorization(options, callback) {
     // 获取临时密钥接口 API
     fetch(baseURL + '/cos/get_credential', { method: 'GET' }).then(
-      (data: any) => {
+      async (res) => {
+        const data = await res.json()
         console.log('LSQ> /cos/get_credential: ', data)
         if (!data) {
           console.error('凭证无效:\n' + JSON.stringify(data, null, 2))
           return
         }
-
         callback({
           TmpSecretId: data.credentials.tmpSecretId,
           TmpSecretKey: data.credentials.tmpSecretKey,
