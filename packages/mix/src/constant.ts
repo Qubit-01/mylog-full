@@ -1,7 +1,7 @@
 // import type { LogFileItem } from "@/types"
 export const isDev = process.env.NODE_ENV !== 'production'
 /** 域名 */
-export const Domain = 'https://www.mylog.ink'
+export const Domain = 'https://mylog.ink'
 // export const Domain = 'http://localhost:20914'
 /** 后端URL前缀 */
 export const baseURL = Domain + '/api'

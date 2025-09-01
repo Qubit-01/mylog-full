@@ -11,7 +11,6 @@ async function bootstrap() {
         'https://www.mylog.ink',
         'http://mylog.ink',
         'http://www.mylog.ink',
-        'http://localhost:3000',
         'http://localhost',
       ],
       credentials: true,
