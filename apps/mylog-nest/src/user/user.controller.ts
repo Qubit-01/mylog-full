@@ -37,7 +37,7 @@ export class UserController {
 
     if (token) {
       res.cookie('token', token, {
-        maxAge: 60 * 60 * 24 * 60, // 秒
+        maxAge: 60 * 60 * 24 * 60 * 1000, // 两个月,ms
         // httpOnly: true, // 仅请求可访问，js不可访问
         secure: process.env.NODE_ENV === 'production', // 仅 https 传输
         // sameSite: 'strict', // 防止CSRF攻击和用户追踪
