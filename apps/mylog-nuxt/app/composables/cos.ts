@@ -1,8 +1,8 @@
 import COS from 'cos-js-sdk-v5'
-import { baseURL, Bucket, Region, BucketCDN } from '@mylog-full/mix/constant'
 import dayjs from 'dayjs'
-import { downloadFile } from '@mylog-full/mix/utils'
 import { inject } from 'vue'
+import { baseURL, Bucket, Region, BucketCDN } from '@mylog-full/mix/constant'
+import { downloadFile } from '@mylog-full/mix/utils'
 
 const cos = new COS({
   /**

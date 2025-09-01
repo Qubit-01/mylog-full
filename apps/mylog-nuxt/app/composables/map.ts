@@ -3,7 +3,7 @@ import '@amap/amap-jsapi-types'
 
 const isSSR = import.meta.env.SSR
 
-const 天府广场 = [104.065739, 30.657452] as AMap.Vector2
+const 天府广场: AMap.Vector2 = [104.065739, 30.657452]
 
 // @ts-ignore
 globalThis._AMapSecurityConfig = {
@@ -48,12 +48,7 @@ export const l2v = (p: AMap.LngLat): AMap.Vector2 => [p.lng, p.lat]
  * 浏览器定位对象，用的比较多，这里直接抽出来，构造时浏览器不会发起询问，调用方法时会
  * 融合了浏览器定位、高精度IP定位、安卓定位sdk辅助定位等多种手段，提供了获取当前准确位置、获取当前城市信息、持续定位(浏览器定位)等功能。
  * 默认情况下，PC端先精确IP定位，失败后浏览器定位；手机端先浏览器定位，失败后IP定位
- *
- * 只管在地图上显示Marker，不会自动定位，不会跳转
- *
- * 还可以通过事件监听获取定位结果
- * @see https://lbs.amap.com/api/javascript-api-v2/documentation#geolocation 2.0版本
- * https://lbs.amap.com/api/javascript-api/reference/location#m_AMap.CitySearch 1.4
+ * @see https://lbs.amap.com/api/javascript-api-v2/documentation#geolocation
  */
 // @ts-ignore
 const Geolocation: AMap.Geolocation = !isSSR
@@ -77,11 +72,12 @@ const Geolocation: AMap.Geolocation = !isSSR
 /**
  * IP定位: 根据IP返回对应城市信息。不要权限，但有代理时不会返回结果
  * @param ip 指定ip查询，可以不传，就自动获取ip
+ * @returns Promise<{bounds.getCenter()才是中心点, ...}>
+ * @see https://lbs.amap.com/api/javascript-api-v2/documentation#citysearch
  * status:
  *   complete => result为CitySearchResult
  *   error => result为错误信息info
  *   no_data => 代表检索返回0结果，result空对象
- * @returns Promise<{bounds.getCenter()才是中心点, ...}>
  */
 export const getCityByIp = async (ip?: string) =>
   new Promise<AMap.CitySearchResult>((resolve, reject) => {

@@ -11,11 +11,11 @@
     "start": "ts-node index.ts"
   },
   "exports": {
-    "./types": "./types/index.ts",
-    "./utils": "./utils/index.ts",
-    "./constant": "./utils/constant.ts",
-    "./qq-connect": "./utils/qq-connect.ts",
-    "./img": "./utils/img.ts"
+    ".": "./src/index.ts",
+    "./constant": "./src/constant.ts",
+    "./img": "./src/img.ts",
+    "./qq-connect": "./src/qq-connect.ts",
+    "./utils": "./src/utils.ts"
   },
   "devDependencies": {
     "typescript": "^5.9.2"
