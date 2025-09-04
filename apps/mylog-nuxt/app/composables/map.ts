@@ -178,14 +178,7 @@ export const useAMap = (
 
     geolocation.addTo(map)
     geolocation.hide()
-    state.message = '正在定位当前...'
 
-    try {
-      const p = await getPositionByGeo(geolocation)
-      !opts?.center && map?.panTo(p.position, 0) // 首次定位要手动控制
-    } catch (error) {
-      console.error('LSQ> ', error)
-    }
     state.message = ''
     state.loading = false
     resolve(map)
