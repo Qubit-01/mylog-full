@@ -21,23 +21,10 @@ init.then(async (map) => {
   map.on('click', (ev) => (location.value = [l2v(ev.lnglat), ''])) // 点击地图时，设置坐标
   map.add(marker)
 
-  // 定位当前，如果有坐标就只打点，不移动，如果没坐标就改marker
-  getPositionByGeo(geolocation).then((p) => {
-    map.add(marker) // 使这个 marker 显示在最上层
-    // 如果没有坐标，就使用定位
-    !location.value[0] && (location.value = [l2v(p.position), ''])
-
-    // 点击当前定位时，设置坐标
-    geolocation._marker?.on('click', (ev) => {
-      location.value = [l2v(ev.target.getPosition()), '']
-    })
-  })
-
   // 当坐标变化时，保持同步
   watch(
-    location,
-    (v) => {
-      const p = v[0]
+    () => location.value[0],
+    (p) => {
       if (!p) return
       map.panTo(p, 500)
       marker.setPosition(p)
@@ -48,6 +35,18 @@ init.then(async (map) => {
     },
     { immediate: true },
   )
+
+  // 定位当前，如果有坐标就只打点，不移动，如果没坐标就改marker
+  getPositionByGeo(geolocation).then((p) => {
+    map.add(marker) // 使marker显示在最上层
+    // 如果没有坐标，就使用定位
+    !location.value[0] && (location.value = [l2v(p.position), ''])
+
+    // 点击当前定位时，设置坐标
+    geolocation._marker?.on('click', (ev) => {
+      location.value = [l2v(ev.target.getPosition()), '']
+    })
+  })
 })
 </script>
 

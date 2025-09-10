@@ -164,6 +164,7 @@ export const useAMap = (
   const geolocation = new AMap.Geolocation({
     enableHighAccuracy: true, //是否使用高精度定位，默认:true
     timeout: 10000, //超过10秒后停止定位，默认：无穷大
+    panToLocation: false,
   })
 
   onMounted(async () => {
