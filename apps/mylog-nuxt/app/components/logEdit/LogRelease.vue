@@ -7,6 +7,11 @@ import EditVideos from './comp/EditVideos.vue'
 import EditFiles from './comp/EditFiles.vue'
 import EditLocation from './comp/EditLocation.vue'
 
+const emits = defineEmits<{
+  /** 发布成功后触发 */
+  onReleaseSuccess: []
+}>()
+
 const { logEdit, logFile, uploadInfo, release } = useLogRelease()
 
 /** 编辑模块的可见性 */
@@ -25,7 +30,7 @@ const visible = reactive<{ [key in LogItem]: boolean }>({
 
 /** 设置编辑项数据，不传 data 用默认值 */
 const setItem = <T extends LogItem>(item: T, data?: LogEdit[T]) => {
-  logEdit[item] = data ?? getInitValue(item)
+  logEdit[item] = data ?? getDefaultValue(item)
   visible[item] = true
 }
 
@@ -34,6 +39,13 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
   setItem(item) // 设置空值，然后组件内会去设置
   logFile[item].push(file as any)
 }
+
+const releaseLog = async () => {
+  const logReal = await release()
+  if (logReal?.id) emits('onReleaseSuccess')
+}
+
+defineExpose({ logEdit })
 </script>
 <!-- 
   发布Log模块
@@ -61,7 +73,7 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
         <ElRadioButton label="记录" value="log" />
         <ElRadioButton label="公开" value="public" />
       </ElRadioGroup>
-      <ElButton size="small" type="primary" @click="release">发布</ElButton>
+      <ElButton size="small" type="primary" @click="releaseLog">发布</ElButton>
     </div>
     <ControlIcons v-model="visible" v-model:log-edit="logEdit" />
 
@@ -107,8 +119,8 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
       />
     </ClientOnly>
   </div>
-  <p>{{ logEdit }}</p>
-  <p>{{ logFile }}</p>
+  <!-- <p>{{ logEdit }}</p> -->
+  <!-- <p>{{ logFile }}</p> -->
 </template>
 
 <style lang="scss" scoped>

@@ -21,7 +21,7 @@ const onClick = (item: LogItem) => {
     visible.value[item] = false
     delete logEdit.value[item]
   } else {
-    logEdit.value[item] = getInitValue(item)
+    logEdit.value[item] = getDefaultValue(item)
     visible.value[item] = true
   }
 }

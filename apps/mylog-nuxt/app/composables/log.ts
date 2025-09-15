@@ -5,7 +5,13 @@ import { AnyArray, Bucket, Region } from '@mylog-full/mix/constant'
 import type { ExifImgFile } from '@mylog-full/mix/img'
 
 /** 获取 Log 项的默认值 */
-export const getInitValue = (item: LogItem): any => {
+const getInitValue = (): { logEdit: LogEdit; logFile: LogFileTypes } => ({
+  logEdit: { type: 'log', content: '' },
+  logFile: { imgs: [], videos: [], audios: [], files: [] },
+})
+
+/** 获取 Log 项的默认值 */
+export const getDefaultValue = (item: LogItem): any => {
   switch (item) {
     case 'logtime':
       return dayjs()
@@ -24,9 +30,7 @@ export const getInitValue = (item: LogItem): any => {
   }
 }
 
-/**
- * 返回如 users/[userid]/mylog/
- */
+/** 返回如 users/[userid]/mylog/ */
 export const cosPath = (userid: number) => `users/${userid}/mylog/`
 
 /** 从files对象中，取出cos文件对象 */
@@ -60,7 +64,7 @@ export const getCosFiles = (logFile: LogFileTypes) => {
 }
 
 /**
- * 发布log，并上传文件，返回有正确id的log
+ * 发布log，并上传文件，返回有正确id的log。出错会直接抛出
  * @param log log对象，部分
  * @param file 要上传的文件
  */
@@ -73,32 +77,22 @@ export const releaseLog = async (
     throw new Error('必须填入内容哦')
   }
 
-  try {
-    await myUploadFiles(uploadFilesParams)
-    const newLog = await $fetch<LogDTO>('/log/release_log', {
-      method: 'POST',
-      baseURL,
-      body: { log: toLogDTO(logEdit) },
-    })
-    return newLog && toLogVO(newLog)
-  } catch (error) {
-    console.error('Error releasing log:', error)
-    return undefined
-  }
+  // 1. 上传文件
+  await myUploadFiles(uploadFilesParams)
+  // 2. 发布log
+  const logNew = await $fetch<LogDTO>('/log/release_log', {
+    method: 'POST',
+    baseURL,
+    body: { log: toLogDTO(logEdit) },
+  })
+  return logNew && toLogVO(logNew)
 }
 
 /** LogRelease Hook */
 export const useLogRelease = () => {
-  const logEdit = reactive<LogEdit>({
-    type: 'log',
-    content: '',
-  })
-  const logFile = reactive<LogFileTypes>({
-    imgs: [],
-    videos: [],
-    audios: [],
-    files: [],
-  })
+  const logEdit = reactive<LogEdit>(getInitValue().logEdit)
+  const logFile = reactive<LogFileTypes>(getInitValue().logFile)
+
   const uploadInfo = reactive({
     percent: -1, // 上传进度
     speed: 0, // 上传速度 MB/s
@@ -106,27 +100,23 @@ export const useLogRelease = () => {
 
   const release = async () => {
     uploadInfo.percent = 0
-    const files = getCosFiles(logFile)
 
-    const log = await releaseLog(logEdit, {
-      files,
+    const logNew = await releaseLog(logEdit, {
+      files: getCosFiles(logFile),
       onProgress(i) {
         uploadInfo.percent = Math.floor(i.percent * 100)
         uploadInfo.speed = +(i.speed / 1024 / 1024).toFixed(2)
       },
     })
 
-    console.log('LSQ> log', log)
-
     uploadInfo.percent = -1
-    ElMessage({ message: '发布成功：' + log?.id, type: 'success' })
 
-    // if (newlog.id !== '0') {
-    //   logStore.addLog(log)
-    //   return log
-    // }
+    if (logNew?.id !== 0) {
+      ElMessage({ message: '发布成功：' + logNew?.id, type: 'success' })
 
-    console.log('LSQ> ', files)
+      // logStore.addLog(logNew)
+      return logNew
+    }
   }
 
   return {

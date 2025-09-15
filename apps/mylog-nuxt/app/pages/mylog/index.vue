@@ -1,13 +1,22 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
 import LogLoading from '~/components/log/LogLoading.vue'
-import LogRelease from '~/components/logEdit/LogRelease.vue';
+import LogRelease from '~/components/logEdit/LogRelease.vue'
 const Mylog = useMylogStore()
+
+const $LogRelease = useTemplateRef('$LogRelease')
+
+const releaseKey = ref(0)
 </script>
 
 <template>
   <div class="timeline">
-    <LogRelease />
+    <LogRelease
+      :key="releaseKey"
+      ref="$LogRelease"
+      @onReleaseSuccess="releaseKey++"
+    />
+    <div>{{ $LogRelease?.logEdit }}</div>
     <div>筛选模块</div>
 
     <el-timeline
@@ -20,7 +29,7 @@ const Mylog = useMylogStore()
         <el-timeline-item
           v-if="
             i === 0 ||
-            !dayjs(log.logtime).isSame(Mylog.logs[i - 1].logtime, 'year')
+            !dayjs(log.logtime).isSame(Mylog.logs[i - 1]?.logtime, 'year')
           "
           :timestamp="dayjs(log.logtime).year().toString()"
           type="success"
@@ -32,7 +41,7 @@ const Mylog = useMylogStore()
         <el-timeline-item
           v-if="
             i === 0 ||
-            !dayjs(log.logtime).isSame(Mylog.logs[i - 1].logtime, 'day')
+            !dayjs(log.logtime).isSame(Mylog.logs[i - 1]?.logtime, 'day')
           "
           :timestamp="dayjs(log.logtime).format('YYYY-MM-DD')"
           placement="top"
