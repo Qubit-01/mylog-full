@@ -43,7 +43,9 @@ export default defineNuxtConfig({
     },
   },
   modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt'],
-  elementPlus: {},
+  elementPlus: {
+    defaultLocale: 'zh-cn',
+  },
   runtimeConfig: {
     public: {},
   },

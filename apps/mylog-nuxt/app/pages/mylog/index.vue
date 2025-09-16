@@ -17,7 +17,8 @@ const releaseKey = ref(0)
       @onReleaseSuccess="releaseKey++"
     />
     <div>{{ $LogRelease?.logEdit }}</div>
-    <div>筛选模块</div>
+
+    <LogFilter />
 
     <el-timeline
       v-infinite-scroll="Mylog.addLogs"
