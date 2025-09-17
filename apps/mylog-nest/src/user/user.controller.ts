@@ -4,7 +4,7 @@ import { getUseridByPswd } from '@prisma/client/sql';
 import { PrismaClient } from '@prisma/client';
 import { sign } from 'src/utils/jwt';
 import { Userid } from 'src/utils';
-import { type UserVO } from '@mylog-full/mix/src';
+import { type User } from '@mylog-full/mix/src';
 import dayjs from 'dayjs';
 import { Response } from 'express';
 
@@ -74,7 +74,7 @@ export class UserController {
 
     if (!user) return;
 
-    const setting = user.setting as UserVO['setting'];
+    const setting = user.setting as User['setting'];
 
     // 覆盖算法
     return {
