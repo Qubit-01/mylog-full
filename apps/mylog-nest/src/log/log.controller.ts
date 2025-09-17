@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { LogService } from './log.service';
 import { PrismaClient } from '@prisma/client';
 import { Userid } from 'src/utils';
-import { LogDTO } from '@mylog-full/mix/src';
+import { Log } from '@mylog-full/mix/src';
 
 @Controller('log')
 export class LogController {
@@ -72,7 +72,7 @@ export class LogController {
 
   /** 发布log，用token的userid */
   @Post('release_log')
-  async releaseLog(@Userid() userid: number, @Body() body: { log: LogDTO }) {
+  async releaseLog(@Userid() userid: number, @Body() body: { log: Log }) {
     console.log('🐔 release_log: ', userid, body);
     if (!userid) return;
 
@@ -90,8 +90,8 @@ export class LogController {
         location: log.location ?? [],
         people: log.people ?? [],
         info: log.info ?? {},
-        sendtime: log.sendtime ?? new Date(),
-        logtime: log.logtime ?? new Date(),
+        sendtime: new Date(log.sendtime),
+        logtime: new Date(log.logtime),
       },
     });
   }

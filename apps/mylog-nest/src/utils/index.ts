@@ -1,7 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import dayjs from 'dayjs';
 import type { log as LogPO } from '@prisma/client';
-import { LogVO } from '@mylog-full/mix/src';
+import { Log } from '@mylog-full/mix/src';
 import { verify } from './jwt';
 
 /**
@@ -9,27 +8,28 @@ import { verify } from './jwt';
  * PO to VO :
  *   1. JsonValue 转 对象
  *   2. Date 转 dayjs
+ *   3. 类型断言
  * @deprecated
  * @param log PO数据库对象 trpc直接返回的对象类型
  * @returns
  */
-export const toLogVO4PO = (log: LogPO) => {
-  const logVO: LogVO = {
+export const toLog4PO = (log: LogPO): Log => {
+  const aLog: Log = {
     ...log,
     userid: log.userid,
-    type: log.type as LogVO['type'],
-    logtime: dayjs(log.logtime),
-    sendtime: dayjs(log.sendtime),
-    tags: log.tags as LogVO['tags'],
-    imgs: log.imgs as LogVO['imgs'],
-    videos: log.videos as LogVO['videos'],
-    audios: log.audios as LogVO['audios'],
-    files: log.files as LogVO['files'],
-    location: log.location as LogVO['location'],
-    people: log.people as LogVO['people'],
-    info: log.info as LogVO['info'],
+    type: log.type as Log['type'],
+    logtime: +log.logtime,
+    sendtime: +log.sendtime,
+    tags: log.tags as Log['tags'],
+    imgs: log.imgs as Log['imgs'],
+    videos: log.videos as Log['videos'],
+    audios: log.audios as Log['audios'],
+    files: log.files as Log['files'],
+    location: log.location as Log['location'],
+    people: log.people as Log['people'],
+    info: log.info as Log['info'],
   };
-  return logVO;
+  return aLog;
 };
 
 /**

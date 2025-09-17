@@ -4,19 +4,19 @@ import LogLoading from '~/components/log/LogLoading.vue'
 import LogRelease from '~/components/logEdit/LogRelease.vue'
 const Mylog = useMylogStore()
 
-const $LogRelease = useTemplateRef('$LogRelease')
+// const $LogRelease = useTemplateRef('$LogRelease')
 
-const releaseKey = ref(0)
+/** 每次成功就加一，然后重置发布组件 */
+const releaseCount = ref(0)
 </script>
 
 <template>
   <div class="timeline">
     <LogRelease
-      :key="releaseKey"
-      ref="$LogRelease"
-      @onReleaseSuccess="releaseKey++"
+      :key="releaseCount"
+      @onReleaseSuccess="releaseCount++"
     />
-    <div>{{ $LogRelease?.logEdit }}</div>
+    <!-- <div>{{ $LogRelease?.logEdit }}</div> -->
 
     <LogFilter />
 

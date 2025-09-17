@@ -153,7 +153,7 @@ export const useAMap = (
   $map: Ref<HTMLDivElement | null>,
   opts?: Partial<AMap.MapOptions>,
   params?: {
-    theme?: Ref<UserVO['setting']['page']['theme']>
+    theme?: Ref<User['setting']['page']['theme']>
   },
 ) => {
   let map: AMap.Map | null = null

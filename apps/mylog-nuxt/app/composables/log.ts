@@ -80,12 +80,12 @@ export const releaseLog = async (
   // 1. 上传文件
   await myUploadFiles(uploadFilesParams)
   // 2. 发布log
-  const logNew = await $fetch<LogDTO>('/log/release_log', {
+  const logNew = await $fetch<Log>('/log/release_log', {
     method: 'POST',
     baseURL,
-    body: { log: toLogDTO(logEdit) },
+    body: { log: logEdit },
   })
-  return logNew && toLogVO(logNew)
+  return logNew
 }
 
 /** LogRelease Hook */

@@ -1,5 +1,5 @@
 export const useMylogStore = defineStore('mylog', () => {
-  const logs = reactive<Log[]>([])
+  const logs = ref<Log[]>([])
   const params = reactive({ skip: 0, limit: 10 })
   const noMore = ref(false)
 
@@ -13,7 +13,7 @@ export const useMylogStore = defineStore('mylog', () => {
     },
     body: params,
     onResponse({ response }) {
-      logs.push(...(response._data ?? []))
+      logs.value.push(...(response._data ?? []))
       if (response._data.length < params.limit) noMore.value = true
     },
   })

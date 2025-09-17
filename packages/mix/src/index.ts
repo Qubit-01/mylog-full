@@ -1,18 +1,5 @@
-import dayjs from 'dayjs'
-
-/** 转为可以通过网络发送的 LogDTO */
-export const toLogDTO = (logEdit: LogEdit): LogDTO => {
-  const { sendtime, logtime, ...rest } = logEdit
-  return {
-    ...rest,
-    // 1. 转换时间
-    ...(sendtime ? { sendtime: sendtime.toISOString() } : {}),
-    ...(logtime ? { logtime: logtime.toISOString() } : {}),
-  }
-}
-
-/** 转为完整的 LogVO */
-export const toLogVO = (logDTO: LogDTO): LogVO => ({
+/** 转为完整的 Log */
+export const toLog = (log: Partial<Log>): Log => ({
   id: 0,
   userid: 0,
   type: 'log',
@@ -25,21 +12,21 @@ export const toLogVO = (logDTO: LogDTO): LogVO => ({
   location: [],
   people: [],
   info: {},
-  ...logDTO,
-  sendtime: dayjs(logDTO.sendtime),
-  logtime: dayjs(logDTO.logtime),
+  sendtime: Date.now(),
+  logtime: Date.now(),
+  ...log,
 })
 
 /** 类型定义：前后端共用的 ******************/
 
 /** UserOV 用户数据结构 */
-export type UserVO = {
+export type User = {
   id: number
   name: string
   img: string
   info: {
     /** 性别 */
-    sex?: '男' | '女' | undefined
+    sex?: '男' | '女'
     /** 生日 */
     birth?: string
     /** 个性签名 */
@@ -79,22 +66,22 @@ export type UserVO = {
   createtime: number
 }
 
-/** LogVO：都是必选，没有就是空数组 */
-export interface LogVO extends LogVOEdit {
+/** Log：都是必选，没有就是空数组 */
+export interface Log extends LogVOEdit {
   /** LogId */
   id: number
   /** 发布者的id */
   userid: number
   /** Log类型 */
   type: 'public' | 'log' | 'tag'
-  /** 发布时间 */
-  sendtime: dayjs.Dayjs
+  /** 发布时间戳 */
+  sendtime: number
 }
 
 /** 可以被编辑的 Log 项 */
-interface LogVOEdit extends LogVOEditWithFiles {
-  /** 记录：时间 */
-  logtime: dayjs.Dayjs
+interface LogVOEdit extends LogEditWithFiles {
+  /** 记录：时间戳 */
+  logtime: number
   /** 记录：内容 */
   content: string
   /** 记录：标签 */
@@ -118,7 +105,7 @@ interface LogVOEdit extends LogVOEditWithFiles {
 export type LogItem = keyof LogVOEdit
 
 /** 需要文件的项 */
-type LogVOEditWithFiles = {
+type LogEditWithFiles = {
   /** 记录：图片 */
   imgs: string[]
   /** 记录：视频 */
@@ -130,7 +117,7 @@ type LogVOEditWithFiles = {
 }
 
 /** log中代表文件的项，需要和COS交互的属性，方便一些方法循环 */
-export type LogFileItem = keyof LogVOEditWithFiles
+export type LogFileItem = keyof LogEditWithFiles
 /** 用于遍历定义顺序，files最后遍历时兜底 */
 export const logFileItem: LogFileItem[] = [
   'imgs',
@@ -163,10 +150,4 @@ export type LogFilter = {
 }
 
 /** 编辑中的log类型，只能填入log属性 */
-export type LogEdit = Partial<LogVO>
-
-/** LogDTO 前后端都要用, 主要是 dayjs 转 string */
-export type LogDTO = Omit<LogEdit, 'sendtime' | 'logtime'> & {
-  sendtime?: string
-  logtime?: string
-}
+export type LogEdit = Partial<Log>
