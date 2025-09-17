@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import LiquidGlass from '~/components/test/LiquidGlass.vue'
 definePageMeta({ layout: false })
 
 
