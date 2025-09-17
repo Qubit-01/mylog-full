@@ -9,8 +9,8 @@ import * as ExifReader from 'exifreader'
 export const compressImg = (file: File, rate = 0.2): Promise<File> => {
   const dataURLtoFile = (dataurl: string, fileName: string) => {
     let arr = dataurl.split(','),
-      mime = arr[0].match(/:(.*?);/)![1],
-      bstr = atob(arr[1]),
+      mime = arr[0]!.match(/:(.*?);/)![1],
+      bstr = atob(arr[1]!),
       n = bstr.length,
       u8arr = new Uint8Array(n)
     while (n--) {
@@ -134,12 +134,12 @@ export const getLnglatByExif = (
     lng[0][0] / lng[0][1],
     lng[1][0] / lng[1][1],
     lng[2][0] / lng[2][1],
-  ]
+  ] as const
   const lat1 = [
     lat[0][0] / lat[0][1],
     lat[1][0] / lat[1][1],
     lat[2][0] / lat[2][1],
-  ]
+  ] as const
   return [
     lng1[0] + lng1[1] / 60 + lng1[2] / 3600,
     lat1[0] + lat1[1] / 60 + lat1[2] / 3600,

@@ -35,13 +35,7 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   css: ['~/assets/css/base.scss', 'element-plus/theme-chalk/dark/css-vars.css'],
-  vite: {
-    css: {
-      preprocessorOptions: {
-        scss: { api: 'modern-compiler' },
-      },
-    },
-  },
+  vite: {},
   modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt'],
   elementPlus: {
     defaultLocale: 'zh-cn',
