@@ -14,7 +14,7 @@ const getInitValue = (): { logEdit: LogEdit; logFile: LogFileTypes } => ({
 export const getDefaultValue = (item: LogItem): any => {
   switch (item) {
     case 'logtime':
-      return dayjs()
+      return Date.now()
     case 'content':
       return ''
     case 'tags':

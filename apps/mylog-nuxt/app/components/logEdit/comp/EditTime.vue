@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-import dayjs from 'dayjs'
-
-const time = defineModel<dayjs.Dayjs>({ required: true })
+const time = defineModel<number>({ required: true })
 const editTime = computed({
-  get: () => time.value.toDate(),
-  set: (v) => (time.value = dayjs(v)),
+  get: () => new Date(time.value),
+  set: (v) => (time.value = +v),
 })
 </script>
 <!--

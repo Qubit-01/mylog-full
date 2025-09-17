@@ -12,6 +12,7 @@ const emits = defineEmits<{
   onReleaseSuccess: []
 }>()
 
+const { logs } = refsMylogStore()
 const { logEdit, logFile, uploadInfo, release } = useLogRelease()
 
 /** 编辑模块的可见性 */
@@ -42,7 +43,10 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
 
 const releaseLog = async () => {
   const logReal = await release()
-  if (logReal?.id) emits('onReleaseSuccess')
+  if (logReal?.id) {
+    logs.value.unshift(logReal) // 直接加到最前面
+    emits('onReleaseSuccess')
+  }
 }
 
 defineExpose({ logEdit })
