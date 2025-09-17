@@ -67,7 +67,7 @@ export type User = {
 }
 
 /** Log：都是必选，没有就是空数组 */
-export interface Log extends LogVOEdit {
+export interface Log extends LogEditable {
   /** LogId */
   id: number
   /** 发布者的id */
@@ -79,7 +79,7 @@ export interface Log extends LogVOEdit {
 }
 
 /** 可以被编辑的 Log 项 */
-interface LogVOEdit extends LogEditWithFiles {
+interface LogEditable extends LogEditWithFiles {
   /** 记录：时间戳 */
   logtime: number
   /** 记录：内容 */
@@ -101,8 +101,8 @@ interface LogVOEdit extends LogEditWithFiles {
   }
 }
 
-/** 用户可以编辑的项的 key */
-export type LogItem = keyof LogVOEdit
+/** 用户可以编辑的项的 key，用于 LogRelease */
+export type LogItem = keyof LogEditable
 
 /** 需要文件的项 */
 type LogEditWithFiles = {
