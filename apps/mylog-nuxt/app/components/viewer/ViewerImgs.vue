@@ -70,7 +70,13 @@ onMounted(() => {
 
 <template>
   <div class="viewer-imgs" ref="viewerDom" @click.stop>
-    <img v-for="url in urls" :key="url" v-img-src="url" v-error-retry />
+    <img
+      v-for="url in urls"
+      :key="url"
+      v-img-src="url"
+      v-error-retry
+      loading="lazy"
+    />
   </div>
 </template>
 
