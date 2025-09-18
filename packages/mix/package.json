@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
-    "dayjs": "^1.11.15",
-    "exifreader": "^4.31.1",
-    "vue": "^3.5.20"
+    "dayjs": "^1.11.18",
+    "exifreader": "^4.31.2",
+    "vue": "^3.5.21"
   }
 }

@@ -22,11 +22,11 @@
     "@vueuse/core": "^13.9.0",
     "@vueuse/nuxt": "12.4.0",
     "cos-js-sdk-v5": "^1.10.1",
-    "dayjs": "^1.11.15",
+    "dayjs": "^1.11.18",
     "dplayer": "^1.27.1",
-    "element-plus": "^2.11.1",
+    "element-plus": "^2.11.2",
     "lodash-unified": "^1.0.3",
-    "nuxt": "^4.0.3",
+    "nuxt": "^4.1.2",
     "pinia": "^2.3.1",
     "viewerjs": "^1.11.7",
     "vue": "latest",
@@ -35,6 +35,6 @@
   "devDependencies": {
     "@amap/amap-jsapi-types": "^0.0.15",
     "@types/dplayer": "^1.25.5",
-    "sass-embedded": "^1.91.0"
+    "sass-embedded": "^1.92.1"
   }
 }
