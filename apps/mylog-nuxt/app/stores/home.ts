@@ -11,8 +11,10 @@ export const useHomeStore = defineStore('home', () => {
     },
     body: params,
     onResponse({ response }) {
-      logs.push(...(response._data ?? []))
-      if (response._data.length < params.limit) noMore.value = true
+      const logsRes = response._data
+      if (!logsRes) return
+      logs.push(...logsRes)
+      if (logsRes.length < params.limit) noMore.value = true
     },
   })
 

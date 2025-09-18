@@ -11,8 +11,10 @@ export const useMylogStore = defineStore('mylog', () => {
     },
     body: params,
     onResponse({ response }) {
-      logs.value.push(...(response._data ?? []))
-      if (response._data.length < params.limit) noMore.value = true
+      const logsRes = response._data
+      if (!logsRes) return
+      logs.value.push(...logsRes)
+      if (logsRes.length < params.limit) noMore.value = true
     },
   })
 

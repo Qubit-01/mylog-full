@@ -90,8 +90,8 @@ export class LogController {
         location: log.location ?? [],
         people: log.people ?? [],
         info: log.info ?? {},
-        sendtime: new Date(log.sendtime),
-        logtime: new Date(log.logtime),
+        sendtime: new Date(),
+        logtime: new Date(log.logtime ?? Date.now()),
       },
     });
   }
