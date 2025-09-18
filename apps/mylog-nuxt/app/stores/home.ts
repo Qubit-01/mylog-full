@@ -5,8 +5,10 @@ export const useHomeStore = defineStore('home', () => {
 
   // 每次触发请求，都会自动 push 在 logs 最后
   const { status, refresh } = useFetch<Log[]>('/log/get_publics', {
-    method: 'POST',
-    baseURL,
+    ...FetchOptsDefault,
+    headers: {
+      Cookie: `token=${useCookie('token').value}`,
+    },
     body: params,
     onResponse({ response }) {
       logs.push(...(response._data ?? []))

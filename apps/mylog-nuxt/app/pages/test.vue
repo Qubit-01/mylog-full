@@ -1,11 +1,8 @@
 <script lang="ts" setup>
 definePageMeta({ layout: false })
 
-
 const { refresh } = useFetch<Log[]>('/test/hello-post', {
-  method: 'POST',
-  credentials: 'include',
-  baseURL,
+  ...FetchOptsDefault,
   headers: {
     Cookie: `token=${useCookie('token').value}`,
   },
@@ -16,8 +13,6 @@ const { refresh } = useFetch<Log[]>('/test/hello-post', {
 const test = () => {
   // 测试能不能拿到 token
   // console.log('token', useCookie('token').value)
-
-
   // 测试访问后端接口
   // const cookie = useRequestHeaders(['cookie'])
   // console.log('🐔 useRequestHeaders', cookie)
@@ -34,8 +29,8 @@ const test = () => {
  * 用 useRequestHeaders(['cookie']) 可以，但是在客户端拿不到，会返回 {}
  *
  * 最终用 useCookie('token').value 拿到了
- * 
- * 
+ *
+ *
  * 现在是同时加 credentials: 'include' 和 useCookie('token').value
  * 服务器上走 headers.cookie
  * 客户端上走 credentials: 'include'
@@ -52,5 +47,6 @@ const test = () => {
 </template>
 
 <style lang="scss" scoped>
-.test-page {}
+.test-page {
+}
 </style>

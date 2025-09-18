@@ -5,9 +5,7 @@ export const useMylogStore = defineStore('mylog', () => {
 
   // 每次触发请求，都会自动 push 在 logs 最后
   const { status, refresh } = useFetch<Log[]>('/log/get_mylogs', {
-    method: 'POST',
-    credentials: 'include',
-    baseURL,
+    ...FetchOptsDefault,
     headers: {
       Cookie: `token=${useCookie('token').value}`,
     },

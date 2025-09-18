@@ -81,8 +81,7 @@ export const releaseLog = async (
   await myUploadFiles(uploadFilesParams)
   // 2. 发布log
   const logNew = await $fetch<Log>('/log/release_log', {
-    method: 'POST',
-    baseURL,
+    ...FetchOptsDefault,
     body: { log: logEdit },
   })
   return logNew

@@ -13,10 +13,8 @@ export const signin = async (
 ) => {
   // 后端来设置cookie
   const token = await $fetch<string>('/user/token', {
-    method: 'POST',
-    baseURL,
+    ...FetchOptsDefault,
     body: data,
-    credentials: 'include',
   })
   if (!token) return
 
