@@ -12,7 +12,7 @@
  -->
 <script lang="ts" setup>
 import { VideoPlay } from '@element-plus/icons-vue'
-import Popup from '~/components/utils/Popup.vue';
+import Popup from '~/components/utils/Popup.vue'
 import VideoDplayer from '~/components/viewer/VideoDplayer.vue'
 // import DPlayer from 'dplayer'
 
@@ -40,9 +40,10 @@ const curUrl = ref('')
       class="video"
       @click.stop="curUrl = url"
     >
-      <video>
+      <img :src="`${url}?ci-process=snapshot&time=1&format=jpg`" alt="" />
+      <!-- <video>
         <source :src="url" />
-      </video>
+      </video> -->
       <VideoPlay class="video-icon" />
     </div>
 
@@ -57,32 +58,6 @@ const curUrl = ref('')
         alt="视频封面"
       />
     </div> -->
-    <!-- 
-      ?q-sign-algorithm=sha1
-      &q-ak=AKID2N8QnaC0-BGh-zaZ2U5y5iw9pzHbP9tcdcRdZ2IVfcVbYxzvlCTcoEJsk7RZNqcK
-      &q-sign-time=1739794856;1739798456
-      &q-key-time=1739794856;1739798456
-      &q-header-list=
-      &q-url-param-list=
-      &q-signature=8391ba3fcf83a4332d2d95ed9ab32b9e3a191acd
-      &x-cos-security-token=Ej132PaZwGJ8S3HTkmyCeeHAoi9wfJza52d901436d71858e40c75d0e38f5af669SMNoe4TAb63napvhkJ81E-V2DY-W5g5oWgUjU5eMtXSe0IhddmhaOFdWzaikN58RFyU8s3GaRWVO71EXcIcBxC-sWjE0EltupB5BR79tTSg8tPwm_brEvNcm6y_clxUGdTuc3H40AgTpDP4s71FRZaXIYtbpyIzch-joJuJZhXqZ2eoV_9DXixvrdvo0K9bM4NrzE2BG2oUtawte7re0w
-      &ci-process=snapshot
-      &time=1
-      &format=jpg 
-    -->
-    <!-- 
-      ?q-sign-algorithm=sha1
-      &q-ak=AKIDoLmnbG1G6SIeuRjpbSkvMhJoVIr7NVFZF7dJ6xh9RsbaSzocHO73hZMghYh-nbrs
-      &q-sign-time=1739796027;1739799627
-      &q-key-time=1739796027;1739799627
-      &q-header-list=
-      &q-url-param-list=
-      &q-signature=5a4b3b46f3529f32d098f3d45f1462952ced7b0c
-      &x-cos-security-token=Ej132PaZwGJ8S3HTkmyCeeHAoi9wfJza46e763194756f6295a1f090449c5a1c19SMNoe4TAb63napvhkJ81JBJA2-ow2I2Bs02QJ8WVprV7cmT_tfyVxdJSJrlytGoqYD6aryPGmqIM7e4R8gtjqaySUlg2Eet0Hnu4UTIQ41VcsSCZMLFS-MVcQgsB4qNVB6ampLZsnPYeCqIcRQnvO9oaAT2MYQL2ChqHyyWSPE-PsamM-Do6XCARDmOz1ez8Q1AI5fxR0InVvAp5-ikdg
-      &ci-process=snapshot
-      &time=1
-      &format=jpg
-    -->
   </div>
 
   <!-- 真正用来播放的 -->
@@ -110,7 +85,8 @@ const curUrl = ref('')
     overflow: hidden;
     flex-shrink: 0;
 
-    video {
+    video,
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;
