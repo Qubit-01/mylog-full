@@ -7,13 +7,17 @@ onlyBuiltDependencies:
   - '@parcel/watcher'
   - '@prisma/client'
   - '@prisma/engines'
+  - '@swc/core'
   - aws-crt
   - better-sqlite3
+  - bufferutil
   - cos-js-sdk-v5
   - esbuild
   - exifreader
   - libpq
   - msgpackr-extract
   - prisma
+  - protobufjs
   - sqlite3
+  - utf-8-validate
   - vue-demi
