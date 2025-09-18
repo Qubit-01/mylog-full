@@ -6,11 +6,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "build": "nuxt build",
     "start:pm2": "pnpm run build && pm2 start ./ecosystem.config.cjs"
   },
   "dependencies": {
