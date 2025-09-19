@@ -1,5 +1,3 @@
-import dayjs from 'dayjs'
-
 const userInit: User = {
   id: 0,
   name: '',
@@ -30,14 +28,15 @@ const userInit: User = {
  * 2. 必须等服务器获取到用户数据
  */
 export const useGlobalStore = defineStore('global', () => {
+  const user = ref<User>(userInit)
   const { data } = useFetch<User>('/user/get_user', {
     ...FetchOptsDefault,
-    headers: {
-      Cookie: `token=${useCookie('token').value}`,
+    headers: { Cookie: `token=${useCookie('token').value}` },
+    onResponse({ response }) {
+      user.value = { ...user.value, ...response._data }
     },
   })
 
-  const user = computed<User>(() => ({ ...userInit, ...data.value }))
   const isLogined = computed(() => user.value.id !== 0)
 
   // 主题切换

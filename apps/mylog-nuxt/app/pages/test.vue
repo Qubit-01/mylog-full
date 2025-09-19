@@ -3,9 +3,7 @@ definePageMeta({ layout: false })
 
 const { refresh } = useFetch<Log[]>('/test/hello-post', {
   ...FetchOptsDefault,
-  headers: {
-    Cookie: `token=${useCookie('token').value}`,
-  },
+  headers: { Cookie: `token=${useCookie('token').value}` },
   onResponse({ response }) {
     console.log('🐤 ', response._data)
   },

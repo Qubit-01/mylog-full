@@ -1,5 +1,20 @@
 <script lang="ts" setup>
-useGlobalStore()
+const { user } = refsGlobalStore()
+
+// 只能在水合后执行
+onMounted(() => {
+  // 自动保存 user 设置
+  watchDebounced(
+    user,
+    (u) => {
+      $fetch<string>('/user/set_user', {
+        ...FetchOptsDefault,
+        body: { img: u.img, info: u.info, setting: u.setting },
+      })
+    },
+    { debounce: 2000, deep: true },
+  )
+})
 </script>
 
 <template>

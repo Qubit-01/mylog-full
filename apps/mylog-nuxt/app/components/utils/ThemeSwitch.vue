@@ -7,7 +7,7 @@ const { user } = refsGlobalStore()
 </script>
 
 <template>
-  <el-switch
+  <ElSwitch
     v-model="user.setting.page.theme"
     class="theme-switch"
     :active-action-icon="Moon"

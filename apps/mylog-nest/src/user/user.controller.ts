@@ -113,7 +113,11 @@ export class UserController {
   ) {
     console.log('🐔 set_user: ', userid, body);
     if (!userid) return;
-    await this.prisma.user.update({ where: { userid }, data: body });
+    await this.prisma.user.update({
+      where: { userid },
+      data: body,
+    });
+    return 1;
   }
 
   /**
@@ -136,6 +140,7 @@ export class UserController {
         unionid_weixin: body.unionidWeixin,
       },
     });
+    return 1;
   }
 
   /**
