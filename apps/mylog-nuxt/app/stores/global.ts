@@ -19,7 +19,7 @@ const userInit: User = {
       diyPoints: [],
     },
   },
-  createtime: dayjs().valueOf(),
+  createtime: new Date().toISOString(),
 } as const
 
 /**

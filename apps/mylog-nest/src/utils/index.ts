@@ -6,9 +6,9 @@ import { verify } from './jwt';
 /**
  * 数据库转VO对象，主要后端用
  * PO to VO :
- *   1. JsonValue 转 对象
- *   2. Date 转 dayjs
- *   3. 类型断言
+ *   - JsonValue 转 对象
+ *   - Date 转 ISO字符串
+ *   - 类型断言
  * @deprecated
  * @param log PO数据库对象 trpc直接返回的对象类型
  * @returns
@@ -18,8 +18,8 @@ export const toLog4PO = (log: LogPO): Log => {
     ...log,
     userid: log.userid,
     type: log.type as Log['type'],
-    logtime: +log.logtime,
-    sendtime: +log.sendtime,
+    logtime: log.logtime.toISOString(),
+    sendtime: log.sendtime.toISOString(),
     tags: log.tags as Log['tags'],
     imgs: log.imgs as Log['imgs'],
     videos: log.videos as Log['videos'],

@@ -12,8 +12,8 @@ export const toLog = (log: Partial<Log>): Log => ({
   location: [],
   people: [],
   info: {},
-  sendtime: Date.now(),
-  logtime: Date.now(),
+  sendtime: new Date().toISOString(),
+  logtime: new Date().toISOString(),
   ...log,
 })
 
@@ -63,7 +63,7 @@ export type User = {
       }[]
     }
   }
-  createtime: number
+  createtime: string
 }
 
 /** Log：都是必选，没有就是空数组 */
@@ -74,14 +74,14 @@ export interface Log extends LogEditable {
   userid: number
   /** Log类型 */
   type: 'public' | 'log' | 'tag'
-  /** 发布时间戳 */
-  sendtime: number
+  /** 发布时间 */
+  sendtime: string
 }
 
 /** 可以被编辑的 Log 项 */
 interface LogEditable extends LogEditWithFiles {
-  /** 记录：时间戳 */
-  logtime: number
+  /** 记录：时间 */
+  logtime: string
   /** 记录：内容 */
   content: string
   /** 记录：标签 */
