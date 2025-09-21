@@ -1,5 +1,6 @@
 export const useMylogStore = defineStore('mylog', () => {
-  const logs = ref<Log[]>([])
+  /** 装所有log */
+  const logsMap = ref<Record<number, Log>>({})
   const params = reactive({ skip: 0, limit: 10 })
   const noMore = ref(false)
 
@@ -11,7 +12,7 @@ export const useMylogStore = defineStore('mylog', () => {
     onResponse({ response }) {
       const logsRes = response._data
       if (!logsRes) return
-      logs.value.push(...logsRes)
+      logsRes.forEach((l) => (logsMap.value[l.id] = l))
       if (logsRes.length < params.limit) noMore.value = true
     },
   })
@@ -22,7 +23,15 @@ export const useMylogStore = defineStore('mylog', () => {
     params.skip += params.limit
   }
 
+  /** 真正展示的logs 筛选，排序 */
+  const logs = computed(() =>
+    Object.values(logsMap.value).toSorted((a, b) =>
+      b.logtime.localeCompare(a.logtime),
+    ),
+  )
+
   return {
+    logsMap,
     /** 主页所有的log */
     logs,
     /** 请求参数 */
