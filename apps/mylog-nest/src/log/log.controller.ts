@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { LogService } from './log.service';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { Userid } from 'src/utils';
-import { Log } from '@mylog-full/mix/src';
+import { Log, LogFilter } from '@mylog-full/mix/src';
 
 @Controller('log')
 export class LogController {
@@ -57,13 +57,57 @@ export class LogController {
   @Post('get_mylogs')
   async getMylogs(
     @Userid() userid: number,
-    @Body() body: { skip: number; limit: number },
+    @Body() body: { skip: number; limit: number; filter?: LogFilter },
   ) {
     console.log('🐔 get_mylogs: ', userid, body);
     if (!userid) return;
 
+    // 构造 where 条件
+    const { filter } = body;
+    const whereFilter: Prisma.logWhereInput = {};
+    if (filter) {
+      if (filter.type) whereFilter.type = filter.type;
+      if (filter.logtime) {
+        whereFilter.logtime = {};
+        filter.logtime.gte &&
+          (whereFilter.logtime.gte = new Date(filter.logtime.gte));
+        filter.logtime.lte &&
+          (whereFilter.logtime.lte = new Date(filter.logtime.lte));
+      }
+      //   if (filter.content)
+      //     whereFilter.content = { search: filter.content.include.join(' | ') };
+      //   if (filter.people)
+      //     whereFilter.people = { array_contains: filter.people.include };
+      //   if (filter.tags)
+      //     whereFilter.tags = { array_contains: filter.tags.include };
+      //   if (filter.exclude) whereFilter.id = { notIn: filter.exclude };
+    }
+
+    console.log('LSQ> whereFilter: ', whereFilter);
+
     return await this.prisma.log.findMany({
-      where: { userid },
+      where: {
+        userid,
+        ...whereFilter,
+        // type: 'log',
+        // logtime: {
+        //   gte: new Date('2000-01-01T00:00:00.000Z'),
+        //   lte: new Date(),
+        // },
+        // content: {
+        //   search: 'adwdwd',
+        // contains: '获取位置和',
+        // },
+        // people: {
+        //   array_contains: ['张三'],
+        // },
+        // tags: {
+        //   array_contains: ['标签1'],
+        // },
+        // id: {
+        //   notIn: [2871, 2, 3],
+        // },
+      },
       skip: body.skip,
       take: body.limit ?? 10,
       orderBy: { logtime: 'desc' },

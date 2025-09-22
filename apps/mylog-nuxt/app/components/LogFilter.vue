@@ -11,7 +11,7 @@ const curFilter = ref(-1)
 const diyFilter = reactive<LogFilter>({
   name: '',
   type: '',
-  timeLimit: [null, null],
+  logtime: { gte: undefined, lte: undefined },
   isOrAll: true,
   content: { include: [], isOr: false },
   people: { include: [], isOr: false },
@@ -50,20 +50,22 @@ const diyFilter = reactive<LogFilter>({
       <ElRow>
         时间限制：
         <ElDatePicker
-          v-model="diyFilter.timeLimit[0]"
+          v-model="diyFilter.logtime.gte"
           type="date"
           placeholder="起始日期"
           size="small"
           :editable="false"
+          :value-on-clear="undefined"
           style="width: 120px"
         />
         &nbsp;~&nbsp;
         <ElDatePicker
-          v-model="diyFilter.timeLimit[1]"
+          v-model="diyFilter.logtime.lte"
           type="date"
           placeholder="结束日期"
           size="small"
           :editable="false"
+          :value-on-clear="undefined"
           style="width: 120px"
         />
       </ElRow>

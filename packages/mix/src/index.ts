@@ -128,25 +128,34 @@ export const logFileItem: LogFileItem[] = [
 
 /** 过滤器对象 */
 export type LogFilter = {
+  /** 过滤器名称 */
   name?: string
+  /** log类型 */
   type: '' | 'log' | 'public'
   /** 时间限制，范围 */
-  timeLimit: [any | null, any | null]
+  logtime: {
+    gte?: string
+    lte?: string
+  }
   /** 全部大筛选项都或运算 */
   isOrAll: boolean
+  /** 内容包含 */
   content: {
     include: string[]
     isOr: boolean
   }
+  /** 人员包含 */
   people: {
     include: string[]
     isOr: boolean
   }
+  /** 标签包含 */
   tags: {
     include: string[]
     isOr: boolean
   }
-  exclude: string[] // 排除，填入id
+  /** 排除id */
+  exclude: number[]
 }
 
 /** 编辑中的log类型，只能填入log属性 */
