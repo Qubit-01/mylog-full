@@ -141,17 +141,17 @@ export type LogFilter = {
   isOrAll: boolean
   /** 内容包含 */
   content: {
-    include: string[]
+    contains: string[]
     isOr: boolean
   }
   /** 人员包含 */
   people: {
-    include: string[]
+    contains: string[]
     isOr: boolean
   }
   /** 标签包含 */
   tags: {
-    include: string[]
+    contains: string[]
     isOr: boolean
   }
   /** 排除id */

@@ -141,33 +141,33 @@ export const matchesLogFilter = (log: Log, filter?: LogFilter): boolean => {
     return false
   // 3. 先排除
   if (filter.exclude.includes(log.id)) return false
-
-  if (filter.content.include.length) {
+  // 4. 内容包含
+  if (filter.content.contains.length) {
     const f = filter.content.isOr
-      ? filter.content.include.some((c) => log.content.includes(c))
-      : filter.content.include.every((c) => log.content.includes(c))
+      ? filter.content.contains.some((c) => log.content.includes(c))
+      : filter.content.contains.every((c) => log.content.includes(c))
     if (f) {
       if (filter.isOrAll) return true
     } else {
       return false
     }
   }
-
-  if (filter.people.include.length) {
+  // 5. 人员包含
+  if (filter.people.contains.length) {
     const f = filter.people.isOr
-      ? filter.people.include.some((c) => log.people.includes(c))
-      : filter.people.include.every((c) => log.people.includes(c))
+      ? filter.people.contains.some((c) => log.people.includes(c))
+      : filter.people.contains.every((c) => log.people.includes(c))
     if (f) {
       if (filter.isOrAll) return true
     } else {
       return false
     }
   }
-
-  if (filter.tags.include.length) {
+  // 6. 标签包含
+  if (filter.tags.contains.length) {
     const f = filter.tags.isOr
-      ? filter.tags.include.some((c) => log.tags.includes(c))
-      : filter.tags.include.every((c) => log.tags.includes(c))
+      ? filter.tags.contains.some((c) => log.tags.includes(c))
+      : filter.tags.contains.every((c) => log.tags.includes(c))
     if (f) {
       if (filter.isOrAll) return true
     } else {
