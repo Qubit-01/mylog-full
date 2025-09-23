@@ -4,6 +4,7 @@ import LogLoading from '~/components/log/LogLoading.vue'
 import LogRelease from '~/components/logEdit/LogRelease.vue'
 
 const Mylog = useMylogStore()
+const { logs, status } = refsMylogStore()
 
 // const $LogRelease = useTemplateRef('$LogRelease')
 
@@ -13,25 +14,21 @@ const releaseCount = ref(0)
 
 <template>
   <div class="timeline">
-    <LogRelease
-      :key="releaseCount"
-      @onReleaseSuccess="releaseCount++"
-    />
+    <LogRelease :key="releaseCount" @onReleaseSuccess="releaseCount++" />
     <!-- <div>{{ $LogRelease?.logEdit }}</div> -->
 
     <LogFilter />
 
     <el-timeline
       v-infinite-scroll="Mylog.addLogs"
-      :infinite-scroll-disabled="Mylog.status !== 'success'"
+      :infinite-scroll-disabled="status !== 'success'"
     >
       <!-- 时间线开始 -->
-      <template v-for="(log, i) in Mylog.logs" :key="log.id">
+      <template v-for="(log, i) in logs" :key="log.id">
         <!-- 年份节点 -->
         <el-timeline-item
           v-if="
-            i === 0 ||
-            !dayjs(log.logtime).isSame(Mylog.logs[i - 1]?.logtime, 'year')
+            i === 0 || !dayjs(log.logtime).isSame(logs[i - 1]?.logtime, 'year')
           "
           :timestamp="dayjs(log.logtime).year().toString()"
           type="success"
@@ -42,8 +39,7 @@ const releaseCount = ref(0)
         <!-- 日期节点 -->
         <el-timeline-item
           v-if="
-            i === 0 ||
-            !dayjs(log.logtime).isSame(Mylog.logs[i - 1]?.logtime, 'day')
+            i === 0 || !dayjs(log.logtime).isSame(logs[i - 1]?.logtime, 'day')
           "
           :timestamp="dayjs(log.logtime).format('YYYY-MM-DD')"
           placement="top"
@@ -51,17 +47,17 @@ const releaseCount = ref(0)
 
         <!-- Log节点  :color="log.type === 'public' ? 'var(--el-color-warning)' : 'transparent'"-->
         <el-timeline-item hide-timestamp center color="transparent">
-          <Log :id="log.id" :log="log" />
+          <Log :id="log.id" :log />
         </el-timeline-item>
       </template>
 
       <!-- 加载态节点 -->
       <el-timeline-item
-        v-show="Mylog.status !== 'success'"
+        v-show="status !== 'success'"
         timestamp="loading..."
         placement="top"
       >
-        <LogLoading :status="Mylog.status" @retry="Mylog.refresh" />
+        <LogLoading :status @retry="Mylog.refresh" />
       </el-timeline-item>
 
       <!-- 最底部的节点 -->

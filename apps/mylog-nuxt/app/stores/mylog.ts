@@ -21,7 +21,7 @@ export const useMylogStore = defineStore('mylog', () => {
     },
   })
 
-  /** 这里是一个触发器，用于请求下一页数据 */
+  /** 请求下一页数据 */
   const addLogs = () => {
     if (noMore.value) return
     params.skip += params.limit
