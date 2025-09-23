@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import type { log as LogPO } from '@prisma/client';
-import { Log } from '@mylog-full/mix/src';
+import type { log as LogPO, Prisma } from '@prisma/client';
+import { Log, LogFilter } from '@mylog-full/mix/src';
 import { verify } from './jwt';
 
 /**
@@ -9,9 +9,6 @@ import { verify } from './jwt';
  *   - JsonValue 转 对象
  *   - Date 转 ISO字符串
  *   - 类型断言
- * @deprecated
- * @param log PO数据库对象 trpc直接返回的对象类型
- * @returns
  */
 export const toLog4PO = (log: LogPO): Log => {
   const aLog: Log = {
@@ -51,3 +48,49 @@ export const Userid = createParamDecorator(
     return verify(request.cookies?.token);
   },
 );
+
+/** 前端的 filter 转为 where 条件 */
+export const toWhere4LogFilter = (filter?: LogFilter) => {
+  if (!filter) return undefined;
+
+  // type: 'log',
+  // logtime: {
+  //   gte: new Date('2000-01-01T00:00:00.000Z'),
+  //   lte: new Date(),
+  // },
+  // content: {
+  //   search: 'adwdwd',
+  // contains: '获取位置和',
+  // },
+  // people: {
+  //   array_contains: ['张三'],
+  // },
+  // tags: {
+  //   array_contains: ['标签1'],
+  // },
+  // id: {
+  //   notIn: [2871, 2, 3],
+  // },
+
+  const whereFilter: Prisma.logWhereInput = {};
+  // 1. type 限制
+  if (filter.type) whereFilter.type = filter.type;
+  // 2. 时间范围限制
+  if (filter.logtime.gte || filter.logtime.lte) {
+    whereFilter.logtime = {};
+    filter.logtime.gte &&
+      (whereFilter.logtime.gte = new Date(filter.logtime.gte));
+    filter.logtime.lte &&
+      (whereFilter.logtime.lte = new Date(filter.logtime.lte));
+  }
+  // 3. 内容包含
+  //   if (filter.content)
+  //     whereFilter.content = { search: filter.content.include.join(' | ') };
+  //   if (filter.people)
+  //     whereFilter.people = { array_contains: filter.people.include };
+  //   if (filter.tags)
+  //     whereFilter.tags = { array_contains: filter.tags.include };
+  //   if (filter.exclude) whereFilter.id = { notIn: filter.exclude };
+
+  return whereFilter;
+};
