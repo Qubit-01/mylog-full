@@ -5,6 +5,7 @@
 -->
 
 <script lang="ts" setup>
+const { params } = refsMylogStore()
 /** 筛选器：-1是全部，-2是自定义筛选 */
 const curFilter = ref(-1)
 
@@ -18,6 +19,11 @@ const diyFilter = reactive<LogFilter>({
   tags: { include: [], isOr: false },
   exclude: [], // 不包括，填入noteId
 })
+// watch(curFilter, (cf) => {
+//   console.log('LSQ> ', cf, diyFilter)
+//   params.value.skip = 0
+//   params.value.filter = cf === -2 ? diyFilter : undefined
+// })
 </script>
 
 <template>

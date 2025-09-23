@@ -128,6 +128,56 @@ export const useLogRelease = () => {
   }
 }
 
+/** 传入一个log，返回布尔值，为真就是满足，false就是不满足 */
+export const matchesLogFilter = (log: Log, filter?: LogFilter): boolean => {
+  if (!filter) return true // 参二缺省，直接返回true
+  // 1. type
+  if (filter.type && log.type !== filter.type) return false
+  // 2. 时间限制，包含两头
+  const logtime = +new Date(log.logtime)
+  if (filter.logtime.gte && logtime < +dayjs(filter.logtime.gte).startOf('day'))
+    return false
+  if (filter.logtime.lte && logtime > +dayjs(filter.logtime.lte).endOf('day'))
+    return false
+  // 3. 先排除
+  if (filter.exclude.includes(log.id)) return false
+
+  if (filter.content.include.length) {
+    const f = filter.content.isOr
+      ? filter.content.include.some((c) => log.content.includes(c))
+      : filter.content.include.every((c) => log.content.includes(c))
+    if (f) {
+      if (filter.isOrAll) return true
+    } else {
+      return false
+    }
+  }
+
+  if (filter.people.include.length) {
+    const f = filter.people.isOr
+      ? filter.people.include.some((c) => log.people.includes(c))
+      : filter.people.include.every((c) => log.people.includes(c))
+    if (f) {
+      if (filter.isOrAll) return true
+    } else {
+      return false
+    }
+  }
+
+  if (filter.tags.include.length) {
+    const f = filter.tags.isOr
+      ? filter.tags.include.some((c) => log.tags.includes(c))
+      : filter.tags.include.every((c) => log.tags.includes(c))
+    if (f) {
+      if (filter.isOrAll) return true
+    } else {
+      return false
+    }
+  }
+
+  return true
+}
+
 /** 类型定义 *************************/
 /** 这里只定义文件有关的类型，看后面有没有单独提出去的必要 */
 

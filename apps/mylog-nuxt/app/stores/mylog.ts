@@ -1,7 +1,11 @@
 export const useMylogStore = defineStore('mylog', () => {
   /** 装所有log */
   const logsMap = ref<Record<number, Log>>({})
-  const params = reactive({ skip: 0, limit: 10 })
+  const params = reactive<{
+    skip: number
+    limit: number
+    filter?: LogFilter
+  }>({ skip: 0, limit: 10 })
   const noMore = ref(false)
 
   // 每次触发请求，都会自动 push 在 logs 最后
@@ -25,9 +29,10 @@ export const useMylogStore = defineStore('mylog', () => {
 
   /** 真正展示的logs 筛选，排序 */
   const logs = computed(() =>
-    Object.values(logsMap.value).toSorted((a, b) =>
-      b.logtime.localeCompare(a.logtime),
-    ),
+    Object.values(logsMap.value)
+      .toSorted((a, b) => b.logtime.localeCompare(a.logtime))
+      .filter((l) => matchesLogFilter(l, params.filter))
+      .slice(0, params.skip + params.limit),
   )
 
   return {
