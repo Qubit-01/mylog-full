@@ -14,16 +14,19 @@ const diyFilter = reactive<LogFilter>({
   type: '',
   logtime: { gte: undefined, lte: undefined },
   isOrAll: true,
-  content: { include: [], isOr: false },
-  people: { include: [], isOr: false },
-  tags: { include: [], isOr: false },
+  content: { contains: [], isOr: false },
+  people: { contains: [], isOr: false },
+  tags: { contains: [], isOr: false },
   exclude: [], // 不包括，填入noteId
 })
-// watch(curFilter, (cf) => {
-//   console.log('LSQ> ', cf, diyFilter)
-//   params.value.skip = 0
-//   params.value.filter = cf === -2 ? diyFilter : undefined
-// })
+
+watch(curFilter, (cf) => {
+  console.log('LSQ> ', cf, diyFilter)
+  Object.assign(params.value, {
+    skip: 0,
+    filter: cf === -1 ? undefined : cf === -2 ? diyFilter : undefined,
+  })
+})
 </script>
 
 <template>
@@ -76,8 +79,8 @@ const diyFilter = reactive<LogFilter>({
         />
       </ElRow>
 
-      <!-- <ElRow>
-        <EditTags v-model="diyFilter.content.include" label="内容含有：">
+      <ElRow>
+        <EditTags v-model="diyFilter.content.contains" label="内容含有：">
           <ElSwitch
             v-model="diyFilter.content.isOr"
             size="small"
@@ -86,9 +89,9 @@ const diyFilter = reactive<LogFilter>({
             inactive-text="和"
           />
         </EditTags>
-      </ElRow> -->
-      <!-- <ElRow>
-        <EditTags v-model="diyFilter.people.include" label="人员含有：">
+      </ElRow>
+      <ElRow>
+        <EditTags v-model="diyFilter.people.contains" label="人员含有：">
           <ElSwitch
             v-model="diyFilter.people.isOr"
             size="small"
@@ -97,9 +100,9 @@ const diyFilter = reactive<LogFilter>({
             inactive-text="和"
           />
         </EditTags>
-      </ElRow> -->
-      <!-- <ElRow>
-        <EditTags v-model="diyFilter.tags.include" label="标签含有：">
+      </ElRow>
+      <ElRow>
+        <EditTags v-model="diyFilter.tags.contains" label="标签含有：">
           <ElSwitch
             v-model="diyFilter.tags.isOr"
             size="small"
@@ -108,7 +111,7 @@ const diyFilter = reactive<LogFilter>({
             inactive-text="和"
           />
         </EditTags>
-      </ElRow> -->
+      </ElRow>
       <ElRow>
         <ElSwitch
           v-model="diyFilter.isOrAll"

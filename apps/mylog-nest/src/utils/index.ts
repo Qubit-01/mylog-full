@@ -72,25 +72,46 @@ export const toWhere4LogFilter = (filter?: LogFilter) => {
   //   notIn: [2871, 2, 3],
   // },
 
-  const whereFilter: Prisma.logWhereInput = {};
+  const where: Prisma.logWhereInput = {};
   // 1. type 限制
-  if (filter.type) whereFilter.type = filter.type;
+  if (filter.type) where.type = filter.type;
   // 2. 时间范围限制
   if (filter.logtime.gte || filter.logtime.lte) {
-    whereFilter.logtime = {};
-    filter.logtime.gte &&
-      (whereFilter.logtime.gte = new Date(filter.logtime.gte));
-    filter.logtime.lte &&
-      (whereFilter.logtime.lte = new Date(filter.logtime.lte));
+    where.logtime = {};
+    filter.logtime.gte && (where.logtime.gte = new Date(filter.logtime.gte));
+    filter.logtime.lte && (where.logtime.lte = new Date(filter.logtime.lte));
   }
-  // 3. 内容包含
-  //   if (filter.content)
-  //     whereFilter.content = { search: filter.content.include.join(' | ') };
-  //   if (filter.people)
-  //     whereFilter.people = { array_contains: filter.people.include };
-  //   if (filter.tags)
-  //     whereFilter.tags = { array_contains: filter.tags.include };
-  //   if (filter.exclude) whereFilter.id = { notIn: filter.exclude };
 
-  return whereFilter;
+  const r = filter.isOrAll ? 'OR' : 'AND';
+  where[r] = [];
+  const conditions = where[r];
+
+  // 3. 内容包含
+  if (filter.content.contains.length) {
+    const c = filter.content.contains.map((t) => ({
+      content: { contains: t },
+    }));
+    if (filter.content.isOr) conditions.push({ OR: c });
+    else conditions.push(...c);
+  }
+  // 4. 人员包含
+  if (filter.people.contains.length) {
+    const c = filter.people.contains.map((t) => ({
+      people: { array_contains: [t] },
+    }));
+    if (filter.people.isOr) conditions.push({ OR: c });
+    else conditions.push(...c);
+  }
+  // 5. 标签包含
+  if (filter.tags.contains.length) {
+    const c = filter.tags.contains.map((t) => ({
+      tags: { array_contains: [t] },
+    }));
+    if (filter.tags.isOr) conditions.push({ OR: c });
+    else conditions.push(...c);
+  }
+  // 6. 排除id
+  if (filter.exclude) where.id = { notIn: filter.exclude };
+
+  return where;
 };

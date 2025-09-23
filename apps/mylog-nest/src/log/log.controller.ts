@@ -61,7 +61,7 @@ export class LogController {
     if (!userid) return;
 
     const whereFilter = toWhere4LogFilter(body.filter);
-    console.log('LSQ> whereFilter: ', whereFilter);
+    console.log('LSQ> whereFilter: ', JSON.stringify(whereFilter));
 
     return await this.prisma.log.findMany({
       where: { userid, ...whereFilter },
