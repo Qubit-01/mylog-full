@@ -10,6 +10,7 @@ export const useMylogStore = defineStore('mylog', () => {
 
   // 每次触发请求，都会自动 push 在 logs 最后
   const { status, refresh } = useFetch<Log[]>('/log/get_mylogs', {
+    key: 'mylogs',
     ...FetchOptsDefault,
     headers: { Cookie: `token=${useCookie('token').value}` },
     body: params,
@@ -22,10 +23,20 @@ export const useMylogStore = defineStore('mylog', () => {
   })
 
   /** 请求下一页数据 */
-  const addLogs = () => {
+  const fetchLogs = () => {
     if (noMore.value) return
     params.skip += params.limit
   }
+
+  // 每次filter变化，重置分页
+  watch(
+    () => params.filter,
+    () => {
+      params.skip = 0
+      noMore.value = false
+    },
+    { deep: true },
+  )
 
   /** 真正展示的logs 筛选，排序 */
   const logs = computed(() =>
@@ -44,7 +55,7 @@ export const useMylogStore = defineStore('mylog', () => {
     /** 请求状态 */
     status,
     /** 触发请求数据，会自动 push 在 logs 最后 */
-    addLogs,
+    fetchLogs,
     /** 重新请求 */
     refresh,
   }

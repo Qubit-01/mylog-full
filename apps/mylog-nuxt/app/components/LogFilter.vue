@@ -21,11 +21,7 @@ const diyFilter = reactive<LogFilter>({
 })
 
 watch(curFilter, (cf) => {
-  console.log('LSQ> ', cf, diyFilter)
-  Object.assign(params.value, {
-    skip: 0,
-    filter: cf === -1 ? undefined : cf === -2 ? diyFilter : undefined,
-  })
+  params.value.filter = cf === -2 ? diyFilter : undefined
 })
 </script>
 
@@ -33,7 +29,6 @@ watch(curFilter, (cf) => {
   <div class="LogFilter">
     <div class="filters">
       <ElRadioGroup v-model="curFilter" size="small">
-        <!-- size="large" -->
         <ElRadioButton label="全部" :value="-1" />
         <!-- <ElRadioButton v-for="(f, i) in filters" :label="f.name" :value="i" /> -->
         <ElRadioButton label="筛选" :value="-2" />
