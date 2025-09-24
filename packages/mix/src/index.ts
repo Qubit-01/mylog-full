@@ -92,12 +92,14 @@ interface LogEditable extends LogEditWithFiles {
   location: [[number, number], string] | []
   /** 记录：其他详细 */
   info: {
-    /** 记录： 爬虫数据的原始链接 */
+    /** 标题 */
+    title?: string
+    /** 爬虫数据的原始链接 */
     link?: string
-    /** 记录： 是否是MD类型 */
+    /** 是否是MD类型 */
     markdown?: boolean
-    /** 记录： 爬虫数据的来源 */
-    source?: string // 爬虫数据的来源
+    /** 爬虫数据的来源 */
+    source?: string
   }
 }
 

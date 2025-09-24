@@ -11,6 +11,7 @@
 import { Star, Share } from '@element-plus/icons-vue'
 import LogContent from './comp/LogContent.vue'
 import LogMedias from './comp/LogMedias.vue'
+import LogTags from './comp/LogTags.vue'
 import LogBottom from './comp/LogBottom.vue'
 import { vDblclick } from '@mylog-full/mix/utils'
 
@@ -25,20 +26,19 @@ const expand = () => (isExpand.value = !isExpand.value)
 
 <template>
   <div class="Log _m" :id="`log${log.id}`" v-dblclick="expand">
-    <!-- {{ log }} -->
     <LogContent />
     <LogMedias />
-    <!-- <LogTags noPublic /> -->
+    <LogTags />
     <LogBottom />
 
     <!-- StarFilled -->
-    <!-- <ElButtonGroup class="buttons">
+    <ElButtonGroup class="buttons">
       <ElButton :icon="Share" />
-      <ElButton :icon="Star" />
-      <ElButton>
+      <!-- <ElButton :icon="Star" /> -->
+      <!-- <ElButton>
         <ElIcon><CaretTop /></ElIcon>0
-      </ElButton>
-    </ElButtonGroup> -->
+      </ElButton> -->
+    </ElButtonGroup>
 
     <slot name="bottom"></slot>
   </div>
