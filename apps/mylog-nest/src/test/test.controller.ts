@@ -12,7 +12,7 @@ export class TestController {
     console.log('🐤 Hello World! get');
     console.log('🐤 Cookies', cookies);
     console.log('🐤 Body', body);
-    return '🐤 Hello World!';
+    return `🐤 Hello World! ${JSON.stringify(body)}`;
   }
 
   /**
@@ -24,6 +24,6 @@ export class TestController {
     console.log('🐤 Hello World! post');
     console.log('🐤 Cookies', cookies);
     console.log('🐤 Body', body);
-    return '🐤 Hello World!';
+    return `🐤 Hello World! ${JSON.stringify(body)}`;
   }
 }
