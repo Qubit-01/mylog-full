@@ -1,16 +1,17 @@
 <script lang="ts" setup>
 const log = inject<Log>('log')!
 const isExpand = inject<Ref<boolean>>('isExpand')!
-const { noPublic } = defineProps<{
+const { hidePublic } = defineProps<{
   /** 是否不显示公开tag */
-  noPublic?: boolean
+  hidePublic?: boolean
 }>()
 </script>
 
 <template>
   <div class="LogTags">
     <ElTag
-      v-if="!noPublic && log.type === 'public'"
+      v-if="log.type === 'public'"
+      v-show="!hidePublic"
       size="small"
       type="warning"
     >
