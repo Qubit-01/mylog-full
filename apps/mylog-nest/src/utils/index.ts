@@ -82,9 +82,7 @@ export const toWhere4LogFilter = (filter?: LogFilter) => {
     filter.logtime.lte && (where.logtime.lte = new Date(filter.logtime.lte));
   }
 
-  const r = filter.isOrAll ? 'OR' : 'AND';
-  where[r] = [];
-  const conditions = where[r];
+  const conditions: Prisma.logWhereInput[] = [];
 
   // 3. 内容包含
   if (filter.content.contains.length) {
@@ -109,6 +107,10 @@ export const toWhere4LogFilter = (filter?: LogFilter) => {
     }));
     if (filter.tags.isOr) conditions.push({ OR: c });
     else conditions.push(...c);
+  }
+
+  if (conditions.length) {
+    where[filter.isOrAll ? 'OR' : 'AND'] = conditions;
   }
   // 6. 排除id
   if (filter.exclude.length) where.id = { notIn: filter.exclude };
