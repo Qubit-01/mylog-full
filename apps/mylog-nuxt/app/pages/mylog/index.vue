@@ -19,14 +19,14 @@ const releaseCount = ref(0)
 
     <LogFilter />
 
-    <el-timeline
-      v-infinite-scroll="Mylog.addLogs"
+    <ElTimeline
+      v-infinite-scroll="Mylog.fetchLogs"
       :infinite-scroll-disabled="status !== 'success'"
     >
       <!-- 时间线开始 -->
       <template v-for="(log, i) in logs" :key="log.id">
         <!-- 年份节点 -->
-        <el-timeline-item
+        <ElTimelineItem
           v-if="
             i === 0 || !dayjs(log.logtime).isSame(logs[i - 1]?.logtime, 'year')
           "
@@ -37,7 +37,7 @@ const releaseCount = ref(0)
         />
 
         <!-- 日期节点 -->
-        <el-timeline-item
+        <ElTimelineItem
           v-if="
             i === 0 || !dayjs(log.logtime).isSame(logs[i - 1]?.logtime, 'day')
           "
@@ -46,23 +46,23 @@ const releaseCount = ref(0)
         />
 
         <!-- Log节点  :color="log.type === 'public' ? 'var(--el-color-warning)' : 'transparent'"-->
-        <el-timeline-item hide-timestamp center color="transparent">
+        <ElTimelineItem hide-timestamp center color="transparent">
           <Log :id="log.id" :log />
-        </el-timeline-item>
+        </ElTimelineItem>
       </template>
 
       <!-- 加载态节点 -->
-      <el-timeline-item
+      <ElTimelineItem
         v-show="status !== 'success'"
         timestamp="loading..."
         placement="top"
       >
         <LogLoading :status @retry="Mylog.refresh" />
-      </el-timeline-item>
+      </ElTimelineItem>
 
       <!-- 最底部的节点 -->
-      <el-timeline-item timestamp="origin" placement="top" />
-    </el-timeline>
+      <ElTimelineItem timestamp="origin" placement="top" />
+    </ElTimeline>
   </div>
 </template>
 

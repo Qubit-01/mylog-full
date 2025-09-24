@@ -111,7 +111,7 @@ export const toWhere4LogFilter = (filter?: LogFilter) => {
     else conditions.push(...c);
   }
   // 6. 排除id
-  if (filter.exclude) where.id = { notIn: filter.exclude };
+  if (filter.exclude.length) where.id = { notIn: filter.exclude };
 
   return where;
 };
