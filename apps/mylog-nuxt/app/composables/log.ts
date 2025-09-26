@@ -178,6 +178,29 @@ export const matchesLogFilter = (log: Log, filter?: LogFilter): boolean => {
   return true
 }
 
+/** 分享 */
+export const shareLogs = async (ids: number[]) => {
+  // const logIds = mylog.listFilter.map((log) => log.id)
+  // try {
+  //   await ElMessageBox.confirm(`确定要分享${ids.length}条Log吗？`, '分享', {
+  //     confirmButtonText: '分享',
+  //     cancelButtonText: '取消',
+  //     type: 'info',
+  //   })
+  // } catch {
+  //   return
+  // }
+  $fetch('/log/get_share', { ...FetchOptsDefault, body: { ids } })
+
+  // getShare({ logIdsJson: JSON.stringify(ids) }).then((link) => {
+  //   // 要进行url转义
+  //   const url = `${webURL}/#/share?share=${encodeURIComponent(link)}`
+  //   writeClipboard(url).then(() => {
+  //     ElMessage({ message: '分享链接已经写入剪贴板', type: 'success' })
+  //   })
+  // })
+}
+
 /** 类型定义 *************************/
 /** 这里只定义文件有关的类型，看后面有没有单独提出去的必要 */
 

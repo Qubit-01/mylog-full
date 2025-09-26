@@ -3,6 +3,7 @@ import { LogService } from './log.service';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { toWhere4LogFilter, Userid } from 'src/utils';
 import { Log, LogFilter } from '@mylog-full/mix/src';
+import { decrypt, encrypt } from 'src/utils/crypto';
 
 @Controller('log')
 export class LogController {
@@ -95,5 +96,28 @@ export class LogController {
         logtime: new Date(log.logtime ?? Date.now()),
       },
     });
+  }
+
+  /** 分享加密 */
+  @Post('get_share')
+  async getShare(@Userid() userid: number, @Body() body: { ids: number[] }) {
+    console.log('🐔 get_share: ', userid, body);
+    if (!userid) return;
+    console.log('LSQ> ss', crypto.subtle.encrypt);
+
+    const idsReal = (
+      await this.prisma.log.findMany({
+        select: { id: true },
+        where: { userid, id: { in: body.ids } },
+      })
+    ).map((log) => log.id);
+
+    console.log('LSQ> idsReal', idsReal);
+
+    const en = await encrypt(idsReal);
+    console.log('LSQ> ', en);
+    console.log('LSQ< ', await decrypt(en));
+
+    return;
   }
 }

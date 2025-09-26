@@ -20,9 +20,25 @@ const diyFilter = reactive<LogFilter>({
   exclude: [], // 不包括，填入noteId
 })
 
+// 选择筛选器
 watch(curFilter, (cf) => {
   params.value.filter = cf === -2 ? diyFilter : undefined
 })
+
+// 判断时间先后
+watch(diyFilter.logtime, (lt) => {
+  if (lt.gte && lt.lte && dayjs(lt.gte).diff(dayjs(lt.lte)) > 0) {
+    lt.lte = undefined
+    ElMessage('结束时间必须在开始时间之后哦！')
+  }
+})
+
+const clickShare = () => {
+  shareLogs([
+    3188, 3189, 1234, 3188, 3187, 3186, 3185, 3184, 3183, 3182, 3181, 3180,
+    3179, 3178, 3177, 3176, 3175, 3174, 3173, 3172, 3171, 3170,
+  ])
+}
 </script>
 
 <template>
@@ -34,11 +50,11 @@ watch(curFilter, (cf) => {
         <ElRadioButton label="筛选" :value="-2" />
       </ElRadioGroup>
 
-      <!-- <ElButton size="small" @click="shareLogs"> 分享 </ElButton> -->
+      <ElButton size="small" @click="clickShare">分享</ElButton>
       <!-- 删除预设应当移动到设置页面 -->
-      <!-- <ElButton v-if="curFilter >= 0" size="small" @click="delFilter"
-        >删除此预设</ElButton
-      > -->
+      <!-- <ElButton v-if="curFilter >= 0" size="small" @click="delFilter">
+        删除此预设
+      </ElButton> -->
     </div>
 
     <!-- {{ diyFilter }} -->
