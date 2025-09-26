@@ -6,7 +6,6 @@
  -->
 
 <script lang="ts" setup>
-import dayjs from 'dayjs'
 // const router = useRouter()
 const log = inject<Log>('log')!
 // const { noUsername } = defineProps<{

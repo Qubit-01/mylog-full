@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import dayjs from 'dayjs'
 import LogLoading from '~/components/log/LogLoading.vue'
 import LogRelease from '~/components/logEdit/LogRelease.vue'
 

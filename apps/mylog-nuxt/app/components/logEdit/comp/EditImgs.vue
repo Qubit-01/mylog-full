@@ -25,7 +25,6 @@
   - compressImg 压缩文件
 -->
 <script lang="ts" setup>
-import dayjs from 'dayjs'
 import type { UploadFile, UploadFiles } from 'element-plus'
 import { Delete, Plus } from '@element-plus/icons-vue'
 import {

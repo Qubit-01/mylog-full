@@ -1,5 +1,8 @@
+import dayjs from 'dayjs'
 import { baseURL } from '@mylog-full/mix/constant'
 export { baseURL, BucketCDN } from '@mylog-full/mix/constant'
+
+export { dayjs }
 
 export const replace = (to: string) => navigateTo(to, { replace: true })
 

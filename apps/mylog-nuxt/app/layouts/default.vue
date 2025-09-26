@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import dayjs from 'dayjs'
 import OneSentence from '~/components/aside/OneSentence.vue'
 import UserAside from '~/components/aside/UserAside.vue'
 import NoteAside from '~/components/aside/NoteAside.vue'

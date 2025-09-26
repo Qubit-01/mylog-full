@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import type { UploadFile, UploadRawFile } from 'element-plus'
 import type COS from 'cos-js-sdk-v5'
 import { AnyArray, Bucket, Region } from '@mylog-full/mix/constant'

@@ -1,5 +1,4 @@
 import COS from 'cos-js-sdk-v5'
-import dayjs from 'dayjs'
 import { inject } from 'vue'
 import { baseURL, Bucket, Region, BucketCDN } from '@mylog-full/mix/constant'
 import { downloadFile } from '@mylog-full/mix/utils'
