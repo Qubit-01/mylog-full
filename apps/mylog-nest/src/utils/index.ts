@@ -44,7 +44,7 @@ export const Cookies = createParamDecorator(
 export const Userid = createParamDecorator(
   (key: string, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    console.log('🔥 @Userid: token: ', request.cookies?.token);
+    if (!request.cookies?.token) console.log('🔥 @UserId: 未携带 token');
     return verify(request.cookies?.token);
   },
 );

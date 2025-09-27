@@ -58,7 +58,7 @@ export class LogController {
     @Userid() userid: number,
     @Body() body: { skip: number; limit: number; filter?: LogFilter },
   ) {
-    console.log('🐔 get_mylogs: ', userid, body);
+    console.log('🐔 get_mylogs: ', userid, JSON.stringify(body));
     if (!userid) return;
 
     const whereFilter = toWhere4LogFilter(body.filter);
@@ -103,7 +103,6 @@ export class LogController {
   async getShare(@Userid() userid: number, @Body() body: { ids: number[] }) {
     console.log('🐔 get_share: ', userid, body);
     if (!userid) return;
-    console.log('LSQ> ss', crypto.subtle.encrypt);
 
     const idsReal = (
       await this.prisma.log.findMany({
@@ -111,13 +110,8 @@ export class LogController {
         where: { userid, id: { in: body.ids } },
       })
     ).map((log) => log.id);
+    // console.log('LSQ< ', await decrypt(en));
 
-    console.log('LSQ> idsReal', idsReal);
-
-    const en = await encrypt(idsReal);
-    console.log('LSQ> ', en);
-    console.log('LSQ< ', await decrypt(en));
-
-    return;
+    return await encrypt(idsReal);
   }
 }
