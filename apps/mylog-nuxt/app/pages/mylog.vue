@@ -8,7 +8,7 @@ const tab = ref('mylog')
 </script>
 
 <template>
-  <div class="mylog-page">
+  <div class="MylogPage">
     <!-- <el-radio-group v-model="tab">
       <el-radio-button label="时间线" value="mylog" />
       <el-radio-button label="日历" value="calendar" />
@@ -19,7 +19,7 @@ const tab = ref('mylog')
 </template>
 
 <style lang="scss" scoped>
-.mylog-page {
+.MylogPage {
   display: flex;
   flex-direction: column;
   gap: var(--gap);

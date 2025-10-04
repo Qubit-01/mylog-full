@@ -4,7 +4,7 @@ const { user } = refsGlobalStore()
 </script>
 
 <template>
-  <div class="logger-page">
+  <div class="LoggerPage">
     用户页
     <div>
       <el-button @click="signout()">退出登录</el-button>
@@ -16,6 +16,6 @@ const { user } = refsGlobalStore()
 </template>
 
 <style lang="scss" scoped>
-.logger-page {
+.LoggerPage {
 }
 </style>

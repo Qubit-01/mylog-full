@@ -17,7 +17,7 @@ const { isLogined } = refsGlobalStore()
 
 <template>
   <NuxtLayout name="empty">
-    <div class="signin-page">
+    <div class="SigninPage">
       <div class="window _m">
         <div class="banner">
           <div class="text">
@@ -43,7 +43,7 @@ const { isLogined } = refsGlobalStore()
 </template>
 
 <style lang="scss" scoped>
-.signin-page {
+.SigninPage {
   display: flex;
   height: 100vh;
   width: 100vw;

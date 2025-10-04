@@ -7,7 +7,7 @@ const Home = useHomeStore()
 
 <template>
   <div
-    class="home-page"
+    class="HomePage"
     v-infinite-scroll="Home.addLogs"
     :infinite-scroll-disabled="Home.status !== 'success'"
   >
@@ -20,7 +20,7 @@ const Home = useHomeStore()
 </template>
 
 <style lang="scss" scoped>
-.home-page {
+.HomePage {
   display: flex;
   flex-direction: column;
   gap: var(--gap);

@@ -3,11 +3,10 @@
 </script>
 
 <template>
-  <div class="map-page">
-    地图页
-  </div>
+  <div class="MapPage">地图页</div>
 </template>
 
 <style lang="scss" scoped>
-.map-page {}
+.MapPage {
+}
 </style>
