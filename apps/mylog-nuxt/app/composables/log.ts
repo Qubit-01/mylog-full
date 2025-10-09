@@ -197,9 +197,6 @@ export const shareLogs = async (ids: number[]) => {
     body: { ids },
   })
   const url = `${Domain}/share?share=${encodeURIComponent(en)}`
-
-  console.log('LSQ> share', url)
-
   const { copy } = useClipboard()
   copy(url).then(() => {
     ElMessage({ message: '分享链接已经写入剪贴板', type: 'success' })

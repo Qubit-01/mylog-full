@@ -62,7 +62,7 @@ export class UserController {
     @Userid() userid: number,
     @Body() body: { id: number } | { name: string },
   ) {
-    console.log('🐔 get_user: ', userid, body);
+    // console.log('🐔 get_user: ', userid, body);
 
     let user;
     if ('id' in body)

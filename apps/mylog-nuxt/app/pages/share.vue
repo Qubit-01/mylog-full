@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 const { query } = useRoute()
 
-const logs = reactive<Log[]>([])
+const logs = useState<Log[]>(() => [])
 const params = reactive({ skip: 0, limit: 10, share: query.share })
 const noMore = ref(false)
-
-console.log('LSQ> ', params)
 
 const { refresh, status } = useFetch<Log[]>('/log/get_share', {
   ...FetchOptsDefault,
@@ -13,10 +11,8 @@ const { refresh, status } = useFetch<Log[]>('/log/get_share', {
   body: params,
   onResponse({ response }) {
     const logsRes = response._data
-    console.log('LSQ> ', logsRes);
-    
     if (!logsRes) return
-    logs.push(...logsRes)
+    logs.value.push(...logsRes)
     if (logsRes.length < params.limit) noMore.value = true
   },
 })
