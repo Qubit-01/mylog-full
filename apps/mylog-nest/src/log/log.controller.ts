@@ -99,9 +99,12 @@ export class LogController {
   }
 
   /** 分享加密 */
-  @Post('get_share')
-  async getShare(@Userid() userid: number, @Body() body: { ids: number[] }) {
-    console.log('🐔 get_share: ', userid, body);
+  @Post('encrypt_share')
+  async encryptShare(
+    @Userid() userid: number,
+    @Body() body: { ids: number[] },
+  ) {
+    console.log('🐔 encrypt_share: ', userid, body);
     if (!userid) return;
 
     const idsReal = (
@@ -113,5 +116,23 @@ export class LogController {
     // console.log('LSQ< ', await decrypt(en));
 
     return await encrypt(idsReal);
+  }
+
+  /** 解密分享加密字符串，然后返回logs */
+  @Post('get_share')
+  async getShare(
+    @Body() body: { skip: number; limit: number; share: string },
+  ) {
+    console.log('🐔 get_share: ', body);
+
+    const ids = await decrypt<number[]>(body.share);
+
+    console.log('LSQ> ', ids);
+    return await this.prisma.log.findMany({
+      where: { id: { in: ids } },
+      skip: body.skip,
+      take: body.limit ?? 10,
+      orderBy: { logtime: 'desc' },
+    });
   }
 }

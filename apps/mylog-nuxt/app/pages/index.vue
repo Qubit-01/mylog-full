@@ -8,7 +8,7 @@ const Home = useHomeStore()
 <template>
   <div
     class="HomePage"
-    v-infinite-scroll="Home.addLogs"
+    v-infinite-scroll="Home.fetchLogs"
     :infinite-scroll-disabled="Home.status !== 'success'"
   >
     <HomeTopLog />

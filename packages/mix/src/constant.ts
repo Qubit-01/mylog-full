@@ -11,7 +11,7 @@ export const Bucket = 'bit-1310383539'
 /* 所在地域 */
 export const Region = 'ap-chengdu'
 /* COS地址 */
-export const bucketURL = Bucket + '.cos.' + Region + '.myqcloud.com/'
+// export const bucketURL = Bucket + '.cos.' + Region + '.myqcloud.com/'
 /** CDN加速域名 */
 export const BucketCDN = 'https://cos.mylog.ink/'
 

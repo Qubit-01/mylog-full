@@ -5,7 +5,7 @@
 -->
 
 <script lang="ts" setup>
-const { params } = refsMylogStore()
+const { params, logs } = refsMylogStore()
 /** 筛选器：-1是全部，-2是自定义筛选 */
 const curFilter = ref(-1)
 
@@ -33,11 +33,9 @@ watch(diyFilter.logtime, (lt) => {
   }
 })
 
+// 点击分享
 const clickShare = () => {
-  shareLogs([
-    3188, 3189, 1234, 3188, 3187, 3186, 3185, 3184, 3183, 3182, 3181, 3180,
-    3179, 3178, 3177, 3176, 3175, 3174, 3173, 3172, 3171, 3170,
-  ])
+  shareLogs(logs.value.map((l) => l.id))
 }
 </script>
 

@@ -16,8 +16,8 @@ export const useHomeStore = defineStore('home', () => {
     },
   })
 
-  /** 这里是一个触发器，用于请求下一页数据 */
-  const addLogs = () => {
+  /** 请求下一页数据 */
+  const fetchLogs = () => {
     if (noMore.value) return
     params.skip += params.limit
   }
@@ -30,7 +30,7 @@ export const useHomeStore = defineStore('home', () => {
     /** 请求状态 */
     status,
     /** 触发请求数据，会自动 push 在 logs 最后 */
-    addLogs,
+    fetchLogs,
     /** 重新请求 */
     refresh,
   }

@@ -179,25 +179,31 @@ export const matchesLogFilter = (log: Log, filter?: LogFilter): boolean => {
 
 /** 分享 */
 export const shareLogs = async (ids: number[]) => {
-  // const logIds = mylog.listFilter.map((log) => log.id)
-  // try {
-  //   await ElMessageBox.confirm(`确定要分享${ids.length}条Log吗？`, '分享', {
-  //     confirmButtonText: '分享',
-  //     cancelButtonText: '取消',
-  //     type: 'info',
-  //   })
-  // } catch {
-  //   return
-  // }
-  $fetch('/log/get_share', { ...FetchOptsDefault, body: { ids } })
+  try {
+    await ElMessageBox.confirm(
+      `确定要分享${ids.length}条 Log 吗？只会分享下面已展示的 Log，请下拉确认哦~`,
+      '分享',
+      {
+        confirmButtonText: '分享',
+        cancelButtonText: '取消',
+        type: 'info',
+      },
+    )
+  } catch {
+    return
+  }
+  const en = await $fetch<string>('/log/encrypt_share', {
+    ...FetchOptsDefault,
+    body: { ids },
+  })
+  const url = `${Domain}/share?share=${encodeURIComponent(en)}`
 
-  // getShare({ logIdsJson: JSON.stringify(ids) }).then((link) => {
-  //   // 要进行url转义
-  //   const url = `${webURL}/#/share?share=${encodeURIComponent(link)}`
-  //   writeClipboard(url).then(() => {
-  //     ElMessage({ message: '分享链接已经写入剪贴板', type: 'success' })
-  //   })
-  // })
+  console.log('LSQ> share', url)
+
+  const { copy } = useClipboard()
+  copy(url).then(() => {
+    ElMessage({ message: '分享链接已经写入剪贴板', type: 'success' })
+  })
 }
 
 /** 类型定义 *************************/
