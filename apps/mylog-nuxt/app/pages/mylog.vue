@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-// definePageMeta({ middleware: 'auth' })
+definePageMeta({ middleware: 'auth' })
+useHead({ title: '记录' })
 const tab = ref('mylog')
 // const tab = computed<string>({
 //   get: () => route.name as string,

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-// definePageMeta({ middleware: 'auth' })
+definePageMeta({ middleware: 'auth' })
+useHead({ title: '用户' })
 const { user } = refsGlobalStore()
 </script>
 

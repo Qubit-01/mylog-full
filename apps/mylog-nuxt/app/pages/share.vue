@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+useHead({ title: '分享' })
 const { query } = useRoute()
 
 const logs = useState<Log[]>(() => [])

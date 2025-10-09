@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import ThemeSwitch from '~/components/utils/ThemeSwitch.vue'
 definePageMeta({ layout: false })
+useHead({ title: '登录' })
 // QQ登录 重定向后data-callback="true"?
 useHead({
   script: [

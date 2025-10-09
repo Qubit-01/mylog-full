@@ -1,7 +1,6 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-  const { isLogined } = refsGlobalStore()
-  if (!isLogined.value) {
-    // ElMessage.info('请先登录')
+  if (!useCookie('token').value) {
+    ElMessage.error('请先登录')
     return navigateTo('/signin')
   }
 })

@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+useHead({
+  titleTemplate: (c) => (c ? `${c} - 多元记` : '多元记 - 记录生活 记录你'),
+})
 const { user } = refsGlobalStore()
 
 // 只能在水合后执行

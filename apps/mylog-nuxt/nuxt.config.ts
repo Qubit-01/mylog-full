@@ -3,12 +3,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   app: {
     head: {
+      // title: '多元记', // 兜底的标题，可以不设置，在 app.vue 里面处理
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1, user-scalable=no',
       meta: [
-        { charset: 'utf-8' },
-        {
-          name: 'viewport',
-          content: 'width=device-width, initial-scale=1.0, user-scalable=no',
-        },
         // 网站自定义信息
         { name: 'author', content: 'Qubit' },
         {
