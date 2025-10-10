@@ -4,11 +4,8 @@
       首页要展示用户名, 而我的不用
       首页用发布时间排序, 我的用记录时间排序
   1. 标题有才显示
-  2. 视频记录首帧, 展示在图片后面是最好的方式, 但工作量大
-      现在采用更多来下拉展示
  -->
 <script lang="ts" setup>
-import { Share } from '@element-plus/icons-vue'
 import LogContent from './comp/LogContent.vue'
 import LogMedias from './comp/LogMedias.vue'
 import LogTags from './comp/LogTags.vue'
@@ -29,11 +26,7 @@ const expand = () => (isExpand.value = !isExpand.value)
     <LogContent />
     <LogMedias />
     <LogTags />
-    <LogBottom />
-
-    <ElButtonGroup class="buttons">
-      <ElButton :icon="Share" />
-    </ElButtonGroup>
+    <LogBottom show-username />
 
     <slot name="bottom" />
   </div>
@@ -51,17 +44,6 @@ const expand = () => (isExpand.value = !isExpand.value)
   // 空div应该不占用gap
   > div:empty {
     display: none;
-  }
-
-  .buttons {
-    display: none;
-    position: absolute;
-    top: -26px;
-    right: var(--padding);
-  }
-
-  &:hover .buttons {
-    display: block;
   }
 }
 </style>

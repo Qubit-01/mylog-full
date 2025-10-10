@@ -13,7 +13,7 @@ const Home = useHomeStore()
   >
     <HomeTopLog />
 
-    <Log v-for="log in Home.logs" :key="log.id" :log="log" />
+    <LogHome v-for="log in Home.logs" :key="log.id" :log />
 
     <LogLoading :status="Home.status" @retry="Home.refresh" />
   </div>

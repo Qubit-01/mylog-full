@@ -13,20 +13,6 @@ export class LogController {
   ) {}
 
   /**
-   * 获取单个public，没有返回null
-   * @param id log的id
-   */
-  @Post('get_public')
-  async getPublic(@Body() body: { id: number }) {
-    console.log('🐔 get_public: ', body);
-
-    const log = await this.prisma.log.findUnique({
-      where: { id: body.id, type: 'public' },
-    });
-    return log;
-  }
-
-  /**
    * 获取public列表， 按发送时间倒序
    * @param userid 用户id
    * @param skip 跳过多少条
@@ -40,6 +26,7 @@ export class LogController {
 
     const logs = await this.prisma.log.findMany({
       where: { userid: body.userid, type: 'public' },
+      include: { user: { select: { name: true } } },
       skip: body.skip,
       take: body.limit ?? 10,
       orderBy: { sendtime: 'desc' },
@@ -120,9 +107,7 @@ export class LogController {
 
   /** 解密分享加密字符串，然后返回logs */
   @Post('get_share')
-  async getShare(
-    @Body() body: { skip: number; limit: number; share: string },
-  ) {
+  async getShare(@Body() body: { skip: number; limit: number; share: string }) {
     console.log('🐔 get_share: ', body);
 
     const ids = await decrypt<number[]>(body.share);

@@ -24,10 +24,8 @@ const { hidePublic } = defineProps<{
     <ElTag v-if="log.info.markdown" size="small">MarkDown</ElTag>
 
     <template v-if="!isExpand">
-      <!-- <span v-if="log.videos.length">🎬{{ log.videos.length }}</span> -->
       <span v-if="log.audios.length">🎙️{{ log.audios.length }}</span>
       <span v-if="log.files.length">📁{{ log.files.length }}</span>
-      <span v-if="log.location.length">📍</span>
     </template>
   </div>
 </template>

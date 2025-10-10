@@ -76,6 +76,8 @@ export interface Log extends LogEditable {
   type: 'public' | 'log' | 'tag'
   /** 发布时间 */
   sendtime: string
+  /** 发送者信息，后端联表查询 */
+  user?: Partial<User>
 }
 
 /** 可以被编辑的 Log 项 */

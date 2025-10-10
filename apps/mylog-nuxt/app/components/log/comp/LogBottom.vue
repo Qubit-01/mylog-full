@@ -4,39 +4,33 @@
 
   默认都展示
  -->
-
 <script lang="ts" setup>
-// const router = useRouter()
+import { vEllipsis } from '@mylog-full/mix/utils'
+
 const log = inject<Log>('log')!
-// const { noUsername } = defineProps<{
-//   noUsername?: boolean
-// }>()
+const { showUsername } = defineProps<{
+  /** 是否展示用户名 */
+  showUsername?: boolean
+}>()
 </script>
 
 <template>
-  <!-- v-ellipsis -->
-  <div class="log-bottom">
-    <!-- <div
-      v-if="!noUsername"
-      @click="router.push({ name: 'logger', query: { id: log.userid } })"
-      style="cursor: pointer"
-    >
-      {{ log.username }} ·
-    </div> -->
+  <div class="LogBottom" v-ellipsis>
+    <!-- @click="router.push({ name: 'logger', query: { id: log.userid } })" -->
+    <span v-if="showUsername && log.user" style="cursor: pointer">
+      {{ log.user.name }} ·
+    </span>
 
-    <el-tooltip effect="light" placement="top">
-      <div>{{ dayjs(log.logtime).format('YYYY-MM-DD HH:mm') }}</div>
+    <ElTooltip effect="light" placement="top">
+      <span>{{ dayjs(log.logtime).format('YYYY-MM-DD HH:mm') }}</span>
       <template #content>
         发送时间：{{ dayjs(log.sendtime).format('YYYY-MM-DD HH:mm') }}<br />
         记录时间：{{ dayjs(log.logtime).format('YYYY-MM-DD HH:mm') }}
       </template>
-    </el-tooltip>
-    <!-- <template v-if="log.location.length">
-      ·
-      <div>{{ log.location[1] }}</div>
-    </template> -->
-    ·
-    <div>{{ log.id }}</div>
+    </ElTooltip>
+
+    <!-- <div>· {{ log.id }}</div> -->
+    <span v-if="log.location.length"> · {{ log.location[1] }}</span>
     <!-- <template v-if="log.info.link">
       · <ElLink :href="log.info.link" target="_blank">查看原文</ElLink>
     </template> -->
@@ -44,10 +38,9 @@ const log = inject<Log>('log')!
 </template>
 
 <style lang="scss" scoped>
-.log-bottom {
-  display: flex;
+.LogBottom {
   gap: 4px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--color-2);
 }
 </style>
