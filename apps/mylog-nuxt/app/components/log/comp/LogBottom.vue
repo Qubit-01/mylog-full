@@ -30,7 +30,10 @@ const { showUsername } = defineProps<{
     </ElTooltip>
 
     <!-- <div>· {{ log.id }}</div> -->
-    <span v-if="log.location.length"> · {{ log.location[1] }}</span>
+    <ElTooltip v-if="log.location.length" effect="light" placement="top">
+      <span> · {{ log.location[1] }}</span>
+      <template #content>{{ log.location[1] }}</template>
+    </ElTooltip>
     <!-- <template v-if="log.info.link">
       · <ElLink :href="log.info.link" target="_blank">查看原文</ElLink>
     </template> -->
