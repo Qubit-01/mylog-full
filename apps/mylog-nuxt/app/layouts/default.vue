@@ -89,13 +89,11 @@ onMounted(() => {
           <slot />
         </div>
         <aside class="left">
-          <UserAside />
-          <NoteAside />
-        </aside>
-        <aside class="right">
           <!-- 目录栏 -->
           <!-- <ContentLan /> -->
           <OneSentence />
+          <UserAside />
+          <NoteAside />
         </aside>
       </div>
     </main>
@@ -277,19 +275,13 @@ onMounted(() => {
         width: var(--lan-width);
 
         // 栏固定
-        > div:nth-child(1) {
+        > div:nth-child(2) {
           position: sticky;
           top: calc(var(--header-height) + var(--gap));
         }
       }
 
-      .right {
-        order: 3;
-        width: var(--lan-width);
-      }
-
-      .left,
-      .right {
+      .left {
         display: flex;
         flex-direction: column;
         gap: var(--gap);
@@ -299,8 +291,7 @@ onMounted(() => {
       }
 
       @media (max-width: 890px) {
-        .left,
-        .right {
+        .left {
           display: none;
         }
       }
