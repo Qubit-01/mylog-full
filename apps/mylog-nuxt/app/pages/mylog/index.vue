@@ -46,7 +46,7 @@ const releaseCount = ref(0)
 
         <!-- Log节点  :color="log.type === 'public' ? 'var(--el-color-warning)' : 'transparent'"-->
         <ElTimelineItem hide-timestamp center color="transparent">
-          <Log :id="log.id" :log />
+          <Log :log />
         </ElTimelineItem>
       </template>
 
