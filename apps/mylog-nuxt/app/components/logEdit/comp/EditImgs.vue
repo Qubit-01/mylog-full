@@ -112,14 +112,17 @@ const useExif = () => {
     if (!flag.logtime) {
       let dateTime =
         exif.DateTimeOriginal.value[0] || // 照片在被拍下来的日期/时间，通常和DateTime一样
-        exif.DateTime.value[0] || // 图像最后一次被修改时的日期/时间 "YYYY:MM:DD HH:MM:SS"
+        exif.DateTime.value[0] || // 图像最后一次被修改时的日期/时间
         exif.DateTimeDigitized.value[0] // 照片被数字化时的日期/时间
 
       console.log(dateTime)
       if (dateTime) {
-        // 'YYYY:MM:DD HH:MM:SS' 转为 'YYYY-MM-DD HH:mm:ss'
-        dateTime = dateTime.replace(':', '-').replace(':', '-')
-        emits('setItem', 'logtime', dayjs(dateTime))
+        // 2025:08:23 22:58:58 'YYYY:MM:DD HH:mm:ss' 转为 ISO
+        emits(
+          'setItem',
+          'logtime',
+          dayjs(dateTime, 'YYYY:MM:DD HH:mm:ss').toISOString(),
+        )
         flag.logtime = true
       }
     }

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-const time = defineModel<number>({ required: true })
+const time = defineModel<string>({ required: true })
 const editTime = computed({
   get: () => new Date(time.value),
-  set: (v) => (time.value = +v),
+  set: (v) => (time.value = v.toISOString()),
 })
 </script>
 <!--

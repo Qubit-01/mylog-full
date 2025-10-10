@@ -1,5 +1,7 @@
 import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
+dayjs.extend(customParseFormat)
 export { dayjs }
 export * from '@mylog-full/mix'
 export * from '@mylog-full/mix/constant'
