@@ -55,7 +55,7 @@ const fetchLogs = () => {
 
         <!-- Log节点  :color="log.type === 'public' ? 'var(--el-color-warning)' : 'transparent'"-->
         <ElTimelineItem hide-timestamp center color="transparent">
-          <Log :id="log.id" :log />
+          <Log type="share" :log />
         </ElTimelineItem>
       </template>
 
@@ -65,7 +65,7 @@ const fetchLogs = () => {
         timestamp="loading..."
         placement="top"
       >
-        <LogLoading :status @retry="refresh" />
+        <LogLoading :status="status" @retry="refresh" />
       </ElTimelineItem>
 
       <!-- 最底部的节点 -->

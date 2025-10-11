@@ -129,6 +129,7 @@ export class LogController {
     console.log('LSQ> ', ids);
     return await this.prisma.log.findMany({
       where: { id: { in: ids } },
+      include: { user: { select: { name: true } } },
       skip: body.skip,
       take: body.limit ?? 10,
       orderBy: { logtime: 'desc' },

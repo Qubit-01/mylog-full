@@ -15,7 +15,11 @@ import LogTags from './comp/LogTags.vue'
 import LogBottom from './comp/LogBottom.vue'
 import { vDblclick } from '@mylog-full/mix/utils'
 
-const { log } = defineProps<{ log: Log }>()
+const { log, type } = defineProps<{
+  log: Log
+  /** Log的展示方式 */
+  type?: 'home' | 'share'
+}>()
 provide('log', log) // 暴露给子组件
 
 const { logsMap } = refsMylogStore()
@@ -40,9 +44,9 @@ const onDeleteLog = async () => {
     <LogContent />
     <LogMedias />
     <LogTags />
-    <LogBottom />
+    <LogBottom :show-username="!!type" />
 
-    <ElButtonGroup class="buttons">
+    <ElButtonGroup v-if="type !== 'home' && type !== 'share'" class="buttons">
       <ElButton :icon="Share" />
       <ElButton :icon="Delete" @click="onDeleteLog" />
     </ElButtonGroup>

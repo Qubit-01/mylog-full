@@ -4,7 +4,7 @@ const emits = defineEmits<{ (e: 'retry'): void }>()
 </script>
 
 <template>
-  <div class="log-loading _m">
+  <div class="LogLoading _m">
     <div
       v-if="status === 'pending'"
       class="loading"
@@ -12,21 +12,21 @@ const emits = defineEmits<{ (e: 'retry'): void }>()
       element-loading-text="加载中..."
       element-loading-background="transparent"
     />
-    <el-result
+    <ElResult
       v-else-if="status !== 'success'"
       icon="error"
       title="加载失败"
       sub-title="去检查一下网络"
     >
       <template #extra>
-        <el-button type="primary" @click="emits('retry')">重试</el-button>
+        <ElButton type="primary" @click="emits('retry')">重试</ElButton>
       </template>
-    </el-result>
+    </ElResult>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.log-loading {
+.LogLoading {
   border-radius: var(--border-radius);
   overflow: hidden;
 
