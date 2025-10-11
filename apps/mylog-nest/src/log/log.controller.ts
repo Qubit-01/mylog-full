@@ -85,6 +85,20 @@ export class LogController {
     });
   }
 
+  /** 发布log，用token的userid，成功则返回删除的log，失败返回null */
+  @Post('delete_log')
+  async deleteLog(@Userid() userid: number, @Body() body: { id: number }) {
+    console.log('🐔 delete_log: ', userid, body);
+    if (!userid) return;
+
+    const { id } = body;
+    try {
+      return await this.prisma.log.delete({ where: { id, userid } });
+    } catch (e) {
+      return;
+    }
+  }
+
   /** 分享加密 */
   @Post('encrypt_share')
   async encryptShare(

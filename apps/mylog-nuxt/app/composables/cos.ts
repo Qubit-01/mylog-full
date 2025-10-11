@@ -14,9 +14,9 @@ const cos = new COS({
       method: 'GET',
       credentials: 'include',
     }).then(async (res) => {
-      console.log('LSQ> ', res);
+      // console.log('LSQ> ', res);
       const data = await res.json()
-      console.log('LSQ> /cos/get_credential: ', data)
+      // console.log('LSQ> /cos/get_credential: ', data)
       if (!data) {
         console.error('凭证无效:\n' + JSON.stringify(data, null, 2))
         return

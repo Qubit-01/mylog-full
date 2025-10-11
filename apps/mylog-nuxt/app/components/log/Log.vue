@@ -8,7 +8,7 @@
       现在采用更多来下拉展示
  -->
 <script lang="ts" setup>
-import { Share } from '@element-plus/icons-vue'
+import { Share, Delete } from '@element-plus/icons-vue'
 import LogContent from './comp/LogContent.vue'
 import LogMedias from './comp/LogMedias.vue'
 import LogTags from './comp/LogTags.vue'
@@ -18,10 +18,21 @@ import { vDblclick } from '@mylog-full/mix/utils'
 const { log } = defineProps<{ log: Log }>()
 provide('log', log) // 暴露给子组件
 
+const { logsMap } = refsMylogStore()
+
 // 双击log，展开和收起
 const isExpand = ref(false)
 provide('isExpand', isExpand)
 const expand = () => (isExpand.value = !isExpand.value)
+
+// 删除log，todo 防暴击，加载态
+const onDeleteLog = async () => {
+  const logDel = await deleteLog(log)
+  if (logDel?.id) {
+    ElMessage({ message: '删除成功：' + logDel?.id, type: 'success' })
+    delete logsMap.value[logDel.id]
+  }
+}
 </script>
 
 <template>
@@ -33,6 +44,7 @@ const expand = () => (isExpand.value = !isExpand.value)
 
     <ElButtonGroup class="buttons">
       <ElButton :icon="Share" />
+      <ElButton :icon="Delete" @click="onDeleteLog" />
     </ElButtonGroup>
 
     <slot name="bottom" />

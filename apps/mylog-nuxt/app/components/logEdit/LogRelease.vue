@@ -8,7 +8,7 @@ import EditFiles from './comp/EditFiles.vue'
 import EditLocation from './comp/EditLocation.vue'
 
 const emits = defineEmits<{
-  /** 发布成功后触发 */
+  /** 发布成功后触发，目前用于触发重置发布模块 */
   onReleaseSuccess: []
 }>()
 
@@ -41,10 +41,11 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
   logFile[item].push(file as any)
 }
 
-const releaseLog = async () => {
-  const logReal = await release()
-  if (logReal?.id) {
-    logs.value.unshift(logReal) // 直接加到最前面
+const onReleaseLog = async () => {
+  const logNew = await release()
+  if (logNew?.id) {
+    ElMessage({ message: '发布成功：' + logNew?.id, type: 'success' })
+    logs.value.unshift(logNew) // 直接加到最前面
     emits('onReleaseSuccess')
   }
 }
@@ -77,7 +78,9 @@ defineExpose({ logEdit })
         <ElRadioButton label="记录" value="log" />
         <ElRadioButton label="公开" value="public" />
       </ElRadioGroup>
-      <ElButton size="small" type="primary" @click="releaseLog">发布</ElButton>
+      <ElButton size="small" type="primary" @click="onReleaseLog"
+        >发布</ElButton
+      >
     </div>
     <ControlIcons v-model="visible" v-model:log-edit="logEdit" />
 

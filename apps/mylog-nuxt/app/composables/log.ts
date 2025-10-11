@@ -63,7 +63,7 @@ export const getCosFiles = (logFile: LogFileTypes) => {
 }
 
 /**
- * 发布log，并上传文件，返回有正确id的log。出错会直接抛出
+ * 发布log，并上传文件，返回有正确id的log
  * @param log log对象，部分
  * @param file 要上传的文件
  */
@@ -71,10 +71,7 @@ export const releaseLog = async (
   logEdit: LogEdit,
   uploadFilesParams: COS.UploadFilesParams,
 ) => {
-  if (!logEdit.content) {
-    ElMessage.error('必须填入内容哦')
-    throw new Error('必须填入内容哦')
-  }
+  if (!logEdit.content) throw new Error('必须填入内容哦')
 
   // 1. 上传文件
   await myUploadFiles(uploadFilesParams)
@@ -84,6 +81,35 @@ export const releaseLog = async (
     body: { log: logEdit },
   })
   return logNew
+}
+
+/** 删除Log，成功返回删除的log，失败返回undefined */
+export const deleteLog = async (log: Log) => {
+  try {
+    await ElMessageBox.confirm('确定删除吗？', '删除Log', {
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+  } catch {
+    return
+  }
+  // 1. 先删文件
+  const objects: { Key: string }[] = []
+  logFileItem.forEach((type) => {
+    log[type].forEach((key) => {
+      objects.push({ Key: `${cosPath(log.userid)}${type}/${key}` })
+      type === 'imgs' &&
+        objects.push({ Key: `${cosPath(log.userid)}compress-imgs/${key}` })
+    })
+  })
+  await myDeleteFiles(objects)
+  // 2. 再删log
+  const logDel = await $fetch('/log/delete_log', {
+    ...FetchOptsDefault,
+    body: { id: log.id },
+  })
+  return logDel ? (logDel as Log) : undefined
 }
 
 /** LogRelease Hook */
@@ -97,6 +123,11 @@ export const useLogRelease = () => {
   })
 
   const release = async () => {
+    if (!logEdit.content) {
+      ElMessage.error('必须填入内容哦')
+      return
+    }
+
     uploadInfo.percent = 0
 
     const logNew = await releaseLog(logEdit, {
@@ -108,13 +139,7 @@ export const useLogRelease = () => {
     })
 
     uploadInfo.percent = -1
-
-    if (logNew?.id !== 0) {
-      ElMessage({ message: '发布成功：' + logNew?.id, type: 'success' })
-
-      // logStore.addLog(logNew)
-      return logNew
-    }
+    if (logNew?.id !== 0) return logNew
   }
 
   return {
