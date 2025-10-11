@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import {
+  Document,
   Clock,
   FolderOpened,
   Picture,
@@ -15,13 +16,17 @@ import {
 const visible = defineModel<{ [key in LogItem]?: boolean }>({ required: true })
 /** logEdit */
 const logEdit = defineModel<LogEdit>('logEdit', { required: true })
+const { log } = defineProps<{
+  /** 是否编辑模式，传入编辑的log，会展示文本按钮 */
+  log?: Log
+}>()
 
 const onClick = (item: LogItem) => {
   if (visible.value[item]) {
     visible.value[item] = false
     delete logEdit.value[item]
   } else {
-    logEdit.value[item] = getDefaultValue(item)
+    logEdit.value[item] = log?.[item] ?? getDefaultValue(item)
     visible.value[item] = true
   }
 }
@@ -32,6 +37,13 @@ const onClick = (item: LogItem) => {
 -->
 <template>
   <div class="ControlIcons">
+    <ElButton
+      v-if="log"
+      link
+      :icon="Document"
+      :type="visible.content ? 'primary' : undefined"
+      @click="onClick('content')"
+    />
     <ElButton
       link
       :icon="Clock"

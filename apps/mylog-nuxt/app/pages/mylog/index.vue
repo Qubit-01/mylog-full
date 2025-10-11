@@ -13,7 +13,7 @@ const releaseCount = ref(0)
 
 <template>
   <div class="timeline">
-    <LogRelease :key="releaseCount" @onReleaseSuccess="releaseCount++" />
+    <LogRelease :key="releaseCount" @success="releaseCount++" />
     <!-- <div>{{ $LogRelease?.logEdit }}</div> -->
 
     <LogFilter />

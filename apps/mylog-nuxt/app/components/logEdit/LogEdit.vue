@@ -7,17 +7,31 @@ import EditVideos from './comp/EditVideos.vue'
 import EditFiles from './comp/EditFiles.vue'
 import EditLocation from './comp/EditLocation.vue'
 
+const { log } = defineProps<{
+  /** 是否有内容输入框按钮 */
+  log?: Log
+}>()
 const emits = defineEmits<{
   /** 发布成功后触发，目前用于触发重置发布模块 */
   success: []
 }>()
 
-const { logs } = refsMylogStore()
-const { logEdit, logFile, uploadInfo, release } = useLogRelease()
+const logEdit = reactive<LogEdit>({ type: 'log' })
+const logFile = reactive<LogFileTypes>({
+  imgs: [],
+  videos: [],
+  audios: [],
+  files: [],
+})
+
+const uploadInfo = reactive({
+  percent: -1, // 上传进度
+  speed: 0, // 上传速度 MB/s
+})
 
 /** 编辑模块的可见性 */
 const visible = reactive<{ [key in LogItem]: boolean }>({
-  content: true, // 默认必须有输入框
+  content: false,
   logtime: false,
   tags: false,
   imgs: false,
@@ -41,26 +55,11 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
   logFile[item].push(file as any)
 }
 
-const onReleaseLog = async () => {
-  const logNew = await release()
-  if (logNew?.id) {
-    ElMessage({ message: '发布成功：' + logNew?.id, type: 'success' })
-    logs.value.unshift(logNew) // 直接加到最前面
-    emits('success')
-  }
-}
-
-defineExpose({ logEdit })
+const onEditLog = () => {}
 </script>
-<!-- 
-  发布Log模块
-  - 显示上传进度/类型选择区，发布按钮
-  - 编辑项选择区
-  - 内容输入区
-  - 编辑数据组件
--->
+
 <template>
-  <div class="LogRelease _m" :class="{ disable: uploadInfo.percent > -1 }">
+  <div class="LogEdit">
     <!-- 第一行 -->
     <ElProgress
       v-if="uploadInfo.percent > -1"
@@ -74,17 +73,12 @@ defineExpose({ logEdit })
       {{ uploadInfo.percent }}% {{ uploadInfo.speed }}MB/s
     </ElProgress>
     <div class="control">
-      <ElRadioGroup v-model="logEdit.type" size="small">
-        <ElRadioButton label="记录" value="log" />
-        <ElRadioButton label="公开" value="public" />
-      </ElRadioGroup>
-      <ElButton size="small" type="primary" @click="onReleaseLog">
-        发布
-      </ElButton>
+      <ControlIcons v-model="visible" v-model:log-edit="logEdit" :log />
+      <ElButton size="small" type="primary" @click="onEditLog">编辑</ElButton>
     </div>
-    <ControlIcons v-model="visible" v-model:log-edit="logEdit" />
 
     <ElInput
+      v-if="visible.content && logEdit.content !== undefined"
       v-model="logEdit.content"
       :autosize="{ minRows: 3 }"
       type="textarea"
@@ -126,14 +120,14 @@ defineExpose({ logEdit })
       />
     </ClientOnly>
   </div>
-  <!-- <p>{{ logEdit }}</p> -->
-  <!-- <p>{{ logFile }}</p> -->
 </template>
 
 <style lang="scss" scoped>
-.LogRelease {
+.LogEdit {
+  // 虚线边框
+  border: 1px dashed #8888;
   border-radius: 8px;
-  padding: var(--padding);
+  padding: 4px;
 
   display: flex;
   flex-direction: column;
@@ -142,13 +136,6 @@ defineExpose({ logEdit })
   .control {
     display: flex;
     justify-content: space-between;
-  }
-
-  &.disable {
-    pointer-events: none;
-    > *:not(.el-progress) {
-      opacity: 0.5;
-    }
   }
 }
 </style>

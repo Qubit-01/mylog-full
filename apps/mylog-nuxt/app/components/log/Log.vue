@@ -8,7 +8,7 @@
       现在采用更多来下拉展示
  -->
 <script lang="ts" setup>
-import { Share, Delete } from '@element-plus/icons-vue'
+import { Share, Delete, Edit } from '@element-plus/icons-vue'
 import LogContent from './comp/LogContent.vue'
 import LogMedias from './comp/LogMedias.vue'
 import LogTags from './comp/LogTags.vue'
@@ -37,6 +37,9 @@ const onDeleteLog = async () => {
     delete logsMap.value[logDel.id]
   }
 }
+
+// 点击编辑按钮
+const isEdit = ref(false)
 </script>
 
 <template>
@@ -46,8 +49,11 @@ const onDeleteLog = async () => {
     <LogTags />
     <LogBottom :show-username="!!type" />
 
+    <LogEdit v-if="isEdit" @success="isEdit = false" :log />
+
     <ElButtonGroup v-if="type !== 'home' && type !== 'share'" class="buttons">
       <ElButton :icon="Share" />
+      <ElButton :icon="Edit" @click="isEdit = !isEdit" />
       <ElButton :icon="Delete" @click="onDeleteLog" />
     </ElButtonGroup>
 
@@ -63,6 +69,10 @@ const onDeleteLog = async () => {
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  .LogEdit {
+    margin-top: 4px;
+  }
 
   // 空div应该不占用gap
   > div:empty {

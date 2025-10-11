@@ -4,12 +4,6 @@ import { AnyArray, Bucket, Region } from '@mylog-full/mix/constant'
 import type { ExifImgFile } from '@mylog-full/mix/img'
 
 /** 获取 Log 项的默认值 */
-const getInitValue = (): { logEdit: LogEdit; logFile: LogFileTypes } => ({
-  logEdit: { type: 'log', content: '' },
-  logFile: { imgs: [], videos: [], audios: [], files: [] },
-})
-
-/** 获取 Log 项的默认值 */
 export const getDefaultValue = (item: LogItem): any => {
   switch (item) {
     case 'logtime':
@@ -112,10 +106,18 @@ export const deleteLog = async (log: Log) => {
   return logDel ? (logDel as Log) : undefined
 }
 
+/** 编辑log，传入log和编辑的部分，返回新的log */
+export const editLog = async (log: Log, edit: Partial<LogEdit>) => {}
+
 /** LogRelease Hook */
 export const useLogRelease = () => {
-  const logEdit = reactive<LogEdit>(getInitValue().logEdit)
-  const logFile = reactive<LogFileTypes>(getInitValue().logFile)
+  const logEdit = reactive<LogEdit>({ type: 'log', content: '' })
+  const logFile = reactive<LogFileTypes>({
+    imgs: [],
+    videos: [],
+    audios: [],
+    files: [],
+  })
 
   const uploadInfo = reactive({
     percent: -1, // 上传进度
@@ -231,7 +233,7 @@ export const shareLogs = async (ids: number[]) => {
 /** 类型定义 *************************/
 /** 这里只定义文件有关的类型，看后面有没有单独提出去的必要 */
 
-type LogFileTypes = {
+export type LogFileTypes = {
   imgs: LogImgFile[]
   videos: KeyFile[]
   audios: KeyFile[]

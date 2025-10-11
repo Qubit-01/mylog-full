@@ -45,6 +45,8 @@ const emits = defineEmits<{
   /** 给其他文件列表添加文件，归档时用 */
   (e: 'addFile', item: LogFileItem, file: KeyFile): void
 }>()
+// 编辑态下，log 会有值
+const log = inject<Log | undefined>('log', undefined)
 /** 原有文件拷贝：组件内要用于删除 */
 const namesOld = ref(names.value)
 
@@ -169,7 +171,7 @@ const useExif = () => {
             :key="name"
             class="el-upload-list__item is-ready"
           >
-            <img :src="toFileUrl(name, 'compress-imgs/')" />
+            <img :src="toFileUrl(name, 'compress-imgs/', log?.userid ?? 0)" />
             <span class="el-upload-list__item-actions">
               <ElIcon size="20" color="#fff" @click="delOld(name)">
                 <Delete />

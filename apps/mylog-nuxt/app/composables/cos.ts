@@ -52,14 +52,13 @@ export const getFileKey = (filename: string) =>
 export const toFileUrl = <T extends string | string[]>(
   file: T,
   prefix: string = '',
-  userid?: number,
+  userid: number,
 ): T => {
-  const userid_ = userid || inject('userid', 0)
   return Array.isArray(file)
-    ? (file.map((f) => toFileUrl(f, prefix, userid_)) as T)
+    ? (file.map((f) => toFileUrl(f, prefix, userid)) as T)
     : file.indexOf('http') !== 0
-      ? (`${BucketCDN}${cosPath(userid_)}${prefix}${file}` as T)
-      : (file.replace('http://', 'https://') as T)
+    ? (`${BucketCDN}${cosPath(userid)}${prefix}${file}` as T)
+    : (file.replace('http://', 'https://') as T)
 }
 
 // 获取文件列表
