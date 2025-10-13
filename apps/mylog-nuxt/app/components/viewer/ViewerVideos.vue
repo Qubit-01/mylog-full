@@ -42,7 +42,7 @@ const curUrl = ref('')
       class="video"
       @click.stop="curUrl = url"
     >
-      <img :src="`${url}?ci-process=snapshot&time=1&format=jpg`" alt="" />
+      <img :src="`${url}?ci-process=snapshot&time=0&format=jpg`" alt="" />
       <!-- <video>
         <source :src="url" />
       </video> -->
@@ -56,7 +56,7 @@ const curUrl = ref('')
       @click.stop="videoSrc = url"
     >
       <img
-        :src="url + '?ci-process=snapshot&time=1&format=jpg'"
+        :src="url + '?ci-process=snapshot&time=0&format=jpg'"
         alt="视频封面"
       />
     </div> -->
