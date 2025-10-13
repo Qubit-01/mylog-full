@@ -7,15 +7,13 @@ import EditVideos from './comp/EditVideos.vue'
 import EditFiles from './comp/EditFiles.vue'
 import EditLocation from './comp/EditLocation.vue'
 
-const { log } = defineProps<{
-  /** 是否有内容输入框按钮 */
-  log?: Log
-}>()
+const { log } = defineProps<{ log: Log }>()
 const emits = defineEmits<{
-  /** 发布成功后触发，目前用于触发重置发布模块 */
+  /** 编辑成功后触发，目前用于触发重置发布模块 */
   success: []
 }>()
 
+const { logsMap } = refsMylogStore()
 const logEdit = reactive<LogEdit>({ type: 'log' })
 const logFile = reactive<LogFileTypes>({
   imgs: [],
@@ -56,7 +54,20 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
   logFile[item].push(file as any)
 }
 
-const onEditLog = () => {}
+const onEditLog = async () => {
+  const logNew = await editLog(log, logEdit, {
+    files: getCosFiles(logFile),
+    onProgress(i) {
+      uploadInfo.percent = Math.floor(i.percent * 100)
+      uploadInfo.speed = +(i.speed / 1024 / 1024).toFixed(2)
+    },
+  })
+  if (logNew?.id) {
+    ElMessage({ message: '编辑成功：' + logNew?.id, type: 'success' })
+    logsMap.value[logNew.id] = logNew
+    emits('success')
+  }
+}
 </script>
 
 <template>

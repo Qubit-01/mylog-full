@@ -7,8 +7,8 @@
 <script lang="ts" setup>
 import { vEllipsis } from '@mylog-full/mix/utils'
 
-const log = inject<Log>('log')!
-const { showUsername } = defineProps<{
+defineProps<{
+  log: Log
   /** 是否展示用户名 */
   showUsername?: boolean
 }>()

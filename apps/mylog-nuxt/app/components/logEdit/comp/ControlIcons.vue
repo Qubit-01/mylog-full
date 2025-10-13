@@ -13,7 +13,9 @@ import {
 } from '@element-plus/icons-vue'
 
 /** 模块可见性 */
-const visible = defineModel<{ [key in LogEditItem]?: boolean }>({ required: true })
+const visible = defineModel<{ [key in LogEditItem]?: boolean }>({
+  required: true,
+})
 /** logEdit */
 const logEdit = defineModel<LogEdit>('logEdit', { required: true })
 const { log } = defineProps<{
@@ -26,7 +28,9 @@ const onClick = (item: LogEditItem) => {
     visible.value[item] = false
     delete logEdit.value[item]
   } else {
-    logEdit.value[item] = log?.[item] ?? getDefaultValue(item)
+    logEdit.value[item] = log?.[item]
+      ? structuredClone(toRaw(log[item]))
+      : getDefaultValue(item)
     visible.value[item] = true
   }
 }

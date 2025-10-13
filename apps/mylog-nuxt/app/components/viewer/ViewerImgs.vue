@@ -10,18 +10,20 @@ import Viewer from 'viewerjs'
 import 'viewerjs/dist/viewer.css'
 import { vImgSrc, vErrorRetry } from '@mylog-full/mix/utils'
 
-const props = defineProps<{
+const { log, data } = defineProps<{
+  /** 从父组件拿到log，主要是获取userId */
+  log?: Log
   /** 图片列表 */
-  imgs?: string[]
+  data: string[]
 }>()
-// 从父组件拿到log，主要是获取userId
-const log: Log = inject('log')!
 // props.imgs > log.imgs
-const imgs = computed(() => props.imgs ?? log.imgs)
+const imgs = computed(() => data)
 // 传入的地址转为正常的url
-const urls = ref<string[]>(toFileUrl(imgs.value, 'compress-imgs/', log.userid))
+const urls = ref<string[]>(
+  toFileUrl(imgs.value, 'compress-imgs/', log?.userid),
+)
 watch(imgs, () => {
-  urls.value = toFileUrl(imgs.value, 'compress-imgs/', log.userid)
+  urls.value = toFileUrl(imgs.value, 'compress-imgs/', log?.userid)
   nextTick(() => viewer?.update())
 })
 
@@ -36,7 +38,7 @@ onMounted(() => {
   rawBtn.classList.add('viewer-raw')
   rawBtn.addEventListener('click', () => {
     const i = (viewer as any).index
-    const newImg = toFileUrl(imgs.value[i]!, 'imgs/', log.userid)
+    const newImg = toFileUrl(imgs.value[i]!, 'imgs/', log?.userid)
     if (urls.value[i] !== newImg) {
       urls.value[i] = newImg
       nextTick(() => viewer!.update()) // .view(i)

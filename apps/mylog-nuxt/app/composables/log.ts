@@ -107,7 +107,35 @@ export const deleteLog = async (log: Log) => {
 }
 
 /** 编辑log，传入log和编辑的部分，返回新的log */
-export const editLog = async (log: Log, logEdit: Partial<LogEdit>) => {}
+export const editLog = async (
+  log: Log,
+  logEdit: Partial<LogEdit>,
+  uploadFilesParams: COS.UploadFilesParams,
+) => {
+  // 1. 上传文件，文件能传好，大概率后续删除和编辑
+  await myUploadFiles(uploadFilesParams)
+  // 2. 删除文件
+  const delObjs: { Key: string }[] = []
+  logFileItem.forEach((fileKey) => {
+    if (logEdit[fileKey]) {
+      // 找 log 里面有，但是 logEdit 里面没有的项
+      log[fileKey]
+        .filter((k) => !logEdit[fileKey]?.includes(k))
+        .forEach((k) => {
+          delObjs.push({ Key: `${cosPath(log.userid)}${fileKey}/${k}` })
+          fileKey === 'imgs' &&
+            delObjs.push({ Key: `${cosPath(log.userid)}compress-imgs/${k}` })
+        })
+    }
+  })
+  await myDeleteFiles(delObjs)
+  // 3. 编辑 log
+  const logNew = await $fetch<Log>('/log/edit_log', {
+    ...FetchOptsDefault,
+    body: { id: log.id, logEdit },
+  })
+  return logNew
+}
 
 /** LogRelease Hook */
 export const useLogRelease = () => {

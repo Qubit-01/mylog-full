@@ -14,18 +14,20 @@
 import { VideoPlay } from '@element-plus/icons-vue'
 import Popup from '~/components/utils/Popup.vue'
 import VideoDplayer from '~/components/viewer/VideoDplayer.vue'
-// import DPlayer from 'dplayer'
 
 /** files是视频列表，不传就用父组件注入的log.videos */
-const props = defineProps<{ videos?: string[] }>()
-// 从父组件拿到log，主要是获取userId
-const log: Log = inject('log')!
+const { log, data } = defineProps<{
+  /** 从父组件拿到log，主要是获取userId */
+  log?: Log
+  /** 视频列表 */
+  data: string[]
+}>()
 // props.videos > log.videos
-const videos = computed(() => props.videos ?? log.videos)
+const videos = computed(() => data)
 // 传入的地址转为正常的url
-const urls = ref<string[]>(toFileUrl(videos.value, 'videos/', log.userid))
+const urls = ref<string[]>(toFileUrl(videos.value, 'videos/', log?.userid))
 watch(videos, () => {
-  urls.value = toFileUrl(videos.value, 'videos/', log.userid)
+  urls.value = toFileUrl(videos.value, 'videos/', log?.userid)
 })
 
 /** 当前播放的是视频地址，控制播放器的显示与否 */

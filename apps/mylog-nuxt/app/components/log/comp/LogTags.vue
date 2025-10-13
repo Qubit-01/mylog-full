@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-const log = inject<Log>('log')!
-const isExpand = inject<Ref<boolean>>('isExpand')!
-const { hidePublic } = defineProps<{
+defineProps<{
+  log: Log
   /** 是否不显示公开tag */
   hidePublic?: boolean
 }>()
+const isExpand = inject<Ref<boolean>>('isExpand')!
 </script>
 
 <template>

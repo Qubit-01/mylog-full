@@ -4,12 +4,12 @@
 <script lang="ts" setup>
 import { vEllipsis } from '@mylog-full/mix/utils'
 
-const log = inject<Log>('log')!
+defineProps<{ log: Log }>()
 const isExpand = inject<Ref<boolean>>('isExpand')!
 </script>
 
 <template>
-  <div class="log-content">
+  <div class="LogContent">
     <!-- 标题 -->
     <div class="title" v-if="log.info?.title" v-ellipsis="isExpand ? 0 : 1">
       {{ log.info?.title }}
@@ -20,7 +20,7 @@ const isExpand = inject<Ref<boolean>>('isExpand')!
 </template>
 
 <style lang="scss" scoped>
-.log-content {
+.LogContent {
   display: flex;
   flex-wrap: wrap;
 

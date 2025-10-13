@@ -52,7 +52,7 @@ export const getFileKey = (filename: string) =>
 export const toFileUrl = <T extends string | string[]>(
   file: T,
   prefix: string = '',
-  userid: number,
+  userid: number = 0,
 ): T => {
   return Array.isArray(file)
     ? (file.map((f) => toFileUrl(f, prefix, userid)) as T)

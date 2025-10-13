@@ -10,17 +10,15 @@
 <script lang="ts" setup>
 import { Share, Delete, Edit } from '@element-plus/icons-vue'
 import LogContent from './comp/LogContent.vue'
-import LogMedias from './comp/LogMedias.vue'
 import LogTags from './comp/LogTags.vue'
 import LogBottom from './comp/LogBottom.vue'
 import { vDblclick } from '@mylog-full/mix/utils'
 
-const { log, type } = defineProps<{
+const { log } = defineProps<{
   log: Log
   /** Log的展示方式 */
   type?: 'home' | 'share'
 }>()
-provide('log', log) // 暴露给子组件
 
 const { logsMap } = refsMylogStore()
 
@@ -37,19 +35,30 @@ const onDeleteLog = async () => {
     delete logsMap.value[logDel.id]
   }
 }
-
 // 点击编辑按钮
 const isEdit = ref(false)
 </script>
 
 <template>
   <div class="Log _m" :id="`log${log.id}`" v-dblclick="expand">
-    <LogContent />
-    <LogMedias />
-    <LogTags />
-    <LogBottom :show-username="!!type" />
+    <LogContent :log />
+    <!-- <LogMedias :log /> -->
+    <!-- 图片和视频放在一起 -->
+    <div class="medias">
+      <ViewerImgs v-if="log.imgs.length" :data="log.imgs" :log />
+      <ViewerVideos v-if="log.videos.length" :data="log.videos" :log />
+    </div>
+    <!-- 音频 和 文件 -->
+    <template v-if="isExpand">
+      <div v-if="log.audios.length">音频：{{ log.audios }}</div>
+      <ViewerFiles v-if="log.files.length" :data="log.files" :log>
+        文件：{{ log.files }}
+      </ViewerFiles>
+    </template>
+    <LogTags :log />
+    <LogBottom :log :show-username="!!type" />
 
-    <LogEdit v-if="isEdit" @success="isEdit = false" :log />
+    <LogEdit v-if="isEdit" :log @success="isEdit = false" />
 
     <ElButtonGroup v-if="type !== 'home' && type !== 'share'" class="buttons">
       <ElButton :icon="Share" />
@@ -69,6 +78,16 @@ const isEdit = ref(false)
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  .medias {
+    --block-height: 6rem;
+    --block-border-radius: 6px;
+    --block-gap: 2px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--block-gap);
+  }
 
   .LogEdit {
     margin-top: 4px;
