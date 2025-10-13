@@ -68,12 +68,12 @@ const onClick = (item: LogEditItem) => {
       :type="visible.videos ? 'primary' : undefined"
       @click="onClick('videos')"
     />
-    <ElButton
+    <!-- <ElButton
       link
       :icon="Microphone"
       :type="visible.audios ? 'primary' : undefined"
       @click="onClick('audios')"
-    />
+    /> -->
     <ElButton
       link
       :icon="FolderOpened"
@@ -92,12 +92,13 @@ const onClick = (item: LogEditItem) => {
       :type="visible.people ? 'primary' : undefined"
       @click="onClick('people')"
     />
-    <ElButton
+    <!-- todo -->
+    <!-- <ElButton
       link
       :icon="More"
       :type="visible.info ? 'primary' : undefined"
       @click="onClick('info')"
-    />
+    /> -->
   </div>
 </template>
 
