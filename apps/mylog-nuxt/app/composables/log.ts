@@ -4,7 +4,7 @@ import { AnyArray, Bucket, Region } from '@mylog-full/mix/constant'
 import type { ExifImgFile } from '@mylog-full/mix/img'
 
 /** 获取 Log 项的默认值 */
-export const getDefaultValue = (item: LogItem): any => {
+export const getDefaultValue = (item: LogEditItem): any => {
   switch (item) {
     case 'logtime':
       return new Date().toISOString()

@@ -41,7 +41,7 @@ const names = defineModel<string[]>({ required: true })
 const files = defineModel<LogImgFile[]>('files', { required: true })
 const emits = defineEmits<{
   /** 设置编辑项数据，用于 EXIF 补全 */
-  <T extends LogItem>(e: 'setItem', item: T, data: LogEdit[T]): void
+  <T extends LogEditItem>(e: 'setItem', item: T, data: LogEdit[T]): void
   /** 给其他文件列表添加文件，归档时用 */
   (e: 'addFile', item: LogFileItem, file: KeyFile): void
 }>()

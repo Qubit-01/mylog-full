@@ -108,7 +108,7 @@ export interface LogEditable extends LogEditWithFiles {
 }
 
 /** 用户可以编辑的项的 key，用于 LogRelease */
-export type LogItem = keyof LogEditable
+export type LogEditItem = keyof LogEditable
 
 /** 需要文件的项 */
 type LogEditWithFiles = {

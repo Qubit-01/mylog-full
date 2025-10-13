@@ -16,7 +16,7 @@ const { logs } = refsMylogStore()
 const { logEdit, logFile, uploadInfo, release } = useLogRelease()
 
 /** 编辑模块的可见性 */
-const visible = reactive<{ [key in LogItem]: boolean }>({
+const visible = reactive<{ [key in LogEditItem]: boolean }>({
   content: true, // 默认必须有输入框
   logtime: false,
   tags: false,
@@ -30,7 +30,7 @@ const visible = reactive<{ [key in LogItem]: boolean }>({
 })
 
 /** 设置编辑项数据，不传 data 用默认值 */
-const setItem = <T extends LogItem>(item: T, data?: LogEdit[T]) => {
+const setItem = <T extends LogEditItem>(item: T, data?: LogEdit[T]) => {
   logEdit[item] = data ?? getDefaultValue(item)
   visible[item] = true
 }
