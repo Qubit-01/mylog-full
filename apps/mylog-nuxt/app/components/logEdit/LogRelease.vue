@@ -17,6 +17,7 @@ const { logEdit, logFile, uploadInfo, release } = useLogRelease()
 
 /** 编辑模块的可见性 */
 const visible = reactive<{ [key in LogEditItem]: boolean }>({
+  type: true,
   content: true, // 默认必须有输入框
   logtime: false,
   tags: false,

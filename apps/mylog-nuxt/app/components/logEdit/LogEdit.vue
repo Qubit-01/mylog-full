@@ -31,6 +31,7 @@ const uploadInfo = reactive({
 
 /** 编辑模块的可见性 */
 const visible = reactive<{ [key in LogEditItem]: boolean }>({
+  type: false,
   content: false,
   logtime: false,
   tags: false,
