@@ -107,7 +107,7 @@ export const deleteLog = async (log: Log) => {
 }
 
 /** 编辑log，传入log和编辑的部分，返回新的log */
-export const editLog = async (log: Log, edit: Partial<LogEdit>) => {}
+export const editLog = async (log: Log, logEdit: Partial<LogEdit>) => {}
 
 /** LogRelease Hook */
 export const useLogRelease = () => {

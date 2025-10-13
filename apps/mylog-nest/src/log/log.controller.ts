@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { LogService } from './log.service';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { toWhere4LogFilter, Userid } from 'src/utils';
-import { Log, LogFilter } from '@mylog-full/mix/src';
+import { Log, LogEditable, LogFilter } from '@mylog-full/mix/src';
 import { decrypt, encrypt } from 'src/utils/crypto';
 
 @Controller('log')
@@ -12,12 +12,7 @@ export class LogController {
     private readonly prisma: PrismaClient,
   ) {}
 
-  /**
-   * 获取public列表， 按发送时间倒序
-   * @param userid 用户id
-   * @param skip 跳过多少条
-   * @param limit 取多少条
-   */
+  /** 获取public列表， 按发送时间倒序 */
   @Post('get_publics')
   async getPublics(
     @Body() body: { userid?: number; skip: number; limit: number },
@@ -34,12 +29,7 @@ export class LogController {
     return logs;
   }
 
-  /**
-   * 获取mylog列表， 按记录时间倒序
-   * @param userid 用户id
-   * @param skip 跳过多少条
-   * @param limit 取多少条
-   */
+  /** 获取mylog列表， 按记录时间倒序 */
   @Post('get_mylogs')
   async getMylogs(
     @Userid() userid: number,
@@ -85,18 +75,34 @@ export class LogController {
     });
   }
 
-  /** 发布log，用token的userid，成功则返回删除的log，失败返回null */
+  /** 删除log，用token的userid，成功则返回删除的log，失败返回null */
   @Post('delete_log')
   async deleteLog(@Userid() userid: number, @Body() body: { id: number }) {
     console.log('🐔 delete_log: ', userid, body);
     if (!userid) return;
-
     const { id } = body;
+
     try {
       return await this.prisma.log.delete({ where: { id, userid } });
     } catch (e) {
       return;
     }
+  }
+
+  /** 编辑log */
+  @Post('edit_log')
+  async editLog(
+    @Userid() userid: number,
+    @Body() body: { id: number; logEdit: Partial<LogEditable> },
+  ) {
+    console.log('🐔 edit_log: ', userid, body);
+    if (!userid) return;
+    const { id, logEdit } = body;
+
+    return await this.prisma.log.update({
+      where: { id, userid },
+      data: logEdit,
+    });
   }
 
   /** 分享加密 */

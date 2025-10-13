@@ -81,7 +81,9 @@ export interface Log extends LogEditable {
 }
 
 /** 可以被编辑的 Log 项 */
-interface LogEditable extends LogEditWithFiles {
+export interface LogEditable extends LogEditWithFiles {
+  /** Log类型 */
+  type: 'public' | 'log' | 'tag'
   /** 记录：时间 */
   logtime: string
   /** 记录：内容 */
