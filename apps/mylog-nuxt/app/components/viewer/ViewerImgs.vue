@@ -71,7 +71,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="viewer-imgs" ref="viewerDom" @click.stop>
+  <div class="ViewerImgs" ref="viewerDom" @click.stop>
     <img
       v-for="url in urls"
       :key="url"
@@ -83,7 +83,7 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.viewer-imgs {
+.ViewerImgs {
   white-space: nowrap;
   overflow-y: hidden;
   width: fit-content;

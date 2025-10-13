@@ -108,6 +108,7 @@ const onEditLog = async () => {
       v-if="visible.imgs && logEdit.imgs"
       v-model="logEdit.imgs"
       v-model:files="logFile.imgs"
+      :log
       @setItem="setItem"
       @addFile="addFile"
     />

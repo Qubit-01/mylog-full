@@ -39,14 +39,16 @@ import { l2v } from '~/composables/map'
 const names = defineModel<string[]>({ required: true })
 /** 外部文件列表 */
 const files = defineModel<LogImgFile[]>('files', { required: true })
+defineProps<{
+  /** 从父组件拿到log，主要是获取userId */
+  log?: Log
+}>()
 const emits = defineEmits<{
   /** 设置编辑项数据，用于 EXIF 补全 */
   <T extends LogEditItem>(e: 'setItem', item: T, data: LogEdit[T]): void
   /** 给其他文件列表添加文件，归档时用 */
   (e: 'addFile', item: LogFileItem, file: KeyFile): void
 }>()
-// 编辑态下，log 会有值
-const log = inject<Log | undefined>('log', undefined)
 /** 原有文件拷贝：组件内要用于删除 */
 const namesOld = ref(names.value)
 
@@ -171,7 +173,7 @@ const useExif = () => {
             :key="name"
             class="el-upload-list__item is-ready"
           >
-            <img :src="toFileUrl(name, 'compress-imgs/', log?.userid ?? 0)" />
+            <img :src="toFileUrl(name, 'compress-imgs/', log?.userid)" />
             <span class="el-upload-list__item-actions">
               <ElIcon size="20" color="#fff" @click="delOld(name)">
                 <Delete />

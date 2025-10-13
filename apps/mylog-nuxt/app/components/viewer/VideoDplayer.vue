@@ -31,7 +31,7 @@ onMounted(async () => {
     metadata:播放前不会下载视频资源，但是会获取资源的元数据；
     auto:根据实际情况动态决定
   -->
-  <div ref="videoDom" />
+  <div class="VideoDplayer" ref="videoDom" />
 </template>
 
 <style lang="scss" scoped></style>
