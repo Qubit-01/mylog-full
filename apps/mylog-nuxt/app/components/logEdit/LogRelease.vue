@@ -43,7 +43,9 @@ const addFile = (item: LogFileItem, file: KeyFile) => {
 }
 
 const onReleaseLog = async () => {
+  const wakeLock = await navigator.wakeLock.request('screen')
   const logNew = await release()
+  wakeLock.release()
   if (logNew?.id) {
     ElMessage({ message: '发布成功：' + logNew?.id, type: 'success' })
     logs.value.unshift(logNew) // 直接加到最前面
