@@ -2,22 +2,22 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div class="top-log _m">
-    <el-carousel height="270px" class="carousel">
-      <el-carousel-item>
+  <div class="TopLog _m">
+    <ElCarousel height="250px" class="carousel">
+      <ElCarouselItem>
         <img :src="BucketCDN + 'web-files/img/carousel-0.jpg'" />
-      </el-carousel-item>
-      <el-carousel-item>
+      </ElCarouselItem>
+      <ElCarouselItem>
         <img :src="BucketCDN + 'web-files/img/carousel-1.jpg'" />
-      </el-carousel-item>
-      <el-carousel-item>
+      </ElCarouselItem>
+      <ElCarouselItem>
         <img :src="BucketCDN + 'web-files/img/carousel-2.jpg'" />
-      </el-carousel-item>
-      <el-carousel-item>
+      </ElCarouselItem>
+      <ElCarouselItem>
         <img :src="BucketCDN + 'web-files/img/bg-light.jpg'" />
-      </el-carousel-item>
+      </ElCarouselItem>
       <div class="title">✨宇宙很大，生活更大</div>
-    </el-carousel>
+    </ElCarousel>
     <div class="text">
       <div>
         2021年只有两种人在写博客：一种是试图建立受众并从中获利的人，另一种是只想写出想法而没有任何目的的人。
@@ -42,7 +42,7 @@
 </template>
 
 <style lang="scss" scoped>
-.top-log {
+.TopLog {
   overflow: hidden;
   border-radius: var(--border-radius);
 
