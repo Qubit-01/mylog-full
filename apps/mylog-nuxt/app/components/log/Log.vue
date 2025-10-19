@@ -8,7 +8,7 @@
       现在采用更多来下拉展示
  -->
 <script lang="ts" setup>
-import { Share, Delete, Edit } from '@element-plus/icons-vue'
+import { Share, Lock, Unlock, Delete, Edit } from '@element-plus/icons-vue'
 import LogContent from './comp/LogContent.vue'
 import LogTags from './comp/LogTags.vue'
 import LogBottom from './comp/LogBottom.vue'
@@ -37,6 +37,17 @@ const onDeleteLog = async () => {
 }
 // 点击编辑按钮
 const isEdit = ref(false)
+
+// 公开log
+const onTogglePublic = async () => {
+  const logNew = await editLog(log, {
+    type: log.type === 'public' ? 'log' : 'public',
+  })
+  if (logNew?.id) {
+    ElMessage({ message: '修改成功：' + logNew?.id, type: 'success' })
+    logsMap.value[logNew.id] = logNew
+  }
+}
 </script>
 
 <template>
@@ -55,13 +66,21 @@ const isEdit = ref(false)
         文件：{{ log.files }}
       </ViewerFiles>
     </template>
-    <LogTags :log />
+    <LogTags :log :hide-public="type !== undefined" />
     <LogBottom :log :show-username="!!type" />
 
     <LogEdit v-if="isEdit" :log @success="isEdit = false" />
 
-    <ElButtonGroup v-if="type !== 'home' && type !== 'share'" class="buttons">
+    <ElButtonGroup
+      v-if="type !== 'home' && type !== 'share'"
+      v-show="isExpand"
+      class="buttons"
+    >
       <ElButton :icon="Share" />
+      <ElButton
+        :icon="log.type === 'public' ? Unlock : Lock"
+        @click="onTogglePublic"
+      />
       <ElButton :icon="Edit" @click="isEdit = !isEdit" />
       <ElButton :icon="Delete" @click="onDeleteLog" />
     </ElButtonGroup>
@@ -99,14 +118,14 @@ const isEdit = ref(false)
   }
 
   .buttons {
-    display: none;
+    // display: none;
     position: absolute;
     top: -26px;
     right: var(--padding);
   }
 
   &:hover .buttons {
-    display: block;
+    // display: block;
   }
 }
 </style>

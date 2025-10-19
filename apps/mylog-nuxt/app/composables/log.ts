@@ -110,7 +110,7 @@ export const deleteLog = async (log: Log) => {
 export const editLog = async (
   log: Log,
   logEdit: Partial<LogEdit>,
-  uploadFilesParams: COS.UploadFilesParams,
+  uploadFilesParams: COS.UploadFilesParams = { files: [] },
 ) => {
   // 1. 上传文件，文件能传好，大概率后续删除和编辑
   await myUploadFiles(uploadFilesParams)
