@@ -3,7 +3,7 @@ useHead({ title: '分享' })
 const { query } = useRoute()
 
 const logs = useState<Log[]>(() => [])
-const params = reactive({ skip: 0, limit: 10, share: query.share })
+const params = reactive({ skip: 0, limit: 20, share: query.share })
 const noMore = ref(false)
 
 const { refresh, status } = useFetch<Log[]>('/log/get_share', {

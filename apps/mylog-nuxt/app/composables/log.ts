@@ -182,6 +182,18 @@ export const useLogRelease = () => {
   }
 }
 
+/** 返回完整的过滤器 */
+export const initFilter = (filter?: Partial<LogFilter>): LogFilter => ({
+  type: '',
+  logtime: { gte: undefined, lte: undefined },
+  isOrAll: true,
+  content: { contains: [], isOr: false },
+  people: { contains: [], isOr: false },
+  tags: { contains: [], isOr: false },
+  exclude: [],
+  ...filter,
+})
+
 /** 传入一个log，返回布尔值，为真就是满足，false就是不满足 */
 export const matchesLogFilter = (log: Log, filter?: LogFilter): boolean => {
   if (!filter) return true // 参二缺省，直接返回true

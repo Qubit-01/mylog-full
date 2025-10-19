@@ -6,13 +6,11 @@ import { Location, Male, Female } from '@element-plus/icons-vue'
 definePageMeta({ middleware: 'auth' })
 useHead({ title: '用户' })
 const { user } = refsGlobalStore()
+const Logger = useLoggerStore()
+const { logs } = refsLoggerStore()
 
 const imgFallback =
   'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
-
-// watchEffect(() => {
-//   console.log('LSQ> user', user.value)
-// })
 
 const location = ref<string>('')
 onMounted(() => {
@@ -56,30 +54,44 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="detail">
-          <div>{{ user.info.text }}</div>
+        <div class="info-2">
+          <div class="detail">
+            <div>{{ user.info.text }}</div>
 
-          <!-- <div>info: {{ user.info }}</div>
-          <div>setting.mylog: {{ user.setting.mylog }}</div>
-          <div>setting.page: {{ user.setting.page }}</div>
-          <div>setting: {{ Object.keys(user.setting) }}</div> -->
+            <!-- <div>info: {{ user.info }}</div>
+            <div>setting.mylog: {{ user.setting.mylog }}</div>
+            <div>setting.page: {{ user.setting.page }}</div>
+            <div>setting: {{ Object.keys(user.setting) }}</div> -->
+          </div>
+          <ElButton @click="signout()">退出登录</ElButton>
         </div>
-        <!--
-        <div class="location" v-if="user?.location">{{ user?.location }}</div>
-        -->
       </div>
     </div>
-    <div>
-      <ElButton @click="signout()">退出登录</ElButton>
-    </div>
-    <div class="_m">
-      {{ user }}
+
+    <!-- <ElRadioGroup v-if="!id" v-model="tab" size="large">
+      size="large"
+      <ElRadioButton label="多元记" value="logger" />
+      <ElRadioButton label="设置" value="setting" />
+    </ElRadioGroup> -->
+
+    <div
+      class="logs"
+      v-infinite-scroll="Logger.fetchLogs"
+      :infinite-scroll-disabled="Logger.status !== 'success'"
+    >
+      <Log type="home" v-for="log in logs" :key="log.id" :log />
+
+      <LogLoading :status="Logger.status" @retry="Logger.refresh" />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .LoggerPage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+
   .top {
     border-radius: var(--border-radius);
 
@@ -102,7 +114,7 @@ onMounted(() => {
       flex-direction: column;
       gap: 8px;
 
-      height: 200px;
+      // height: 200px;
 
       .avatar {
         position: absolute;
@@ -146,19 +158,31 @@ onMounted(() => {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            height: 24px;
+            height: 22px;
             border-radius: 99px;
-            padding: 0 6px;
+            padding: 0 5px;
             background-color: #9999;
           }
         }
       }
 
-      .detail {
+      .info-2 {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
         padding: var(--padding);
-        // border: 2px solid red;
+
+        .detail {
+          // border: 2px solid red;
+        }
       }
     }
+  }
+
+  .logs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
   }
 }
 </style>

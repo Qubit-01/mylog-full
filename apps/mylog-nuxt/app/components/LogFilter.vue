@@ -9,16 +9,7 @@ const { params, logs } = refsMylogStore()
 /** 筛选器：-1是全部，-2是自定义筛选 */
 const curFilter = ref(-1)
 
-const diyFilter = reactive<LogFilter>({
-  name: '',
-  type: '',
-  logtime: { gte: undefined, lte: undefined },
-  isOrAll: true,
-  content: { contains: [], isOr: false },
-  people: { contains: [], isOr: false },
-  tags: { contains: [], isOr: false },
-  exclude: [], // 不包括，填入noteId
-})
+const diyFilter = reactive<LogFilter>(initFilter())
 
 // 选择筛选器
 watch(curFilter, (cf) => {
@@ -37,6 +28,11 @@ watch(diyFilter.logtime, (lt) => {
 const clickShare = () => {
   shareLogs(logs.value.map((l) => l.id))
 }
+
+// 重置筛选条件
+onBeforeUnmount(() => {
+  params.value.filter = undefined
+})
 </script>
 
 <template>

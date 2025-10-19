@@ -1,10 +1,12 @@
-export const useHomeStore = defineStore('home', () => {
+export const useLoggerStore = defineStore('logger', () => {
+  const { user } = refsGlobalStore()
   const logs = ref<Log[]>([])
-  const params = reactive({ skip: 0, limit: 20 })
+  const params = reactive({ skip: 0, limit: 20, userid: user.value.id })
   const noMore = ref(false)
 
   // 每次触发请求，都会自动 push 在 logs 最后
   const { status, refresh } = useFetch<Log[]>('/log/get_publics', {
+    key: 'logger',
     ...FetchOptsDefault,
     headers: { Cookie: `token=${useCookie('token').value}` },
     body: params,
@@ -23,7 +25,6 @@ export const useHomeStore = defineStore('home', () => {
   }
 
   return {
-    /** 主页所有的log */
     logs,
     /** 请求参数 */
     params,
@@ -36,4 +37,4 @@ export const useHomeStore = defineStore('home', () => {
   }
 })
 
-export const refsHomeStore = () => storeToRefs(useHomeStore())
+export const refsLoggerStore = () => storeToRefs(useLoggerStore())
