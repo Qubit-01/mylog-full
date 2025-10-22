@@ -14,7 +14,7 @@ const emits = defineEmits<{
 }>()
 
 const { logsMap } = refsMylogStore()
-const logEdit = reactive<LogEdit>({ type: 'log' })
+const logEdit = reactive<LogEdit>({})
 const logFile = reactive<LogFileTypes>({
   imgs: [],
   videos: [],
