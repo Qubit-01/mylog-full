@@ -68,7 +68,7 @@ const bd = async () => {
     element-loading-background="transparent"
   >
     <div class="title">
-      <el-button
+      <ElButton
         v-show="state > 1"
         text
         circle
@@ -86,8 +86,8 @@ const bd = async () => {
     <form v-if="state === 1">
       <div class="title2">没有找到对应的用户</div>
       <div>以前注册过本网站吗？</div>
-      <el-button @click="state = 2" size="large">绑定已有账号</el-button>
-      <!-- <el-button @click="handleNew" size="large">注册新用户</el-button> -->
+      <ElButton @click="state = 2" size="large">绑定已有账号</ElButton>
+      <!-- <ElButton @click="handleNew" size="large">注册新用户</ElButton> -->
     </form>
 
     <!-- 绑定已有 -->
@@ -105,14 +105,14 @@ const bd = async () => {
         v-model="input.pswd"
         placeholder="密码"
       />
-      <div><el-switch v-model="qqImg" />&nbsp;&nbsp;使用QQ头像</div>
-      <el-button
+      <div><ElSwitch v-model="qqImg" />&nbsp;&nbsp;使用QQ头像</div>
+      <ElButton
         @click="bd"
         size="large"
         :disabled="!input.name.trim() || !input.pswd.trim()"
       >
         绑定并登录
-      </el-button>
+      </ElButton>
     </form>
 
     <!-- 注册新用户 -->
@@ -145,7 +145,7 @@ const bd = async () => {
           />
           <img ref="captchaDom" alt="验证码看不清，换一张" @click="changeImg" />
         </div>
-        <el-button
+        <ElButton
           class="btn"
           @click="zc"
           size="large"
@@ -154,7 +154,7 @@ const bd = async () => {
           "
         >
           注册并登录
-        </el-button>
+        </ElButton>
       </form> -->
   </div>
 </template>

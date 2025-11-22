@@ -57,24 +57,19 @@ onMounted(() => {
           </div>
         </div>
         <nav>
-          <el-button text @click="replace('/mylog')">记录</el-button>
-          <el-button text @click="replace('/album')">相册</el-button>
-          <el-button text @click="replace('/map')">地图</el-button>
-          <el-button text @click="replace('/relation')">人脉</el-button>
+          <ElButton text @click="replace('/mylog')">记录</ElButton>
+          <ElButton text @click="replace('/album')">相册</ElButton>
+          <ElButton text @click="replace('/map')">地图</ElButton>
+          <ElButton text @click="replace('/relation')">人脉</ElButton>
         </nav>
         <div class="right">
           <div class="mix">
-            <el-button v-if="isLogined" text @click="navigateTo('/logger')">
+            <ElButton v-if="isLogined" text @click="navigateTo('/logger')">
               {{ user.name }}
-            </el-button>
-            <el-button
-              v-else
-              text
-              type="primary"
-              @click="navigateTo('/signin')"
-            >
+            </ElButton>
+            <ElButton v-else text type="primary" @click="navigateTo('/signin')">
               去登录
-            </el-button>
+            </ElButton>
             <ThemeSwitch />
           </div>
         </div>
@@ -107,13 +102,13 @@ onMounted(() => {
             </div>
           </div>
           <div>
-            <el-tooltip
+            <ElTooltip
               content="从您注册时间到现在"
               effect="light"
               placement="top"
             >
               <div class="title">已为你服务</div>
-            </el-tooltip>
+            </ElTooltip>
             <div class="time">
               {{ serverTime[0] }}<i>天</i> {{ serverTime[1] }}<i>时</i>
               {{ serverTime[2] }}<i>分</i> {{ serverTime[3] }}<i>秒</i>
@@ -133,14 +128,14 @@ onMounted(() => {
             喜欢本站的话，不妨分享给你身边的同学们，万分感谢！
           </div>
           <div class="item">
-            <el-link
+            <ElLink
               type="primary"
               href="https://beian.miit.gov.cn/"
               target="_black"
             >
               蜀ICP备2020030786号
-            </el-link>
-            <el-link
+            </ElLink>
+            <ElLink
               type="primary"
               href="https://beian.mps.gov.cn/#/query/webSearch?code=51018102000743"
               target="_black"
@@ -148,7 +143,7 @@ onMounted(() => {
             >
               <img src="~/assets/img/备案图标.png" alt="备案图标" />
               川公网安备51018102000743
-            </el-link>
+            </ElLink>
           </div>
         </div>
       </div>

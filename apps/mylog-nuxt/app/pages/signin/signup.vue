@@ -73,13 +73,13 @@ const doSignin = async () => {
         <img ref="captchaDom" alt="验证码看不清，换一张" @click="changeImg" />
       </div>
 
-      <el-button @click="doSignin" size="large">注册</el-button>
+      <ElButton @click="doSignin" size="large">注册</ElButton>
     </form>
     <div class="text-link">
       有账号？
-      <el-button link type="primary" @click="replace('/signin')">
+      <ElButton link type="primary" @click="replace('/signin')">
         去登录
-      </el-button>
+      </ElButton>
     </div>
   </div>
 </template>

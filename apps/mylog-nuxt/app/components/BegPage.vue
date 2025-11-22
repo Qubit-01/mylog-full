@@ -9,7 +9,7 @@
             src="https://cos.mylog.ink/web-files/contact&pay/pay-wechat.png"
           />
 
-          <el-tooltip>
+          <ElTooltip>
             <template #content>
               <img
                 style="height: 150px"
@@ -17,7 +17,7 @@
               />
             </template>
             <span>微信号：QQ_0xAE8A9951</span>
-          </el-tooltip>
+          </ElTooltip>
 
           <h2>微信</h2>
         </div>
@@ -27,7 +27,7 @@
       <div>
         <div class="box box3">
           <img src="https://cos.mylog.ink/web-files/contact&pay/pay-qq.png" />
-          <el-tooltip>
+          <ElTooltip>
             <template #content>
               <img
                 style="height: 150px"
@@ -35,7 +35,7 @@
               />
             </template>
             <span>QQ号：2928318801</span>
-          </el-tooltip>
+          </ElTooltip>
 
           <h2>QQ钱包</h2>
         </div>

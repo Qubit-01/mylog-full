@@ -31,10 +31,8 @@ const { isLogined } = refsGlobalStore()
         <div class="main">
           <div v-if="isLogined" class="loged">
             <div>检测到您已经登录了，是否要</div>
-            <el-button @click="replace('/')" type="primary">
-              进入首页
-            </el-button>
-            <el-button @click="signout()">退出登录</el-button>
+            <ElButton @click="replace('/')" type="primary">进入首页</ElButton>
+            <ElButton @click="signout()">退出登录</ElButton>
           </div>
           <NuxtPage v-else />
         </div>

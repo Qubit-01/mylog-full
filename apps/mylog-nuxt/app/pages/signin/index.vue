@@ -34,19 +34,19 @@ const qqLogin = () => {
         type="password"
         autocomplete="on"
       />
-      <el-button size="large" @click="doLogin">登录</el-button>
+      <ElButton size="large" @click="doLogin">登录</ElButton>
     </form>
 
     <div class="text-link">
       <span>
         没有账号？
-        <el-button link type="primary" @click="replace('/signin/signup')">
+        <ElButton link type="primary" @click="replace('/signin/signup')">
           去注册
-        </el-button>
+        </ElButton>
         或
-        <el-button link type="primary" @click="loginTest">
+        <ElButton link type="primary" @click="loginTest">
           登录测试账号
-        </el-button>
+        </ElButton>
       </span>
     </div>
 

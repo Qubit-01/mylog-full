@@ -8,9 +8,9 @@ const showBeg = ref(false)
   <div class="note-lan _m">
     <div class="title">公告</div>
     <div class="items">
-      <el-button text @click="showBeg = true">联系&资助</el-button>
-      <el-button text @click="$router.push('/about')">关于本站</el-button>
-      <el-button text @click="$router.push('/user?name=Sybit')">更新公告</el-button>
+      <ElButton text @click="showBeg = true">联系&资助</ElButton>
+      <ElButton text @click="$router.push('/about')">关于本站</ElButton>
+      <ElButton text @click="$router.push('/user?name=Sybit')">更新公告</ElButton>
       <a href="https://gitee.com/bit-01/mylog-full" target="_black">
         <img
           :src="`https://gitee.com/bit-01/mylog-full/badge/star.svg?theme=${

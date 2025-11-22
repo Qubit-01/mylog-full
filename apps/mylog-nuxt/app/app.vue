@@ -26,7 +26,7 @@ onMounted(() => {
       <NuxtPage />
       <!-- <NuxtWelcome /> -->
     </NuxtLayout>
-    <el-backtop :right="20" :bottom="20" />
+    <ElBacktop :right="20" :bottom="20" />
     <DevOnly>
       <div class="env">DEV</div>
     </DevOnly>

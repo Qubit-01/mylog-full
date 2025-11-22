@@ -10,10 +10,10 @@ const tab = ref('mylog')
 
 <template>
   <div class="MylogPage">
-    <!-- <el-radio-group v-model="tab">
-      <el-radio-button label="时间线" value="mylog" />
-      <el-radio-button label="日历" value="calendar" />
-    </el-radio-group> -->
+    <!-- <ElRadioGroup v-model="tab">
+      <ElRadioButton label="时间线" value="mylog" />
+      <ElRadioButton label="日历" value="calendar" />
+    </ElRadioGroup> -->
 
     <NuxtPage />
   </div>
