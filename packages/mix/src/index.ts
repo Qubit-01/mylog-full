@@ -40,8 +40,8 @@ export type User = {
   setting: {
     /** 页面设置 */
     page: {
-      /** 主题 light | dark */
-      theme: 'light' | 'dark'
+      /** 主题 */
+      theme: Theme
       /** 选中的背景图片 */
       backgroundImage?: string
       /** 自己添加的背景图片 */
@@ -166,3 +166,6 @@ export type LogFilter = {
 
 /** 编辑中的log类型，只能填入log属性 */
 export type LogEdit = Partial<Log>
+
+/** 主题类型 light | dark | default系统默认 */
+export type Theme = 'light' | 'dark' | 'default'

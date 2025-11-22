@@ -2,6 +2,6 @@
 
 一个帮助你记录、管理所有媒体资源的应用。
 
-## Syntax Highlighting
+## 主题相关
 
-VitePress provides Syntax Highlighting powered by [Shiki](https://github.com/shikijs/shiki), with additional features like line-highlighting:
+用户设置为 'defaut' 时，则跟随系统

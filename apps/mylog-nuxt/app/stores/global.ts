@@ -1,3 +1,6 @@
+import type { Theme } from '@mylog-full/mix'
+import { useDark } from '@vueuse/core'
+
 const userInit: User = {
   id: 0,
   name: '',
@@ -5,7 +8,7 @@ const userInit: User = {
   info: {},
   setting: {
     page: {
-      theme: 'light',
+      theme: 'default',
     },
     mylog: {
       tags: [],
@@ -39,11 +42,26 @@ export const useGlobalStore = defineStore('global', () => {
 
   const isLogined = computed(() => user.value.id !== 0)
 
+  /** 主题：仅设置中能改持久化主题配置，其他地方只能临时切换 */
+
+  /** 当前系统主题 */
+  const isDark = useDark()
+
+  /** 实际主题 */
+  const theme = ref<Exclude<Theme, 'default'>>(
+    user.value.setting.page.theme === 'default'
+      ? isDark.value
+        ? 'dark'
+        : 'light'
+      : user.value.setting.page.theme,
+  )
+  watch([() => user.value.setting.page.theme, isDark], ([t, d]) => {
+    theme.value = t === 'default' ? (d ? 'dark' : 'light') : t
+  })
   // 主题切换
   const link = computed(() => {
-    const theme = user.value.setting.page.theme
-    if (import.meta.client) document.documentElement.className = theme
-    return [{ rel: 'stylesheet', href: `/theme/${theme}.css` }]
+    if (import.meta.client) document.documentElement.className = theme.value
+    return [{ rel: 'stylesheet', href: `/theme/${theme.value}.css` }]
   })
   useHead({ link })
 
@@ -52,6 +70,8 @@ export const useGlobalStore = defineStore('global', () => {
     user,
     /** 是否登录 */
     isLogined,
+    /** 主题 */
+    theme,
   }
 })
 

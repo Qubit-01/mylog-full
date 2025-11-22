@@ -3,12 +3,12 @@
  -->
 <script lang="ts" setup>
 import { Sunny, Moon } from '@element-plus/icons-vue'
-const { user } = refsGlobalStore()
+const { theme } = refsGlobalStore()
 </script>
 
 <template>
   <ElSwitch
-    v-model="user.setting.page.theme"
+    v-model="theme"
     class="theme-switch"
     :active-action-icon="Moon"
     :inactive-action-icon="Sunny"
