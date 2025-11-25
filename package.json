@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pull": "git pull && pnpm i",
-    "restart": "pnpm run pull && pnpm -F mylog-nest build && pnpm -F mylog-nuxt build && pm2 restart all",
-    "start": "pnpm run pull && pnpm -F mylog-nest start:pm2 && pnpm -F mylog-nuxt start:pm2"
+    "restart": "pnpm run pull && pnpm -F mylog-be build && pnpm -F mylog-nuxt build && pm2 restart all",
+    "start": "pnpm run pull && pnpm -F mylog-be start:pm2 && pnpm -F mylog-nuxt start:pm2"
   },
   "keywords": [],
   "author": "",
