@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Res } from '@nestjs/common';
 import { UserService } from './user.service';
-import { getUseridByPswd } from '@prisma/client/sql';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../lib/prisma'
+import { getUseridByPswd } from 'generated/prisma/sql';
 import { sign } from 'src/utils/jwt';
 import { Userid } from 'src/utils';
 import { type User } from '@mylog-full/mix/src';
@@ -12,8 +12,7 @@ import { Response } from 'express';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly prisma: PrismaClient,
-  ) {}
+  ) { }
 
   /**
    * 获取token。用于登录，getUser不行，目前token只包含id信息
@@ -66,11 +65,11 @@ export class UserController {
 
     let user;
     if ('id' in body)
-      user = await this.prisma.user.findUnique({ where: { userid: body.id } });
+      user = await prisma.user.findUnique({ where: { userid: body.id } });
     else if ('name' in body)
-      user = await this.prisma.user.findUnique({ where: { name: body.name } });
+      user = await prisma.user.findUnique({ where: { name: body.name } });
     else if (userid)
-      user = await this.prisma.user.findUnique({ where: { userid } });
+      user = await prisma.user.findUnique({ where: { userid } });
 
     if (!user) return;
 
@@ -113,7 +112,7 @@ export class UserController {
   ) {
     console.log('🐔 set_user: ', userid, body);
     if (!userid) return;
-    await this.prisma.user.update({
+    await prisma.user.update({
       where: { userid },
       data: body,
     });
@@ -133,7 +132,7 @@ export class UserController {
   ) {
     console.log('🐔 set_userlogin: ', userid, body);
     if (!userid) return;
-    await this.prisma.userlogin.update({
+    await prisma.userlogin.update({
       where: { id: userid },
       data: {
         unionid_qq: body.unionidQq,
@@ -150,7 +149,7 @@ export class UserController {
    */
   async getUseridByPswd(name: string, pswd: string) {
     const user = (
-      await this.prisma.$queryRawTyped(getUseridByPswd(name, pswd))
+      await prisma.$queryRawTyped(getUseridByPswd(name, pswd))
     )[0];
     return user ? Number(user.id) : undefined;
   }
@@ -162,7 +161,7 @@ export class UserController {
    */
   async getUseridByUnionidQq(unionidQq: string) {
     return (
-      await this.prisma.userlogin.findUnique({
+      await prisma.userlogin.findUnique({
         select: { id: true },
         where: { unionid_qq: unionidQq },
       })

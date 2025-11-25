@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { LogService } from './log.service';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { prisma } from '../../lib/prisma'
 import { toWhere4LogFilter, Userid } from 'src/utils';
 import { Log, LogEditable, LogFilter } from '@mylog-full/mix/src';
 import { decrypt, encrypt } from 'src/utils/crypto';
@@ -9,7 +9,6 @@ import { decrypt, encrypt } from 'src/utils/crypto';
 export class LogController {
   constructor(
     private readonly logService: LogService,
-    private readonly prisma: PrismaClient,
   ) {}
 
   /** 获取public列表， 按发送时间倒序 */
@@ -19,9 +18,9 @@ export class LogController {
   ) {
     console.log('🐔 get_publics: ', body);
 
-    const logs = await this.prisma.log.findMany({
+    const logs = await prisma.log.findMany({
       where: { userid: body.userid, type: 'public' },
-      include: { user: { select: { name: true } } },
+      include: { userlogin: { select: { name: true } } },
       skip: body.skip,
       take: body.limit ?? 10,
       orderBy: { sendtime: 'desc' },
@@ -41,7 +40,7 @@ export class LogController {
     const whereFilter = toWhere4LogFilter(body.filter);
     console.log('LSQ> whereFilter: ', JSON.stringify(whereFilter));
 
-    return await this.prisma.log.findMany({
+    return await prisma.log.findMany({
       where: { userid, ...whereFilter },
       skip: body.skip,
       take: body.limit ?? 10,
@@ -56,7 +55,7 @@ export class LogController {
     if (!userid) return;
 
     const { log } = body;
-    return await this.prisma.log.create({
+    return await prisma.log.create({
       data: {
         userid: log.userid ?? userid,
         type: log.type ?? 'log',
@@ -83,7 +82,7 @@ export class LogController {
     const { id } = body;
 
     try {
-      return await this.prisma.log.delete({ where: { id, userid } });
+      return await prisma.log.delete({ where: { id, userid } });
     } catch (e) {
       return;
     }
@@ -99,7 +98,7 @@ export class LogController {
     if (!userid) return;
     const { id, logEdit } = body;
 
-    return await this.prisma.log.update({
+    return await prisma.log.update({
       where: { id, userid },
       data: logEdit,
     });
@@ -115,7 +114,7 @@ export class LogController {
     if (!userid) return;
 
     const idsReal = (
-      await this.prisma.log.findMany({
+      await prisma.log.findMany({
         select: { id: true },
         where: { userid, id: { in: body.ids } },
       })
@@ -133,9 +132,9 @@ export class LogController {
     const ids = await decrypt<number[]>(body.share);
 
     console.log('LSQ> ', ids);
-    return await this.prisma.log.findMany({
+    return await prisma.log.findMany({
       where: { id: { in: ids } },
-      include: { user: { select: { name: true } } },
+      include: { userlogin: { select: { name: true } } },
       skip: body.skip,
       take: body.limit ?? 10,
       orderBy: { logtime: 'desc' },

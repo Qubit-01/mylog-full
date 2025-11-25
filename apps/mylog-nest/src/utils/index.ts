@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import type { log as LogPO, Prisma } from '@prisma/client';
-import { Log, LogFilter } from '@mylog-full/mix/src';
+import { Prisma } from 'generated/prisma/client';
+import { LogFilter } from '@mylog-full/mix/src';
 import { verify } from './jwt';
 
 /**
@@ -10,24 +10,24 @@ import { verify } from './jwt';
  *   - Date 转 ISO字符串
  *   - 类型断言
  */
-export const toLog4PO = (log: LogPO): Log => {
-  const aLog: Log = {
-    ...log,
-    userid: log.userid,
-    type: log.type as Log['type'],
-    logtime: log.logtime.toISOString(),
-    sendtime: log.sendtime.toISOString(),
-    tags: log.tags as Log['tags'],
-    imgs: log.imgs as Log['imgs'],
-    videos: log.videos as Log['videos'],
-    audios: log.audios as Log['audios'],
-    files: log.files as Log['files'],
-    location: log.location as Log['location'],
-    people: log.people as Log['people'],
-    info: log.info as Log['info'],
-  };
-  return aLog;
-};
+// export const toLog4PO = (log: LogPO): Log => {
+//   const aLog: Log = {
+//     ...log,
+//     userid: log.userid,
+//     type: log.type as Log['type'],
+//     logtime: log.logtime.toISOString(),
+//     sendtime: log.sendtime.toISOString(),
+//     tags: log.tags as Log['tags'],
+//     imgs: log.imgs as Log['imgs'],
+//     videos: log.videos as Log['videos'],
+//     audios: log.audios as Log['audios'],
+//     files: log.files as Log['files'],
+//     location: log.location as Log['location'],
+//     people: log.people as Log['people'],
+//     info: log.info as Log['info'],
+//   };
+//   return aLog;
+// };
 
 /**
  * 注解: 获取请求的cookie的装饰器
