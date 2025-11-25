@@ -1,0 +1,143 @@
+import { Body, Controller, Post } from '@nestjs/common';
+import { LogService } from './log.service';
+import { prisma } from '../../lib/prisma'
+import { toWhere4LogFilter, Userid } from 'src/utils';
+import { Log, LogEditable, LogFilter } from '@mylog-full/mix';
+import { decrypt, encrypt } from 'src/utils/crypto';
+
+@Controller('log')
+export class LogController {
+  constructor(
+    private readonly logService: LogService,
+  ) {}
+
+  /** 获取public列表， 按发送时间倒序 */
+  @Post('get_publics')
+  async getPublics(
+    @Body() body: { userid?: number; skip: number; limit: number },
+  ) {
+    console.log('🐔 get_publics: ', body);
+
+    const logs = await prisma.log.findMany({
+      where: { userid: body.userid, type: 'public' },
+      include: { userlogin: { select: { name: true } } },
+      skip: body.skip,
+      take: body.limit ?? 10,
+      orderBy: { sendtime: 'desc' },
+    });
+    return logs;
+  }
+
+  /** 获取mylog列表， 按记录时间倒序 */
+  @Post('get_mylogs')
+  async getMylogs(
+    @Userid() userid: number,
+    @Body() body: { skip: number; limit: number; filter?: LogFilter },
+  ) {
+    console.log('🐔 get_mylogs: ', userid, JSON.stringify(body));
+    if (!userid) return;
+
+    const whereFilter = toWhere4LogFilter(body.filter);
+    console.log('LSQ> whereFilter: ', JSON.stringify(whereFilter));
+
+    return await prisma.log.findMany({
+      where: { userid, ...whereFilter },
+      skip: body.skip,
+      take: body.limit ?? 10,
+      orderBy: { logtime: 'desc' },
+    });
+  }
+
+  /** 发布log，用token的userid */
+  @Post('release_log')
+  async releaseLog(@Userid() userid: number, @Body() body: { log: Log }) {
+    console.log('🐔 release_log: ', userid, body);
+    if (!userid) return;
+
+    const { log } = body;
+    return await prisma.log.create({
+      data: {
+        userid: log.userid ?? userid,
+        type: log.type ?? 'log',
+        content: log.content ?? '',
+        tags: log.tags ?? [],
+        imgs: log.imgs ?? [],
+        videos: log.videos ?? [],
+        audios: log.audios ?? [],
+        files: log.files ?? [],
+        location: log.location ?? [],
+        people: log.people ?? [],
+        info: log.info ?? {},
+        sendtime: new Date(),
+        logtime: new Date(log.logtime ?? Date.now()),
+      },
+    });
+  }
+
+  /** 删除log，用token的userid，成功则返回删除的log，失败返回null */
+  @Post('delete_log')
+  async deleteLog(@Userid() userid: number, @Body() body: { id: number }) {
+    console.log('🐔 delete_log: ', userid, body);
+    if (!userid) return;
+    const { id } = body;
+
+    try {
+      return await prisma.log.delete({ where: { id, userid } });
+    } catch (e) {
+      return;
+    }
+  }
+
+  /** 编辑log */
+  @Post('edit_log')
+  async editLog(
+    @Userid() userid: number,
+    @Body() body: { id: number; logEdit: Partial<LogEditable> },
+  ) {
+    console.log('🐔 edit_log: ', userid, body);
+    if (!userid) return;
+    const { id, logEdit } = body;
+
+    return await prisma.log.update({
+      where: { id, userid },
+      data: logEdit,
+    });
+  }
+
+  /** 分享加密 */
+  @Post('encrypt_share')
+  async encryptShare(
+    @Userid() userid: number,
+    @Body() body: { ids: number[] },
+  ) {
+    console.log('🐔 encrypt_share: ', userid, body);
+    if (!userid) return;
+
+    const idsReal = (
+      await prisma.log.findMany({
+        select: { id: true },
+        where: { userid, id: { in: body.ids } },
+      })
+    ).map((log) => log.id);
+    // console.log('LSQ< ', await decrypt(en));
+
+    return await encrypt(idsReal);
+  }
+
+  /** 解密分享加密字符串，然后返回logs */
+  @Post('get_share')
+  async getShare(@Body() body: { skip: number; limit: number; share: string }) {
+    console.log('🐔 get_share: ', body);
+
+    const ids = await decrypt<number[]>(body.share);
+
+    console.log('LSQ> ', ids);
+    return await prisma.log.findMany({
+      where: { id: { in: ids } },
+      include: { userlogin: { select: { name: true } } },
+      skip: body.skip,
+      take: body.limit ?? 10,
+      orderBy: { logtime: 'desc' },
+    });
+  }
+}
