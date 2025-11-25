@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
+  // ssr: false,
   app: {
     head: {
       // title: '多元记', // 兜底的标题，可以不设置，在 app.vue 里面处理
