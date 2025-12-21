@@ -19,14 +19,14 @@
     "@element-plus/nuxt": "1.1.4",
     "@mylog-full/mix": "workspace:^",
     "@pinia/nuxt": "0.11.3",
-    "@vueuse/core": "^14.0.0",
-    "@vueuse/nuxt": "14.0.0",
+    "@vueuse/core": "^14.1.0",
+    "@vueuse/nuxt": "14.1.0",
     "cos-js-sdk-v5": "^1.10.1",
     "dayjs": "^1.11.19",
     "dplayer": "^1.27.1",
-    "element-plus": "^2.11.8",
+    "element-plus": "^2.13.0",
     "lodash-unified": "^1.0.3",
-    "nuxt": "^4.2.1",
+    "nuxt": "^4.2.2",
     "pinia": "^3.0.4",
     "viewerjs": "^1.11.7",
     "vue": "latest",
@@ -35,6 +35,6 @@
   "devDependencies": {
     "@amap/amap-jsapi-types": "^0.0.15",
     "@types/dplayer": "^1.25.5",
-    "sass-embedded": "^1.93.3"
+    "sass-embedded": "^1.97.1"
   }
 }
