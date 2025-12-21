@@ -29,6 +29,7 @@
     "@mylog-full/mix": "workspace:*",
     "@nestjs/common": "^11.1.9",
     "@nestjs/core": "^11.1.9",
+    "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.1.9",
     "@prisma/adapter-mariadb": "^7.0.0",
     "@prisma/client": "^7.0.1",
