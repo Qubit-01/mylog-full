@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Res } from '@nestjs/common';
 import { UserService } from './user.service';
-import { prisma } from '../../lib/prisma'
+import { prisma } from '../../lib/prisma';
 import { getUseridByPswd } from 'generated/prisma/sql';
 import { sign } from 'src/utils/jwt';
 import { Userid } from 'src/utils';
@@ -10,9 +10,7 @@ import { type Response } from 'express';
 
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-  ) { }
+  constructor(private readonly userService: UserService) {}
 
   /**
    * 获取token。用于登录，getUser不行，目前token只包含id信息
@@ -33,6 +31,7 @@ export class UserController {
       userid = await this.getUseridByPswd(body.name, body.pswd);
 
     const token = userid ? sign(userid) : undefined;
+    console.log('LSQ> token', token);
 
     if (token) {
       res.cookie('token', token, {
@@ -59,17 +58,16 @@ export class UserController {
   @Post('get_user')
   async getUser(
     @Userid() userid: number,
-    @Body() body: { id: number } | { name: string },
+    @Body() body?: { id: number } | { name: string },
   ) {
-    // console.log('🐔 get_user: ', userid, body);
+    console.log('🐔 get_user: ', userid, body);
 
     let user;
-    if ('id' in body)
+    if (body && 'id' in body)
       user = await prisma.user.findUnique({ where: { userid: body.id } });
-    else if ('name' in body)
+    else if (body && 'name' in body)
       user = await prisma.user.findUnique({ where: { name: body.name } });
-    else if (userid)
-      user = await prisma.user.findUnique({ where: { userid } });
+    else if (userid) user = await prisma.user.findUnique({ where: { userid } });
 
     if (!user) return;
 
@@ -148,9 +146,7 @@ export class UserController {
    * @returns 用户id
    */
   async getUseridByPswd(name: string, pswd: string) {
-    const user = (
-      await prisma.$queryRawTyped(getUseridByPswd(name, pswd))
-    )[0];
+    const user = (await prisma.$queryRawTyped(getUseridByPswd(name, pswd)))[0];
     return user ? Number(user.id) : undefined;
   }
 

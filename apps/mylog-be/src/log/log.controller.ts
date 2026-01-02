@@ -1,15 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { LogService } from './log.service';
-import { prisma } from '../../lib/prisma'
+import { prisma } from '../../lib/prisma';
 import { toWhere4LogFilter, Userid } from 'src/utils';
 import { Log, LogEditable, LogFilter } from '@mylog-full/mix';
 import { decrypt, encrypt } from 'src/utils/crypto';
 
 @Controller('log')
 export class LogController {
-  constructor(
-    private readonly logService: LogService,
-  ) {}
+  constructor(private readonly logService: LogService) {}
 
   /** 获取public列表， 按发送时间倒序 */
   @Post('get_publics')
@@ -40,12 +38,13 @@ export class LogController {
     const whereFilter = toWhere4LogFilter(body.filter);
     console.log('LSQ> whereFilter: ', JSON.stringify(whereFilter));
 
-    return await prisma.log.findMany({
+    const logs = await prisma.log.findMany({
       where: { userid, ...whereFilter },
       skip: body.skip,
       take: body.limit ?? 10,
       orderBy: { logtime: 'desc' },
     });
+    return logs;
   }
 
   /** 发布log，用token的userid */
