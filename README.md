@@ -38,6 +38,12 @@
 - 后端摒弃掉Java，转为使用Nest框架开发，服务器只用安装node环境即可，使我可以更加专注开发功能。
 - 面向未来，为未来开发APP应用和桌面端应用做准备
 
+# 后端
+
+## Prisma
+
+https://console.prisma.io/jgosyhgwxl3oobctl0ncd3rq/cmid3mgfj09gkxefkix3ocle6/cmid3mgfj09ggxefk9oa3airz/dashboard
+
 # 探索记录
 
 ### PM2
