@@ -19,9 +19,7 @@ const { log, data } = defineProps<{
 // props.imgs > log.imgs
 const imgs = computed(() => data)
 // 传入的地址转为正常的url
-const urls = ref<string[]>(
-  toFileUrl(imgs.value, 'compress-imgs/', log?.userid),
-)
+const urls = ref<string[]>(toFileUrl(imgs.value, 'compress-imgs/', log?.userid))
 watch(imgs, () => {
   urls.value = toFileUrl(imgs.value, 'compress-imgs/', log?.userid)
   nextTick(() => viewer?.update())
