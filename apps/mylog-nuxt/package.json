@@ -35,6 +35,6 @@
   "devDependencies": {
     "@amap/amap-jsapi-types": "^0.0.15",
     "@types/dplayer": "^1.25.5",
-    "sass-embedded": "^1.97.1"
+    "sass-embedded": "^1.97.2"
   }
 }
