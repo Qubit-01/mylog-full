@@ -21,9 +21,9 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@prisma/client": "^7.2.0",
+    "@prisma/client": "^7.4.0",
     "dayjs": "^1.11.19",
-    "exifreader": "^4.34.0",
-    "vue": "^3.5.26"
+    "exifreader": "^4.36.1",
+    "vue": "^3.5.28"
   }
 }
