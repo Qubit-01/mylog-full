@@ -14,18 +14,4 @@
 
 2. 运行代理服务器 `w2 restart -n bit -w 123456`
 
-## Setup
-
-Make sure to install dependencies: `pnpm install`
-
-## Development Server
-
-Start the development server on `http://localhost:3000`: `pnpm dev`
-
-## Production
-
-Build the application for production: `pnpm build`
-
-Locally preview production build: `pnpm preview`
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+3. 配置代理转发 `www.mylog.ink 127.0.0.1`
