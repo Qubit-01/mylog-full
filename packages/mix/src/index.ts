@@ -168,4 +168,4 @@ export type LogFilter = {
 export type LogEdit = Partial<Log>
 
 /** 主题类型 light | dark | default系统默认 */
-export type Theme = 'light' | 'dark' | 'default'
+export type Theme = 'light' | 'dark' | 'auto'

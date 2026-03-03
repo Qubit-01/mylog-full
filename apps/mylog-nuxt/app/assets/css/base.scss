@@ -29,7 +29,7 @@
   border: var(--m-border);
 
   box-shadow: var(--m-shadow);
-  backdrop-filter: blur(var(--backdrop-filter-blur));
+  // backdrop-filter: blur(var(--backdrop-filter-blur));
 
   &:hover {
     box-shadow: var(--m-hover-shadow);

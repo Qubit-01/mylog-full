@@ -1,6 +1,3 @@
-import type { Theme } from '@mylog-full/mix'
-import { useDark } from '@vueuse/core'
-
 const userInit: User = {
   id: 0,
   name: '',
@@ -8,7 +5,7 @@ const userInit: User = {
   info: {},
   setting: {
     page: {
-      theme: 'default',
+      theme: 'auto',
     },
     mylog: {
       tags: [],
@@ -42,22 +39,15 @@ export const useGlobalStore = defineStore('global', () => {
 
   const isLogined = computed(() => user.value.id !== 0)
 
-  /** 主题：仅设置中能改持久化主题配置，其他地方只能临时切换 */
+  /** 当前主题，直接修改 theme 不会影响用户设置，如果修改设置会全部影响 */
+  const theme = useColorMode()
 
-  /** 当前系统主题 */
-  const isDark = useDark()
-
-  /** 实际主题 */
-  const theme = ref<Exclude<Theme, 'default'>>(
-    user.value.setting.page.theme === 'default'
-      ? isDark.value
-        ? 'dark'
-        : 'light'
-      : user.value.setting.page.theme,
+  watch(
+    () => user.value.setting.page.theme,
+    (t) => {
+      theme.value = t
+    },
   )
-  watch([() => user.value.setting.page.theme, isDark], ([t, d]) => {
-    theme.value = t === 'default' ? (d ? 'dark' : 'light') : t
-  })
   // 主题切换
   const link = computed(() => {
     if (import.meta.client) document.documentElement.className = theme.value
