@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import OpenAI from 'openai';
-import { ChatCompletionMessageParam } from 'openai/resources/index.js';
+import { type ChatCompletionMessageParam } from 'openai/resources/index.js';
 
 const openai = new OpenAI({
   baseURL: 'https://api.deepseek.com',
