@@ -67,7 +67,7 @@ onMounted(() => {
             <ElRadioGroup v-model="user.setting.page.theme" size="small">
               <ElRadioButton label="亮" value="light" />
               <ElRadioButton label="暗" value="dark" />
-              <ElRadioButton label="跟随系统" value="default" />
+              <ElRadioButton label="跟随系统" value="auto" />
             </ElRadioGroup>
           </div>
           <ElButton @click="signout()">退出登录</ElButton>
