@@ -12,6 +12,10 @@
 
 1. 安装 Whistle `pnpm i -g ` ，配置证书参考 https://cloud.tencent.com/developer/article/1861183
 
-2. 运行代理服务器 `w2 restart -n bit -w 123456`
+2. 运行代理服务器 `w2 restart`
 
 3. 配置代理转发 `www.mylog.ink 127.0.0.1`
+
+### 启动
+
+`API_LOCAL=1 pnpm -F mylog-nuxt dev` API_LOCAL=1 用于访问本地

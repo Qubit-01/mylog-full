@@ -34,7 +34,12 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   css: ['~/assets/css/base.scss', 'element-plus/theme-chalk/dark/css-vars.css'],
-  vite: {},
+  vite: {
+    define: {
+      // 把 API_LOCAL 环境变量注入到客户端构建中
+      'process.env.API_LOCAL': process.env.API_LOCAL,
+    }, 
+  },
   modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt'],
   elementPlus: {
     defaultLocale: 'zh-cn',
