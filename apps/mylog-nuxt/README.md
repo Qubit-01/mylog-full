@@ -18,4 +18,4 @@
 
 ### 启动
 
-`API_LOCAL=1 pnpm -F mylog-nuxt dev` API_LOCAL=1 用于访问本地
+`pnpm -F mylog-nuxt dev`

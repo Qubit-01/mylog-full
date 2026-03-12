@@ -34,12 +34,7 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   css: ['~/assets/css/base.scss', 'element-plus/theme-chalk/dark/css-vars.css'],
-  vite: {
-    define: {
-      // 把 API_LOCAL 环境变量注入到客户端构建中
-      'process.env.API_LOCAL': process.env.API_LOCAL,
-    }, 
-  },
+  vite: {},
   modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt'],
   elementPlus: {
     defaultLocale: 'zh-cn',
@@ -47,18 +42,18 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {},
   },
-  // nitro: {
-  //   devProxy: {
-  //     "/api": {
-  //       target: "http://localhost:20914", // 这里是接口地址
-  //       changeOrigin: true,
-  //       prependPath: true,
-  //     },
-  //   },
-  //   routeRules: {
-  //     '/api/**': {
-  //       proxy: 'http://localhost:20914/**'
-  //     }
-  //   }
-  // }
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: 'http://localhost:20914', // 这里是接口地址
+        changeOrigin: true,
+        prependPath: true,
+      },
+    },
+    //   routeRules: {
+    //     '/api/**': {
+    //       proxy: 'http://localhost:20914/**'
+    //     }
+    //   }
+  },
 })
