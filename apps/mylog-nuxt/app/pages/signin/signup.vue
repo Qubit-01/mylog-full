@@ -9,35 +9,56 @@ const login = reactive({
 // 确认密码独立出来
 const pswd2 = ref('')
 
-//刷新验证码
-// const changeImg = () => {
-//   captchaDom.value!.src = baseURL + '/user/signin/captcha_img?' + Math.random()
-// }
-// onMounted(changeImg)
+// 验证码图片 DOM
+const $Captcha = useTemplateRef('$Captcha')
 
-const doSignin = async () => {
+// 刷新验证码
+const changeImg = () => {
+  login.captcha = ''
+  if ($Captcha.value) {
+    $Captcha.value.src = baseURL + '/user/captcha_img?' + Date.now()
+  }
+}
+
+onMounted(changeImg)
+
+const doSignup = async () => {
   // 普通校验
   if (!login.name.trim() || !login.pswd.trim() || !pswd2.value.trim()) {
-    // ElMessage.error("请输入相关信息");
-    return false
+    ElMessage.error('请输入相关信息')
+    return
   }
   // 先确认密码
   if (login.pswd !== pswd2.value) {
-    // ElMessage.error("两次密码不一致");
+    ElMessage.error('两次密码不一致')
     return
   }
-  const userid = await signin(login, '/')
-  console.log(userid)
-  if (userid === 0) {
-    // ElMessage.error("用户名已存在");
+  if (!login.captcha.trim()) {
+    ElMessage.error('请输入验证码')
     return
   }
-  if (userid === -1) {
-    // ElMessage.error("验证码错误");
+
+  const result = await $fetch('/user/signup', {
+    ...FetchOptsDefault,
+    body: login,
+  })
+
+  console.log('🚀 result', result, -1)
+
+  if (result == 0) {
+    ElMessage.error('用户名已存在')
+    changeImg()
     return
   }
-  // ElMessage.success("注册成功");
-  // router.push('/login')
+  if (result == -1) {
+    ElMessage.error('验证码错误')
+    changeImg()
+    return
+  }
+
+  ElMessage.success('注册成功，正在跳转...')
+  await nextTick()
+  location.href = '/'
 }
 </script>
 <template>
@@ -70,10 +91,10 @@ const doSignin = async () => {
           type="text"
           autocomplete="off"
         />
-        <img ref="captchaDom" alt="验证码看不清，换一张" @click="changeImg" />
+        <img ref="$Captcha" alt="" title="点击刷新" @click="changeImg" />
       </div>
 
-      <ElButton @click="doSignin" size="large">注册</ElButton>
+      <ElButton @click="doSignup" size="large">注册</ElButton>
     </form>
     <div class="text-link">
       有账号？
@@ -99,6 +120,7 @@ const doSignin = async () => {
       img {
         height: 34px;
         cursor: pointer;
+        border-radius: 4px;
       }
     }
   }
