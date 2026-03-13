@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
 import { prisma } from '../../lib/prisma';
 import { Prisma } from 'generated/prisma/client';
@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import { type Response } from 'express';
 import * as svgCaptcha from 'svg-captcha';
 import * as crypto from 'crypto';
+import { BizException } from 'src/common/exceptions/biz.exception';
 
 /** 验证码存储：captchaId -> { text, expires } */
 const captchaMap = new Map<string, { text: string; expires: number }>();
@@ -46,22 +47,22 @@ export class UserController {
     else if ('name' in body)
       userid = await this.getUseridByPswd(body.name, body.pswd);
 
-    const token = userid ? sign(userid) : undefined;
+    if (!userid)
+      throw new BizException(HttpStatus.UNAUTHORIZED, '用户名或密码错误');
+    const token = sign(userid);
     console.log('LSQ> token', token);
 
-    if (token) {
-      res.cookie('token', token, {
-        maxAge: 60 * 60 * 24 * 60 * 1000, // 两个月,ms
-        // httpOnly: true, // 仅请求可访问，js不可访问
-        secure: process.env.NODE_ENV === 'production', // 仅 https 传输
-        // sameSite: 'strict', // 防止CSRF攻击和用户追踪
-        domain: '.mylog.ink', // 二级域名共享
-        // path: '/',
-        // signed: true,
-      });
-    }
+    res.cookie('token', token, {
+      maxAge: 60 * 60 * 24 * 60 * 1000, // 两个月,ms
+      // httpOnly: true, // 仅请求可访问，js不可访问
+      secure: process.env.NODE_ENV === 'production', // 仅 https 传输
+      // sameSite: 'strict', // 防止CSRF攻击和用户追踪
+      domain: '.mylog.ink', // 二级域名共享
+      // path: '/',
+      // signed: true,
+    });
 
-    return token;
+    return { token };
   }
 
   /**
@@ -85,7 +86,7 @@ export class UserController {
       user = await prisma.user.findUnique({ where: { name: body.name } });
     else if (userid) user = await prisma.user.findUnique({ where: { userid } });
 
-    if (!user) return;
+    if (!user) return null;
 
     const setting = user.setting as User['setting'];
 
@@ -125,12 +126,12 @@ export class UserController {
     body: { img?: string; info?: string; setting?: string },
   ) {
     console.log('🐔 set_user: ', userid, body);
-    if (!userid) return;
+    if (!userid) throw new BizException(HttpStatus.UNAUTHORIZED, '未登录');
     await prisma.user.update({
       where: { userid },
       data: body,
     });
-    return 1;
+    return { success: true };
   }
 
   /**
@@ -145,7 +146,7 @@ export class UserController {
     @Body() body: { unionidQq?: string; unionidWeixin?: string },
   ) {
     console.log('🐔 set_userlogin: ', userid, body);
-    if (!userid) return;
+    if (!userid) throw new BizException(HttpStatus.UNAUTHORIZED, '未登录');
     await prisma.userlogin.update({
       where: { id: userid },
       data: {
@@ -153,7 +154,7 @@ export class UserController {
         unionid_weixin: body.unionidWeixin,
       },
     });
-    return 1;
+    return { success: true };
   }
 
   /**
@@ -189,10 +190,7 @@ export class UserController {
   /**
    * 用户注册
    * @param body { name, pswd, captcha }
-   * @returns token 注册成功自动登录，返回 token
-   *   - 返回 0: 用户名已存在
-   *   - 返回 -1: 验证码错误
-   *   - 返回 token: 注册成功
+   * @returns 注册成功后返回 token 对象
    */
   @Post('signup')
   async signup(
@@ -204,20 +202,24 @@ export class UserController {
 
     // 1. 校验验证码
     const captchaId = cookies?.captcha_id;
-    if (!captchaId) return -1;
+    if (!captchaId)
+      throw new BizException(HttpStatus.BAD_REQUEST, '验证码错误');
 
     const stored = captchaMap.get(captchaId);
     captchaMap.delete(captchaId); // 用完即删，防止重放
     res.clearCookie('captcha_id');
 
-    if (!stored || stored.expires < Date.now()) return -1;
-    if (stored.text !== body.captcha.toLowerCase()) return -1;
+    if (!stored || stored.expires < Date.now())
+      throw new BizException(HttpStatus.BAD_REQUEST, '验证码错误');
+    if (stored.text !== body.captcha.toLowerCase())
+      throw new BizException(HttpStatus.BAD_REQUEST, '验证码错误');
 
     // 2. 检查用户名是否已存在
     const existing = await prisma.userlogin.findUnique({
       where: { name: body.name },
     });
-    if (existing) return 0;
+    if (existing)
+      throw new BizException(HttpStatus.CONFLICT, '用户名已存在');
 
     // 3. 创建用户（使用 MySQL SHA 函数加密密码，与登录逻辑一致）
     try {
@@ -228,7 +230,8 @@ export class UserController {
       const loginUser = await prisma.userlogin.findUnique({
         where: { name: body.name },
       });
-      if (!loginUser) return -1;
+      if (!loginUser)
+        throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR, '注册失败');
 
       // 再创建 user
       await prisma.user.create({
@@ -248,13 +251,13 @@ export class UserController {
         domain: '.mylog.ink', // 二级域名共享
       });
 
-      return token;
+      return { token };
     } catch (e) {
       if (
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === 'P2002'
       ) {
-        return 0; // 唯一约束冲突 -> 用户名已存在
+        throw new BizException(HttpStatus.CONFLICT, '用户名已存在');
       }
       throw e;
     }
