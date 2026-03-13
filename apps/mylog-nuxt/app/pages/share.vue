@@ -54,7 +54,7 @@ const fetchLogs = () => {
         />
 
         <!-- Log节点  :color="log.type === 'public' ? 'var(--el-color-warning)' : 'transparent'"-->
-        <ElTimelineItem hide-timestamp center color="transparent">
+        <ElTimelineItem hide-timestamp color="transparent">
           <Log type="share" :log />
         </ElTimelineItem>
       </template>
