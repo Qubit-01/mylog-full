@@ -4,7 +4,7 @@ const decoder = new TextDecoder();
 const getKey = async () =>
   crypto.subtle.importKey(
     'raw',
-    encoder.encode(process.env.cryptorKey!.padEnd(32, '0').slice(0, 32)),
+    encoder.encode(process.env.SecretKey!.padEnd(32, '0').slice(0, 32)),
     'AES-GCM',
     false,
     ['encrypt', 'decrypt'],

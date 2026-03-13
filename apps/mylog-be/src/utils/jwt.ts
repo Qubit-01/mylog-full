@@ -3,7 +3,7 @@ import JWT from 'jsonwebtoken';
 type JwtExpiresIn = Parameters<typeof JWT.sign>[2]['expiresIn'];
 
 // 从env中获取配置
-const secretKey = process.env.JwtSecretKey!;
+const secretKey = process.env.SecretKey!;
 const expiresIn = process.env.JwtExpiresIn! as JwtExpiresIn;
 
 /** JwtPayload类型 */
