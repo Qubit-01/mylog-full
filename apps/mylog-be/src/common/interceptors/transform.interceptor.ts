@@ -4,15 +4,9 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
+import type { ApiResult } from '@mylog-full/mix';
 import type { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-/** 统一成功响应体 */
-export interface ApiResult<T = unknown> {
-  code: number;
-  message: string;
-  data: T | null;
-}
 
 @Injectable()
 export class TransformInterceptor<T>
