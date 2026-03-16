@@ -12,10 +12,11 @@ export const signin = async (
   to?: string,
 ) => {
   // 后端来设置cookie
-  const token = await $fetch<string>('/user/token', {
-    ...FetchOptsDefault,
+  const res = await $fetchApi<{ token: string }>('/user/token', {
     body: data,
   })
+
+  const token = res.token
   if (!token) return
 
   await nextTick()

@@ -29,13 +29,19 @@ const userInit: User = {
  */
 export const useGlobalStore = defineStore('global', () => {
   const user = ref<User>(userInit)
-  const { data } = useFetch<User>('/user/get_user', {
-    ...FetchOptsDefault,
+  const { data } = useFetchApi<User | null>('/user/get_user', {
     headers: { Cookie: `token=${useCookie('token').value}` },
-    onResponse({ response }) {
-      user.value = { ...user.value, ...response._data }
-    },
   })
+
+  watch(
+    data,
+    (value) => {
+      if (value && typeof value === 'object') {
+        user.value = { ...user.value, ...value }
+      }
+    },
+    { immediate: true },
+  )
 
   const isLogined = computed(() => user.value.id !== 0)
 

@@ -5,17 +5,16 @@ export const useLoggerStore = defineStore('logger', () => {
   const noMore = ref(false)
 
   // 每次触发请求，都会自动 push 在 logs 最后
-  const { status, refresh } = useFetch<Log[]>('/log/get_publics', {
+  const { data, status, refresh } = useFetchApi<Log[]>('/log/get_publics', {
     key: 'logger',
-    ...FetchOptsDefault,
     headers: { Cookie: `token=${useCookie('token').value}` },
     body: params,
-    onResponse({ response }) {
-      const logsRes = response._data
-      if (!logsRes) return
-      logs.value.push(...logsRes)
-      if (logsRes.length < params.limit) noMore.value = true
-    },
+  })
+
+  watch(data, (logsRes) => {
+    if (!logsRes) return
+    logs.value.push(...logsRes)
+    if (logsRes.length < params.limit) noMore.value = true
   })
 
   /** 请求下一页数据 */

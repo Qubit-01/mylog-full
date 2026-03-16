@@ -48,8 +48,7 @@ const send = async () => {
 
   loading.value = true
   try {
-    const res = await $fetch<{ choices: { message: Message }[] }>('/agent/chat', {
-      ...FetchOptsDefault,
+    const res = await $fetchApi<{ choices: { message: Message }[] }>('/agent/chat', {
       body: {
         model: 'deepseek-chat',
         messages: messages.value,
@@ -60,8 +59,8 @@ const send = async () => {
       messages.value.push(reply)
       scrollToBottom()
     }
-  } catch (e) {
-    ElMessage.error('请求失败，请稍后重试')
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '请求失败，请稍后重试')
   } finally {
     loading.value = false
   }
@@ -85,7 +84,7 @@ const onKeydown = (e: KeyboardEvent) => {
         <span>AI 聊天室</span>
         <span class="model">Deepseek</span>
       </div>
-      <ElButton text size="small" @click="messages.value = []" :disabled="!messages.length">
+      <ElButton text size="small" @click="messages = []" :disabled="!messages.length">
         清空对话
       </ElButton>
     </div>

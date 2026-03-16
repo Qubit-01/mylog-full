@@ -10,8 +10,7 @@ onMounted(() => {
   watchDebounced(
     user,
     (u) => {
-      $fetch<string>('/user/set_user', {
-        ...FetchOptsDefault,
+      $fetchApi('/user/set_user', {
         body: { img: u.img, info: u.info, setting: u.setting },
       })
     },

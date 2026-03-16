@@ -9,17 +9,16 @@ export const useMylogStore = defineStore('mylog', () => {
   const noMore = ref(false)
 
   // 每次触发请求，都会自动 push 在 logs 最后
-  const { status, refresh } = useFetch<Log[]>('/log/get_mylogs', {
+  const { data, status, refresh } = useFetchApi<Log[]>('/log/get_mylogs', {
     key: 'mylogs',
-    ...FetchOptsDefault,
     headers: { Cookie: `token=${useCookie('token').value}` },
     body: params,
-    onResponse({ response }) {
-      const logsRes = response._data
-      if (!logsRes) return
-      logsRes.forEach((l) => (logsMap.value[l.id] = l))
-      if (logsRes.length < params.limit) noMore.value = true
-    },
+  })
+
+  watch(data, (logsRes) => {
+    if (!logsRes) return
+    logsRes.forEach((l) => (logsMap.value[l.id] = l))
+    if (logsRes.length < params.limit) noMore.value = true
   })
 
   /** 请求下一页数据 */
