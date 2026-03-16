@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import type { UseFetchOptions } from 'nuxt/app'
 import type { ApiResult } from '@mylog-full/mix'
 
 dayjs.extend(customParseFormat)
@@ -75,7 +76,7 @@ export const FetchOptsDefault = {
  */
 export const $fetchApi = async <T>(
   url: string,
-  options: Record<string, unknown> = {},
+  options: Parameters<typeof $fetch>[1] = {},
 ) => {
   const result = await $fetch<T | ApiResult<T>>(url, {
     ...FetchOptsDefault,
@@ -95,12 +96,22 @@ export const $fetchApi = async <T>(
  */
 export const useFetchApi = <T>(
   url: string,
-  options: Record<string, unknown> = {},
+  options: UseFetchOptions<
+    T | ApiResult<T>,
+    T,
+    never,
+    undefined,
+    string,
+    'POST'
+  > = {},
 ) => {
-  return useFetch<T>(url, {
-    ...FetchOptsDefault,
-    ignoreResponseError: true,
-    ...options,
-    transform: (input: T | ApiResult<T>) => unwrapApiResult<T>(input),
-  } as never)
+  return useFetch<T | ApiResult<T>, Error, string, 'POST', T | ApiResult<T>, T>(
+    url,
+    {
+      ...FetchOptsDefault,
+      ignoreResponseError: true, // 让 useFetch 不要抛错误，在 transform 里统一处理
+      transform: (input: T | ApiResult<T>) => unwrapApiResult<T>(input),
+      ...options,
+    },
+  )
 }
