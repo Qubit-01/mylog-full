@@ -48,27 +48,32 @@ const send = async () => {
 
   loading.value = true
   try {
-    const res = await $fetchApi<{ choices: { message: Message }[] }>('/agent/chat', {
-      body: {
-        model: 'deepseek-chat',
-        messages: messages.value,
+    const res = await $fetchApi<{ choices: { message: Message }[] }>(
+      '/agent/chat',
+      {
+        body: {
+          model: 'deepseek-chat',
+          messages: messages.value,
+        },
       },
-    })
+    )
     const reply = res?.choices?.[0]?.message
     if (reply) {
       messages.value.push(reply)
       scrollToBottom()
     }
   } catch (error) {
-    ElMessage.error(error instanceof Error ? error.message : '请求失败，请稍后重试')
+    ElMessage.error(
+      error instanceof Error ? error.message : '请求失败，请稍后重试',
+    )
   } finally {
     loading.value = false
   }
 }
 
 // 回车发送，Shift+Enter 换行
-const onKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'Enter' && !e.shiftKey) {
+const onKeydown = (e: KeyboardEvent | Event) => {
+  if (e instanceof KeyboardEvent && e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault()
     send()
   }
@@ -84,7 +89,12 @@ const onKeydown = (e: KeyboardEvent) => {
         <span>AI 聊天室</span>
         <span class="model">Deepseek</span>
       </div>
-      <ElButton text size="small" @click="messages = []" :disabled="!messages.length">
+      <ElButton
+        text
+        size="small"
+        @click="messages = []"
+        :disabled="!messages.length"
+      >
         清空对话
       </ElButton>
     </div>
@@ -108,9 +118,7 @@ const onKeydown = (e: KeyboardEvent) => {
 
       <!-- 加载中 -->
       <div v-if="loading" class="msg assistant">
-        <div class="bubble loading">
-          <span /><span /><span />
-        </div>
+        <div class="bubble loading"><span /><span /><span /></div>
       </div>
     </div>
 
@@ -264,8 +272,12 @@ const onKeydown = (e: KeyboardEvent) => {
             background: var(--el-color-primary);
             animation: bounce 1.2s infinite ease-in-out;
 
-            &:nth-child(2) { animation-delay: 0.2s; }
-            &:nth-child(3) { animation-delay: 0.4s; }
+            &:nth-child(2) {
+              animation-delay: 0.2s;
+            }
+            &:nth-child(3) {
+              animation-delay: 0.4s;
+            }
           }
         }
       }
@@ -292,7 +304,15 @@ const onKeydown = (e: KeyboardEvent) => {
 }
 
 @keyframes bounce {
-  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-  40% { transform: scale(1); opacity: 1; }
+  0%,
+  80%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 </style>
