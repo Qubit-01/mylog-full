@@ -6,16 +6,15 @@ const logs = useState<Log[]>(() => [])
 const params = reactive({ skip: 0, limit: 20, share: query.share })
 const noMore = ref(false)
 
-const { refresh, status } = useFetch<Log[]>('/log/get_share', {
-  ...FetchOptsDefault,
+const { data, refresh, status } = useFetchApi<Log[]>('/log/get_share', {
   // headers: { Cookie: `token=${useCookie('token').value}` },
   body: params,
-  onResponse({ response }) {
-    const logsRes = response._data
-    if (!logsRes) return
-    logs.value.push(...logsRes)
-    if (logsRes.length < params.limit) noMore.value = true
-  },
+})
+
+watch(data, (logsRes) => {
+  if (!logsRes) return
+  logs.value.push(...logsRes)
+  if (logsRes.length < params.limit) noMore.value = true
 })
 
 /** 请求下一页数据 */

@@ -19,6 +19,13 @@ export const toLog = (log: Partial<Log>): Log => ({
 
 /** 类型定义：前后端共用的 ******************/
 
+/** 统一接口返回结构 */
+export type ApiResult<T = unknown> = {
+  code: number
+  message: string
+  data: T | null
+}
+
 /** UserOV 用户数据结构 */
 export type User = {
   id: number

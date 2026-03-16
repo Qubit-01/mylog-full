@@ -70,8 +70,7 @@ export const releaseLog = async (
   // 1. 上传文件
   await myUploadFiles(uploadFilesParams)
   // 2. 发布log
-  const logNew = await $fetch<Log>('/log/release_log', {
-    ...FetchOptsDefault,
+  const logNew = await $fetchApi<Log>('/log/release_log', {
     body: { log: logEdit },
   })
   return logNew
@@ -99,11 +98,10 @@ export const deleteLog = async (log: Log) => {
   })
   await myDeleteFiles(objects)
   // 2. 再删log
-  const logDel = await $fetch('/log/delete_log', {
-    ...FetchOptsDefault,
+  const logDel = await $fetchApi<Log | null>('/log/delete_log', {
     body: { id: log.id },
   })
-  return logDel ? (logDel as Log) : undefined
+  return logDel ?? undefined
 }
 
 /** 编辑log，传入log和编辑的部分，返回新的log */
@@ -130,8 +128,7 @@ export const editLog = async (
   })
   await myDeleteFiles(delObjs)
   // 3. 编辑 log
-  const logNew = await $fetch<Log>('/log/edit_log', {
-    ...FetchOptsDefault,
+  const logNew = await $fetchApi<Log>('/log/edit_log', {
     body: { id: log.id, logEdit },
   })
   return logNew
@@ -259,8 +256,7 @@ export const shareLogs = async (ids: number[]) => {
   } catch {
     return
   }
-  const en = await $fetch<string>('/log/encrypt_share', {
-    ...FetchOptsDefault,
+  const en = await $fetchApi<string>('/log/encrypt_share', {
     body: { ids },
   })
   const url = `${Domain}/share?share=${encodeURIComponent(en)}`

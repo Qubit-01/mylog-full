@@ -38,20 +38,10 @@ const doSignup = async () => {
     return
   }
 
-  const result = await $fetch('/user/signup', {
-    ...FetchOptsDefault,
-    body: login,
-  })
-
-  console.log('🚀 result', result, -1)
-
-  if (result == 0) {
-    ElMessage.error('用户名已存在')
-    changeImg()
-    return
-  }
-  if (result == -1) {
-    ElMessage.error('验证码错误')
+  try {
+    await $fetchApi<{ token: string }>('/user/signup', { body: login })
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : '注册失败')
     changeImg()
     return
   }

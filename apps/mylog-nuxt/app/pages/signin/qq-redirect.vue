@@ -47,13 +47,11 @@ const bd = async () => {
     return
   }
   // 先绑定平台，再更新头像
-  await $fetch<string>('/user/set_userlogin', {
-    ...FetchOptsDefault,
+  await $fetchApi('/user/set_userlogin', {
     body: { unionidQq: user.unionidQq },
   })
   if (qqImg.value) {
-    await $fetch<string>('/user/set_user', {
-      ...FetchOptsDefault,
+    await $fetchApi('/user/set_user', {
       body: { img: user.data.figureurl_qq },
     })
   }

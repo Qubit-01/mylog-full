@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 
 const origin = [
   'https://mylog.ink',
@@ -17,6 +19,8 @@ async function bootstrap() {
   });
   app.use(cookieParser()); // 解析cookie
   app.useGlobalPipes(new ValidationPipe({ transform: true })); // 全局验证器，自动转换参数类型，错误直接400
+  app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalFilters(new AllExceptionsFilter());
   await app.listen(process.env.PORT ?? 20914);
 }
 bootstrap();
