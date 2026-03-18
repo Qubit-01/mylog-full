@@ -1,10 +1,7 @@
 {
-  "name": "mylog-be",
-  "version": "1.0.0",
+  "name": "@mylog/be",
   "description": "多元记后端: Nest + Prisma",
-  "author": "bit",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "dev": "pnpm run start:dev",
     "start": "nest start",

@@ -2,6 +2,9 @@ packages:
   - apps/*
   - packages/*
 
+ignoredBuiltDependencies:
+  - libpq # 这个包有问题，暂时先不构建它
+
 onlyBuiltDependencies:
   - '@nestjs/core'
   - '@parcel/watcher'
@@ -15,7 +18,6 @@ onlyBuiltDependencies:
   - esbuild
   - exifreader
   - less
-  # - libpq
   - msgpackr-extract
   - prisma
   - protobufjs
