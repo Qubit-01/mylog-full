@@ -1,6 +1,5 @@
 {
-  "name": "mylog-uni",
-  "version": "1.0.0",
+  "name": "@mylog/uni",
   "scripts": {
     "dev:app": "uni -p app",
     "dev:app-android": "uni -p app-android",

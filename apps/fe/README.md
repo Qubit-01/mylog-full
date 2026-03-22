@@ -1,4 +1,4 @@
-# Mylog-Nuxt
+# @mylog/fe
 
 多元记 H5 前端 （服役中）
 
@@ -18,4 +18,4 @@
 
 ### 启动
 
-`pnpm -F mylog-nuxt dev`
+`pnpm -F fe dev`

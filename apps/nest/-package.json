@@ -1,8 +1,6 @@
 {
-  "name": "mylog-nest",
-  "version": "1.0.0",
+  "name": "@mylog/nest",
   "description": "Mylog NestJS后端",
-  "author": "bit",
   "private": true,
   "scripts": {
     "dev": "pnpm run start:dev",

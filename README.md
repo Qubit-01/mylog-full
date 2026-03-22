@@ -52,9 +52,9 @@ https://console.prisma.io/jgosyhgwxl3oobctl0ncd3rq/cmid3mgfj09gkxefkix3ocle6/cmi
 
 ```bash
 [PM2][ERROR] File ./ecosystem.config.js malformated
-Error [ERR_REQUIRE_ESM]: require() of ES Module /root/Repository/mylog-full/apps/mylog-nuxt/ecosystem.config.js from /root/.local/share/pnpm/global/5/.pnpm/pm2@5.4.3/node_modules/pm2/lib/Common.js not supported.
+Error [ERR_REQUIRE_ESM]: require() of ES Module /root/Repository/mylog-full/apps/fe/ecosystem.config.js from /root/.local/share/pnpm/global/5/.pnpm/pm2@5.4.3/node_modules/pm2/lib/Common.js not supported.
 ecosystem.config.js is treated as an ES module file as it is a .js file whose nearest parent package.json contains "type": "module" which declares all .js files in that package scope as ES modules.
-Instead either rename ecosystem.config.js to end in .cjs, change the requiring code to use dynamic import() which is available in all CommonJS modules, or change "type": "module" to "type": "commonjs" in /root/Repository/mylog-full/apps/mylog-nuxt/package.json to treat all .js files as CommonJS (using .mjs for all ES modules instead).
+Instead either rename ecosystem.config.js to end in .cjs, change the requiring code to use dynamic import() which is available in all CommonJS modules, or change "type": "module" to "type": "commonjs" in /root/Repository/mylog-full/apps/fe/package.json to treat all .js files as CommonJS (using .mjs for all ES modules instead).
 ```
 
 ### Docker 在 Ubuntu 24 上的安装

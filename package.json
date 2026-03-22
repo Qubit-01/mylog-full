@@ -1,15 +1,15 @@
 {
   "name": "mylog-full",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2026.3.22",
+  "description": "多元记",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pull": "git pull && pnpm i",
-    "restart": "pnpm run pull && pnpm -F mylog-be build && pnpm -F mylog-nuxt build && pm2 restart all",
-    "start": "pnpm run pull && pnpm -F mylog-be start:pm2 && pnpm -F mylog-nuxt start:pm2"
+    "restart": "pnpm run pull && pnpm -F be build && pnpm -F fe build && pm2 restart all",
+    "start": "pnpm run pull && pnpm -F be start:pm2 && pnpm -F fe start:pm2"
   },
   "keywords": [],
-  "author": "",
+  "author": "bit",
   "license": "ISC"
 }

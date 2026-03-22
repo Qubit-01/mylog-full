@@ -1,8 +1,6 @@
 {
-  "name": "mylog-docs",
-  "version": "1.0.0",
+  "name": "@mylog/docs",
   "description": "Mylog 多元记文档站",
-  "author": "bit",
   "private": true,
   "scripts": {
     "docs:dev": "vitepress dev docs",

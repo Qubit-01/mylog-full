@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'mylog-be',
+      name: '@mylog/be',
       script: 'dist/src/main.js', // 入口路径
       // instances: '1', // 根据需求设置实例数量
       // exec_mode: 'cluster',

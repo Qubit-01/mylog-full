@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'mylog-nuxt',
+      name: '@mylog/fe',
       port: '3000',
       exec_mode: 'cluster',
       instances: 'max',
