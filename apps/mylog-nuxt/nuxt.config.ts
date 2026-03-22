@@ -3,6 +3,20 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   // ssr: false,
   devtools: { enabled: true },
+  devServer: {
+    host: '0.0.0.0',
+    port: 443,
+    // https: true,
+    https: {
+      key: './../../cert/mylog.ink.key',
+      cert: './../../cert/mylog.ink.crt',
+    },
+  },
+  vite: {
+    server: {
+      allowedHosts: true,
+    },
+  },
   app: {
     head: {
       // title: '多元记', // 兜底的标题，可以不设置，在 app.vue 里面处理
@@ -24,17 +38,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  devServer: {
-    host: '0.0.0.0',
-    port: 443,
-    // https: true,
-    https: {
-      key: './../../cert/mylog.ink.key',
-      cert: './../../cert/mylog.ink.crt',
-    },
-  },
   css: ['~/assets/css/base.scss', 'element-plus/theme-chalk/dark/css-vars.css'],
-  vite: {},
   modules: ['@element-plus/nuxt', '@pinia/nuxt', '@vueuse/nuxt'],
   elementPlus: {
     defaultLocale: 'zh-cn',
