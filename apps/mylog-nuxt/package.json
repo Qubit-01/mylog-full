@@ -21,7 +21,7 @@
     "cos-js-sdk-v5": "^1.10.1",
     "dayjs": "^1.11.20",
     "dplayer": "^1.27.1",
-    "element-plus": "^2.13.5",
+    "element-plus": "^2.13.6",
     "lodash-unified": "^1.0.3",
     "nuxt": "^4.4.2",
     "pinia": "^3.0.4",
