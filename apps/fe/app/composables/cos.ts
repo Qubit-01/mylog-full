@@ -55,9 +55,9 @@ export const toFileUrl = <T extends string | string[]>(
 ): T => {
   return Array.isArray(file)
     ? (file.map((f) => toFileUrl(f, prefix, userid)) as T)
-    : file.indexOf('http') !== 0
-    ? (`${BucketCDN}${cosPath(userid)}${prefix}${file}` as T)
-    : (file.replace('http://', 'https://') as T)
+    : file?.indexOf('http') !== 0
+      ? (`${BucketCDN}${cosPath(userid)}${prefix}${file}` as T)
+      : (file.replace('http://', 'https://') as T)
 }
 
 // 获取文件列表

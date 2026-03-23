@@ -5,7 +5,7 @@
 
   腾讯云推荐的播放器：https://cloud.tencent.com/act/pro/cos-video?player=tcplayer&mode=mp4
   详细API文档：https://cloud.tencent.com/document/product/436/104530
-  视频截帧：// todo
+  视频截帧：
   https://cloud.tencent.com/document/product/436/101440
   https://cloud.tencent.com/document/product/460/47505
   
